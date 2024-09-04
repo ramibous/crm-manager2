@@ -5,6 +5,5 @@ test/
 spec/
 *.log
 *.tmp
-*.map
+public/assets/
 yarn.lock
-public/assets/*
