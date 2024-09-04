@@ -4,3 +4,5 @@ log/
 tmp/
 public/assets/
 storage/
+node_modules/
+*.map
