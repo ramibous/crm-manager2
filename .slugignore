@@ -11,3 +11,5 @@ tmp/
 node_modules/
 log/
 tmp/
+public/assets/
+storage/
