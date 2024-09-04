@@ -1,9 +1,6 @@
 node_modules/
+*.map
 log/
 tmp/
-test/
-spec/
-*.log
-*.tmp
 public/assets/
-yarn.lock
+storage/
