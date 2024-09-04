@@ -1,11 +1,7 @@
 node_modules/
-log/
 tmp/
+log/
 test/
 spec/
 *.log
 *.tmp
-coverage/
-vendor/bundle/
-.bundle/
-
