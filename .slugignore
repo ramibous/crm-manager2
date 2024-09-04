@@ -1,7 +1,10 @@
 node_modules/
-tmp/
 log/
+tmp/
 test/
 spec/
 *.log
 *.tmp
+*.map
+yarn.lock
+public/assets/*
