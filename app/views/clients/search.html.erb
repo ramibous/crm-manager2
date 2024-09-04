@@ -1,0 +1,76 @@
+<div class="container mt-4" style="background-color: #E5ECF6; padding: 20px; border-radius: 10px;">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">PRADA Dubai Mall of the Emirates</h2>
+    <span class="badge bg-info text-dark">DQ: 98%</span>
+  </div>
+
+  <h3>Search existing Customer Card</h3>
+
+  <% if flash[:alert] %>
+    <div class="alert alert-warning">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <%= form_with url: search_clients_path, method: :get, local: true do |form| %>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= form.label :first_name, "Name / اسم", class: "form-label" %>
+        <%= form.text_field :first_name, class: 'form-control' %>
+      </div>
+      <div class="col-md-6">
+        <%= form.label :first_name_local, "Name (local) / اسم (المحلي)", class: "form-label" %>
+        <%= form.text_field :first_name_local, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= form.label :last_name, "Surname / لقب العائلة", class: "form-label" %>
+        <%= form.text_field :last_name, class: 'form-control' %>
+      </div>
+      <div class="col-md-6">
+        <%= form.label :last_name_local, "Surname (local) / اللقب (المحلي)", class: "form-label" %>
+        <%= form.text_field :last_name_local, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= form.label :company, "Company / شركة", class: "form-label" %>
+        <%= form.text_field :company, class: 'form-control' %>
+      </div>
+      <div class="col-md-6">
+        <%= form.label :location, "Location / موقعك", class: "form-label" %>
+        <%= form.text_field :location, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= form.label :email, "E-mail / البريد الإلكتروني", class: "form-label" %>
+        <%= form.email_field :email, class: 'form-control' %>
+      </div>
+      <div class="col-md-6">
+        <%= form.label :passport, "Passport / رقم جواز السفر", class: "form-label" %>
+        <%= form.text_field :passport, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= form.label :mobile, "Mobile / التليفون المحمول", class: "form-label" %>
+        <%= form.text_field :mobile, class: 'form-control' %>
+      </div>
+      <div class="col-md-6">
+        <%= form.label :customer_code, "Customer code / كود العملاء", class: "form-label" %>
+        <%= form.text_field :customer_code, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <%= form.submit 'RESET', class: 'btn btn-dark btn-lg px-5' %>
+      <%= form.submit 'SEARCH', class: 'btn btn-dark btn-lg px-5' %>
+    </div>
+  <% end %>
+</div>

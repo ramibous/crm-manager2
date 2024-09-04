@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Clients List</title>
+  <style>
+    body { font-family: "Helvetica", Arial, sans-serif; }
+    h1 { text-align: center; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    table, th, td { border: 1px solid black; }
+    th, td { padding: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>Clients List</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Total Purchases</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @clients.each do |client| %>
+        <tr>
+          <td><%= client.client_id %></td>
+          <td><%= client.first_name %> <%= client.last_name %></td>
+          <td><%= client.email %></td>
+          <td><%= number_to_currency(client.purchases.sum(:amount)) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</body>
+</html>
+# This is a minor change to trigger a new deployment

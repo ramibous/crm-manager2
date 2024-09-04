@@ -1,0 +1,23 @@
+<!-- app/views/clients/wishlist.pdf.erb -->
+<h1>Wishlist Items</h1>
+
+<table width="100%" border="1" cellspacing="0" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Item Name</th>
+      <th>Item Reference</th>
+      <th>Date Added</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @wishlist_items.each do |item| %>
+      <tr>
+        <td><%= item.client.first_name %> <%= item.client.last_name %></td>
+        <td><%= item.item_name %></td>
+        <td><%= item.item_reference %></td>
+        <td><%= item.created_at.strftime("%d %b %Y") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

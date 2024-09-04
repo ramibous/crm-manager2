@@ -1,0 +1,28 @@
+<!-- app/views/messages/_form.html.erb -->
+
+<%= form_with(model: [@campaign, @message], local: true, id: 'message-form', data: { turbo: false }) do |form| %>
+  <% if @message.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@message.errors.count, "error") %> prohibited this message from being saved:</h2>
+      <ul>
+        <% @message.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :subject %>
+    <%= form.text_field :subject, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :body %>
+    <%= form.text_area :body, class: "form-control" %>
+  </div>
+
+  <%= form.hidden_field :client_id %>
+
+  <%= form.submit "Send Message", class: "btn btn-primary" %>
+<% end %>

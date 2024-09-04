@@ -1,0 +1,16 @@
+<ul class="list-unstyled">
+  <li><i class="fas fa-store"></i> <%= @client.store_location %></li>
+  <li><i class="fas fa-gift"></i> 2023: <%= number_to_currency(@client.purchase_total, unit: "CAD $") %></li>
+  <li><i class="fas fa-venus-mars"></i> <%= @client.gender %></li>
+  <li><i class="fas fa-birthday-cake"></i> 
+    Birthday: 
+    <% if @client.birthday.present? %>
+      <%= @client.birthday.strftime("%d %b %Y") %>
+    <% else %>
+      Not provided
+    <% end %>
+  </li>
+  <li><i class="fas fa-phone"></i> Phone: <%= @client.phone %></li>
+  <li><i class="fas fa-envelope"></i> Email: <%= @client.email %></li>
+  <li><i class="fas fa-map-marker-alt"></i> Address: <%= @client.address %></li>
+</ul>

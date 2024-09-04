@@ -1,0 +1,4 @@
+<!-- app/views/messages/_success.html.erb-->
+<%= turbo_stream.replace "task_status_#{campaign_assignment.id}" do %>
+  <%= render partial: "success", locals: { campaign_assignment: campaign_assignment } %>
+<% end %>

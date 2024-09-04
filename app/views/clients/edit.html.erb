@@ -1,0 +1,133 @@
+<!-- app/views/clients/edit.html.erb -->
+<div class="container mt-4" style="background-color: #E5ECF6; padding: 20px; border-radius: 10px;">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">PRADA Dubai Mall of the Emirates</h2>
+    <span class="badge bg-info text-dark">DQ: 98%</span>
+  </div>
+
+  <h3>Personal Data</h3>
+
+  <%= form_with model: @client, local: true do |form| %>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= link_to 'PDF File', '#', class: 'btn btn-light float-end' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Type Field -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :type, "Type * / نوع", class: "form-label" %>
+        <%= form.select :type, options_for_select(["Client", "VIP", "Partner"], @client.type), {}, class: 'form-control', readonly: true, disabled: true %>
+      </div>
+
+      <!-- Title Field -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :title, "Title * / عنوان", class: "form-label" %>
+        <%= form.select :title, options_for_select(["Mr.", "Mrs.", "Miss", "Dr."], @client.title), {}, class: 'form-control', readonly: true, disabled: true %>
+      </div>
+
+      <!-- Name Fields -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :first_name, "Name * / اسم", class: "form-label" %>
+        <%= form.text_field :first_name, class: 'form-control', value: @client.first_name, readonly: true %>
+      </div>
+      
+      <!-- Surname Fields -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :last_name, "Surname * / لقب العائلة", class: "form-label" %>
+        <%= form.text_field :last_name, class: 'form-control', value: @client.last_name, readonly: true %>
+      </div>
+
+      <!-- Birthday and Email Fields -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :birthday, "Birthday / تاريخ الميلاد", class: "form-label" %>
+        <%= form.date_field :birthday, class: 'form-control', value: @client.birthday, readonly: true %>
+      </div>
+      <div class="col-md-6 mb-3">
+        <%= form.label :email, "E-mail / البريد الإلكتروني", class: "form-label" %>
+        <%= form.email_field :email, class: 'form-control', value: @client.email, readonly: true %>
+      </div>
+
+      <!-- Phone and Address Fields -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :phone, "Phone / الهاتف", class: "form-label" %>
+        <%= form.text_field :phone, class: 'form-control', value: @client.phone, readonly: true %>
+      </div>
+      <div class="col-md-6 mb-3">
+        <%= form.label :address, "Address / العنوان", class: "form-label" %>
+        <%= form.text_field :address, class: 'form-control', value: @client.address, readonly: true %>
+      </div>
+
+      <!-- Notes Field -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :notes, "Notes / ملاحظات", class: "form-label" %>
+        <%= form.text_area :notes, class: 'form-control', value: @client.notes, readonly: true %>
+      </div>
+    </div>
+
+    <!-- Edit and Save Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <%= link_to 'BACK', dashboard_path, class: 'btn btn-dark btn-lg px-5' %>
+      <%= button_tag 'EDIT', id: 'edit-save-button', class: 'btn btn-dark btn-lg px-5', type: 'button' %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+    // app/javascript/packs/clients_edit.js
+// app/javascript/packs/clients_edit.js
+
+document.addEventListener("DOMContentLoaded", function() {
+  const editSaveButton = document.getElementById('edit-save-button');
+  const formControls = document.querySelectorAll('.form-control');
+  const form = document.querySelector('form');
+
+  editSaveButton.addEventListener('click', function() {
+    if (editSaveButton.textContent === 'EDIT') {
+      // Enable form fields for editing
+      formControls.forEach(function(control) {
+        control.removeAttribute('readonly');
+        control.removeAttribute('disabled');
+        control.classList.remove('text-muted');  // Remove faded text color
+      });
+
+      // Change button text to 'SAVE'
+      editSaveButton.textContent = 'SAVE';
+    } else {
+      // Submit the form via AJAX
+      const formData = new FormData(form);
+
+      fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          'Accept': 'application/json'
+        },
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Network response was not ok.');
+        }
+      })
+      .then(data => {
+        alert('Saved');
+        // Re-disable the form fields
+        formControls.forEach(function(control) {
+          control.setAttribute('readonly', true);
+          control.setAttribute('disabled', true);
+        });
+        // Change button text back to 'EDIT'
+        editSaveButton.textContent = 'EDIT';
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+    }
+  });
+});
+
+</script>

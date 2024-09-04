@@ -1,0 +1,112 @@
+<!-- app/views/campaigns/show.html.erb-->
+<%= turbo_frame_tag "campaigns" do %>
+  <div class="campaign-details">
+    <h1 class="campaign-title"><%= @campaign.name %></h1>
+
+    <div class="campaign-info">
+      <p><strong>Description:</strong> <%= @campaign.description %></p>
+      <p><strong>Start Date:</strong> <%= @campaign.start_date.strftime("%B %d, %Y") %></p>
+      <p><strong>End Date:</strong> <%= @campaign.end_date.strftime("%B %d, %Y") %></p>
+    </div>
+
+    <% if @campaign.images.attached? %>
+      <h3 class="section-title">Campaign Images</h3>
+      <div class="campaign-images">
+        <% @campaign.images.each do |image| %>
+          <%= image_tag image, class: "campaign-image-small" %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <h2 class="section-title">Assigned Clients</h2>
+    <div class="assigned-clients">
+      <% @campaign.clients.includes(:messages, :campaign_assignments).each do |client| %>
+        <div class="client-task">
+          <h4 class="client-name"><%= client.full_name %></h4>
+          <% message = client.messages.find { |m| m.campaign_id == @campaign.id } %>
+          <p><strong>Subject:</strong> <%= message&.subject || "No subject available" %></p>
+          <p><strong>Message:</strong> <%= message&.body || "No message available" %></p>
+          <% assignment = client.campaign_assignments.find { |ca| ca.campaign_id == @campaign.id } %>
+          <% if assignment&.message_sent %>
+            <span class="badge badge-success">Message Sent</span>
+          <% else %>
+            <%= link_to 'Send Message', new_campaign_message_path(@campaign, client_id: client.id), class: "btn btn-primary btn-sm" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<style>
+  .campaign-details {
+    padding: 20px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .campaign-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .campaign-info p {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+  }
+
+  .campaign-images {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .campaign-image-small {
+    width: 100px; /* Fixed width */
+    height: 100px; /* Fixed height */
+    object-fit: cover; /* Ensures the image covers the box without distorting the aspect ratio */
+    border-radius: 5px;
+    border: 1px solid #ddd; /* Optional: add a border for better presentation */
+  }
+
+  .assigned-clients {
+    margin-top: 20px;
+  }
+
+  .client-task {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+  }
+
+  .client-name {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .badge-success {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+  }
+
+  .btn-sm {
+    margin-top: 10px;
+  }
+</style>

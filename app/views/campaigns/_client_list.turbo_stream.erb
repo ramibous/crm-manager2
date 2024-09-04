@@ -1,0 +1,17 @@
+<!-- app/views/campaigns/_client_list.turbo_stream.erb -->
+<turbo-stream action="replace" target="client-select-container">
+  <template>
+    <div id="client-select-container">
+      <% if clients&.any? %>
+        <% clients.each do |client| %>
+          <div class="form-check">
+            <%= check_box_tag 'campaign[client_ids][]', client.id, false, class: 'form-check-input' %>
+            <%= label_tag "campaign_client_ids_#{client.id}", "#{client.first_name} #{client.last_name}", class: 'form-check-label' %>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No clients found for the selected staff member.</p>
+      <% end %>
+    </div>
+  </template>
+</turbo-stream>

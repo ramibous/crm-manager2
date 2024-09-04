@@ -1,0 +1,11 @@
+<h2>Search Results</h2>
+
+<% if @clients.any? %>
+  <ul>
+    <% @clients.each do |client| %>
+      <li><%= link_to "#{client.first_name} #{client.last_name}", client_path(client) %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No matching client found.</p>
+<% end %>

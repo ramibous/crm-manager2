@@ -1,0 +1,63 @@
+<!-- app/views/campaigns/_form.html.erb -->
+<div data-controller="client-selector">
+  <%= form_with(model: @campaign, local: true, id: 'campaign-form', data: { turbo: false }, html: { multipart: true }) do |form| %>
+    <% if @campaign.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@campaign.errors.count, "error") %> prohibited this campaign from being saved:</h2>
+        <ul>
+          <% @campaign.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :name %>
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :start_date %>
+      <%= form.date_field :start_date, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :end_date %>
+      <%= form.date_field :end_date, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :description %>
+      <%= form.text_area :description, class: "form-control" %>
+    </div>
+
+    <% if current_staff.manager? %>
+      <div class="form-group">
+        <%= form.label :images, "Upload Campaign Images" %>
+        <%= form.file_field :images, multiple: true, class: "form-control" %>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :staff_id, "Assign Staff" %>
+      <%= form.collection_select :staff_id, Staff.all, :id, :name, prompt: "Select a staff member", class: "form-control", id: "campaign_staff_id", data: { action: "change->client-selector#loadClients", client_selector_target: "staffSelect" } %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :segment, "Select Segment" %>
+      <select id="segment_select" class="form-control" data-action="change->client-selector#loadClients">
+        <option value="">All Segments</option>
+        <% Client::SEGMENTS.each do |segment| %>
+          <option value="<%= segment.first %>"><%= segment.first.capitalize %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <div id="client-select-container" class="form-group" data-client-selector-target="clientsContainer">
+      <%= render partial: "campaigns/client_list", locals: { clients: @clients } %>
+    </div>
+
+    <%= form.submit "Save Campaign", class: "btn btn-primary" %>
+  <% end %>
+</div>

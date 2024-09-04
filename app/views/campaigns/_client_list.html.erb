@@ -1,0 +1,17 @@
+<!-- app/views/campaigns/_client_list.html.erb -->
+<div id="client-select-container">
+  <% if clients&.any? %>
+    <div class="form-check">
+      <%= check_box_tag 'select_all', 'all', false, class: 'form-check-input', id: 'select_all_clients', data: { action: "click->client-selector#toggleSelectAll" } %>
+      <%= label_tag 'select_all_clients', "Select All Clients", class: 'form-check-label' %>
+    </div>
+    <% clients.each do |client| %>
+      <div class="form-check">
+        <%= check_box_tag 'campaign[client_ids][]', client.id, false, class: 'form-check-input', id: "client_#{client.id}" %>
+        <%= label_tag "client_#{client.id}", client.full_name, class: 'form-check-label' %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No clients available.</p>
+  <% end %>
+</div>

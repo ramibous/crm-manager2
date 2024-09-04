@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  scheduled_at: 2024-08-25 16:18:51
+  client: one
+  staff: one
+
+two:
+  title: MyString
+  scheduled_at: 2024-08-25 16:18:51
+  client: two
+  staff: two

@@ -1,0 +1,214 @@
+<!-- app/views/clients/new.html.erb -->
+<div class="container mt-4" style="background-color: #E5ECF6; padding: 20px; border-radius: 10px;">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">La Canadienne 273 Av. Laurier O, Montréal store 002</h2>
+    <span id="dq-score" class="badge bg-info text-dark">DQ: 0%</span>
+    <div class="fixed-icon">
+      <i class="bi bi-calendar-event"></i>
+    </div>
+  </div>
+
+  <h3>Personal Data / Données Personnelles</h3>
+
+  <%= form_with model: @client, local: true do |form| %>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= form.label :customer_code, "Customer Code / Code Client", class: "form-label" %>
+        <%= form.text_field :customer_code, class: 'form-control', readonly: true, value: "" %>
+      </div>
+      <div class="col-md-6">
+        <%= link_to 'PDF File / Fichier PDF', '#', class: 'custom-btn-link float-end' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Type Field -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :type, "Type * / Type *", class: "form-label" %>
+        <%= form.select :type, options_for_select(["Client", "VIP", "Partner", "Client", "VIP", "Partenaire"]), {}, class: 'form-control' %>
+      </div>
+
+      <!-- Title Field -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :title, "Title * / Titre *", class: "form-label" %>
+        <%= form.select :title, options_for_select(["Mr.", "Mrs.", "Miss", "Dr.", "M.", "Mme", "Mlle", "Dr."]), {}, class: 'form-control' %>
+      </div>
+
+      <!-- Name Fields -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :first_name, "Name * / Prénom *", class: "form-label" %>
+        <%= form.text_field :first_name, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+      <div class="col-md-6 mb-3">
+        <%= form.label :first_name_local, "Name (local) / Prénom (local)", class: "form-label" %>
+        <%= form.text_field :first_name_local, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+      
+      <!-- Surname Fields -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :last_name, "Surname * / Nom de Famille *", class: "form-label" %>
+        <%= form.text_field :last_name, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+      <div class="col-md-6 mb-3">
+        <%= form.label :last_name_local, "Surname (local) / Nom de Famille (local)", class: "form-label" %>
+        <%= form.text_field :last_name_local, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+
+      <!-- Birthday and Email Fields -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :birthday, "Birthday / Date de Naissance", class: "form-label" %>
+        <%= form.date_field :birthday, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+      <div class="col-md-6 mb-3">
+        <%= form.label :email, "E-mail / E-mail", class: "form-label" %>
+        <%= form.email_field :email, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+
+      <!-- Phone and Address Fields -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :phone, "Phone / Téléphone", class: "form-label" %>
+        <%= form.text_field :phone, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+      <div class="col-md-6 mb-3">
+        <%= form.label :address, "Address / Adresse", class: "form-label" %>
+        <%= form.text_field :address, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+
+      <!-- Postal Code and Notes Fields -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :postal_code, "Postal Code / Code Postal", class: "form-label" %>
+        <%= form.text_field :postal_code, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+      <div class="col-md-6 mb-3">
+        <%= form.label :notes, "Notes / Remarques", class: "form-label" %>
+        <%= form.text_area :notes, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+
+      <!-- Merch Field -->
+      <div class="col-md-6 mb-3">
+        <%= form.label :merch, "Merchandise / Marchandise", class: "form-label" %>
+        <%= form.text_field :merch, class: 'form-control', oninput: "updateScore()" %>
+      </div>
+    </div>
+
+    <!-- Back, Save, and Search Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <%= link_to 'BACK / RETOUR', dashboard_path, class: 'custom-btn-back' %>
+      <%= form.submit 'SAVE / ENREGISTRER', class: 'custom-btn-save' %>
+      <%= link_to 'SEARCH CLIENT / RECHERCHER CLIENT', search_clients_path, class: 'custom-btn-search' %>
+    </div>
+  <% end %>
+</div>
+
+
+<!-- Custom CSS for buttons -->
+<style>
+
+
+
+
+
+
+
+
+
+
+  
+/* Custom CSS for smaller buttons */
+.custom-btn-back, .custom-btn-save, .custom-btn-search {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 0.25rem;
+  border: 2px solid transparent;
+  text-align: center;
+  display: inline-block;
+}
+
+.custom-btn-back {
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+.custom-btn-back:hover {
+  background-color: #495057;
+  border-color: #343a40;
+}
+
+.custom-btn-save {
+  background-color: #28a745;
+  color: #ffffff;
+}
+
+.custom-btn-save:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.custom-btn-search {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.custom-btn-search:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.fixed-icon {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 1.5rem;
+  color: #6c757d;
+}
+
+</style>
+
+<!-- JavaScript to handle the data capture score -->
+<script>
+function updateScore() {
+  const fields = [
+    { id: 'client_first_name', required: true },
+    { id: 'client_last_name', required: true },
+    { id: 'client_phone', required: true },
+    { id: 'client_email', required: false },
+    { id: 'client_birthday', required: false },
+    { id: 'client_address', required: false },
+    { id: 'client_postal_code', required: false },
+    { id: 'client_notes', required: false }
+  ];
+
+  let filledRequiredFields = 0;
+  let filledOptionalFields = 0;
+  const totalRequired = fields.filter(field => field.required).length;
+  const totalOptional = fields.length - totalRequired;
+
+  fields.forEach(field => {
+    const element = document.getElementById(field.id);
+    if (element && element.value.trim() !== '') {
+      if (field.required) {
+        filledRequiredFields += 1;
+      } else {
+        filledOptionalFields += 1;
+      }
+    }
+  });
+
+  // Calculate the score
+  const requiredFieldWeight = 50 / totalRequired;
+  const optionalFieldWeight = 50 / totalOptional;
+
+  const score = Math.round((filledRequiredFields * requiredFieldWeight) + (filledOptionalFields * optionalFieldWeight));
+  
+  document.getElementById('dq-score').textContent = `DQ: ${score}%`;
+}
+
+// Attach the updateScore function to each field's input event
+document.addEventListener('DOMContentLoaded', function() {
+  updateScore(); // Initialize the score when the page loads
+
+  document.querySelectorAll('input, textarea').forEach(input => {
+    input.addEventListener('input', updateScore);
+  });
+});
+</script>

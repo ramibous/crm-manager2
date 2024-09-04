@@ -1,0 +1,38 @@
+<h1>Campaigns</h1>
+
+<% if current_staff.manager? %>
+  <%= link_to 'Create New Campaign', new_campaign_path, class: 'btn btn-primary' %>
+<% else %>
+  <p>Your role is: <%= current_staff.role %></p>
+<% end %>
+
+<turbo-frame id="campaigns">
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @campaigns.each do |campaign| %>
+        <tr id="<%= dom_id(campaign) %>">
+          <td><%= campaign.name %></td>
+          <td><%= campaign.start_date %></td>
+          <td><%= campaign.end_date %></td>
+          <td><%= campaign.description %></td>
+          <td>
+            <%= link_to 'Show', campaign_path(campaign), class: "btn btn-secondary btn-sm" %>
+            <% if current_staff.manager? %>
+              <%= link_to 'Edit', edit_campaign_path(campaign), class: "btn btn-warning btn-sm" %>
+              <%= link_to 'Delete', campaign_path(campaign), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</turbo-frame>

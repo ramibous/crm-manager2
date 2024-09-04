@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "campaign_form" do %>
+  <%= render partial: "campaigns/form", locals: { campaign: @campaign } %>
+<% end %>
+
+<%= turbo_stream.append "campaigns" do %>
+  <%= render @campaign %>
+<% end %>

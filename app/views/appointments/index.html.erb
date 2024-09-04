@@ -1,0 +1,35 @@
+<!-- app/views/appointments/index.html.erb -->
+<div class="container mt-4">
+  <h2>Upcoming Appointments</h2>
+
+  <% if @appointments.any? %>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Title</th>
+            <th>Scheduled At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @appointments.each do |appointment| %>
+            <tr>
+              <td><%= link_to appointment.client.first_name + ' ' + appointment.client.last_name, client_path(appointment.client) %></td>
+              <td><%= appointment.title %></td>
+              <td>
+                <% if appointment.scheduled_at.present? %>
+                  <%= appointment.scheduled_at.strftime("%d %b %Y at %I:%M %p") %>
+                <% else %>
+                  No date scheduled
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p>No upcoming appointments.</p>
+  <% end %>
+</div>

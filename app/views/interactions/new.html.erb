@@ -1,0 +1,11 @@
+<!-- app/views/interactions/new.html.erb -->
+<h2>New Interaction</h2>
+<%= form_with model: [@client, @interaction], local: true do |form| %>
+  <%= form.label :interaction_type, "Type of Interaction" %>
+  <%= form.select :interaction_type, ['Call', 'Email', 'SMS', 'Chat'], {}, class: 'form-control' %>
+
+  <%= form.label :content, "Details" %>
+  <%= form.text_area :content, class: 'form-control' %>
+
+  <%= form.submit "Save", class: 'btn btn-primary mt-2' %>
+<% end %>

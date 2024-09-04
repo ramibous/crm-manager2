@@ -1,0 +1,4 @@
+<!-- app/views/messages/new.turbo_stream.erb-->
+<%= turbo_stream.replace "new_message_form" do %>
+  <%= render "form", message: @message %>
+<% end %>

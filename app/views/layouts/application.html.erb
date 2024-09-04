@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CrmApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <style>
+    /* Profile info bar */
+    .profile-bar {
+      background-color: #f8f9fa;
+      padding: 10px 20px;
+      border-bottom: 1px solid #dee2e6;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1040;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .profile-bar span {
+      font-weight: bold;
+      margin-right: 15px;
+    }
+
+    .profile-bar .logout-link {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .profile-bar .logout-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Adjust main content to avoid overlap */
+    .main-content {
+      margin-top: 50px; /* Adjust based on the height of the profile bar */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Profile bar with logged-in staff's email -->
+  <div class="profile-bar">
+    <% if staff_signed_in? %>
+      <span>Welcome, <%= current_staff.email %></span>
+      <%= link_to 'Logout', destroy_staff_session_path, method: :delete, class: "logout-link" %>
+    <% else %>
+      <%= link_to 'Login', new_staff_session_path, class: "logout-link" %>
+    <% end %>
+  </div>
+
+  <!-- Flash messages -->
+  <div class="main-content">
+    <%= render 'shared/flash' %>
+    <%= yield %>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="navbar navbar-light navbar-scroll-off">
+    <div class="container-fluid d-flex justify-content-around">
+      <%= link_to dashboard_path, class: "nav-link text-center" do %>
+        <i class="fas fa-home"></i><br>
+        Home
+      <% end %>
+
+      <%= link_to search_clients_path, class: "nav-link text-center" do %>
+        <i class="fas fa-search"></i><br>
+        Search
+      <% end %>
+
+      <%= link_to new_client_path, class: "nav-link text-center" do %>
+        <i class="fas fa-plus-circle"></i><br>
+        New Client
+      <% end %>
+
+      <%= link_to appointments_path, class: "nav-link text-center" do %>
+        <i class="fas fa-calendar"></i><br>
+        Appointments
+      <% end %>
+
+      <%= link_to campaigns_path, class: "nav-link text-center" do %>
+        <i class="fas fa-bullhorn"></i><br>
+        Campaigns
+      <% end %>
+
+      <% if staff_signed_in? %>
+        <%= link_to destroy_staff_session_path, method: :delete, class: "nav-link text-center" do %>
+          <i class="fas fa-sign-out-alt"></i><br>
+          Logout
+        <% end %>
+      <% else %>
+        <%= link_to new_staff_session_path, class: "nav-link text-center" do %>
+          <i class="fas fa-sign-in-alt"></i><br>
+          Login
+        <% end %>
+      <% end %>
+    </div>
+  </nav>
+</body>
+</html>
