@@ -4,3 +4,5 @@ log/
 tmp/
 public/assets/
 storage/
+vendor/bundle/
+yarn.lock
