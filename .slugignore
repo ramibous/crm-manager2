@@ -1,8 +1,6 @@
 node_modules/
-*.map
 log/
 tmp/
+.bfg-report/
+bfg.jar
 public/assets/
-storage/
-vendor/bundle/
-yarn.lock
