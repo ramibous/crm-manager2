@@ -14,8 +14,8 @@ Rails.application.configure do
   # Compress CSS using a preprocessor.
   config.assets.css_compressor = :sass
 
-  # Compress JavaScript using Uglifier.
-  config.assets.js_compressor = :uglifier
+  # Compress JavaScript using Terser.
+  config.assets.js_compressor = :terser
 
   # Do not fall back to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
@@ -48,5 +48,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
 end
