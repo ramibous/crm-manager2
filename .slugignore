@@ -2,10 +2,9 @@
 /tmp/*
 /test/*
 /spec/*
-/node_modules/*
 /coverage/*
-/doc/*
+/node_modules/*
+/vendor/bundle/cache/*
 .env
 .git
-/log/*
-/tmp/*
+.DS_Store
