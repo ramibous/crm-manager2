@@ -23,6 +23,8 @@ gem 'groupdate'
 gem 'caxlsx_rails'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+gem 'asset_sync'
+
 
 group :development, :test do
   gem 'debug', platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
