@@ -4,12 +4,3 @@ log/
 tmp/
 public/assets/
 storage/
-node_modules/
-*.map
-log/
-tmp/
-node_modules/
-log/
-tmp/
-public/assets/
-storage/
