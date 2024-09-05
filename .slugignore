@@ -1,6 +1,3 @@
-node_modules/
-log/
-tmp/
-.bfg-report/
-bfg.jar
-public/assets/
+test/
+spec/
+docs/
