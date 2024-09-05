@@ -1,10 +1,23 @@
-/log/*
-/tmp/*
-/test/*
-/spec/*
-/coverage/*
-/node_modules/*
-/vendor/bundle/cache/*
-.env
-.git
-.DS_Store
+# Existing entries
+/log
+/tmp
+/test
+/spec
+/public/assets
+/node_modules
+/coverage
+/vendor/cache
+*.log
+*.tmp
+
+# Additional suggestions
+/public/packs       # If you're using Webpacker or precompiled assets
+/doc                # Any generated documentation
+/lib/tasks          # Rake tasks that might not be needed in production
+/.bundle            # Bundler configuration files
+/.gitignore         # Git ignore file
+.yarn-cache         # Yarn cache files if present
+/db/*.sqlite3       # Exclude SQLite database files
+*.sqlite3-journal   # SQLite journal files
+/public/system      # If you're using ActiveStorage and files are stored remotely
+/public/uploads     # User uploads that shouldn't be stored in the slug

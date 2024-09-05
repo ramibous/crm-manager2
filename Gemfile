@@ -4,8 +4,6 @@ ruby "3.1.6"
 
 gem "rails", "~> 7.1.4"
 gem "sprockets-rails"
-gem "pg", "~> 1.1"
-gem "puma", ">= 5.0"
 gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
@@ -22,12 +20,9 @@ gem 'devise'
 gem 'groupdate'
 gem 'caxlsx_rails'
 gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
-
-
 
 group :development, :test do
-  gem 'debug', platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
+  gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
   gem 'rspec-rails', '~> 5.0'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry'
@@ -46,5 +41,7 @@ group :test do
 end
 
 group :production do
+  gem 'pg', '~> 1.1'
+  gem 'puma', '>= 5.0'
   gem 'terser'
 end
