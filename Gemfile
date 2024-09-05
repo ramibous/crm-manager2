@@ -21,13 +21,16 @@ gem 'groupdate'
 gem 'caxlsx_rails'
 gem 'wicked_pdf'
 
+group :development, :test, :production do
+  gem 'faker' # Added to all environments
+end
+
 group :development, :test do
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
   gem 'rspec-rails', '~> 5.0'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry'
   gem 'pry-rails'
-  gem 'faker'
 end
 
 group :development do
