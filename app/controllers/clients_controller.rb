@@ -16,9 +16,6 @@ class ClientsController < ApplicationController
     end
   end
 
-
-
-
   def show
     @client = Client.find(params[:id])
     @interactions = @client.interactions.order(created_at: :desc)
@@ -34,23 +31,27 @@ class ClientsController < ApplicationController
   def new
     @client = Client.new
   end
-  def create
-    # If current_staff is a manager, assign themselves as the manager of the client
-    if current_staff.manager?
-      @client = current_staff.clients.build(client_params.merge(manager_id: current_staff.id))
-    else
-      # Otherwise, allow assigning a manager manually or leave it as nil
-      @client = current_staff.clients.build(client_params)
-    end
 
-    if @client.save
-      redirect_to dashboard_path, notice: 'Client was successfully created.'
-    else
-      render :new
+  def export
+    @clients = Client.all # or apply your filtering logic here
+
+    respond_to do |format|
+      format.xlsx do
+        render xlsx: 'export', handlers: [:axlsx], filename: "clients_#{Date.today}.xlsx"
+      end
+      format.pdf do
+        begin
+          Rails.logger.debug "Rendering PDF export..."
+          render pdf: "clients_#{Date.today}",
+                 template: 'clients/export',
+                 disposition: 'attachment' # Forces the browser to download the file
+        rescue => e
+          Rails.logger.error "PDF generation failed: #{e.message}"
+          redirect_to dashboard_path, alert: "PDF could not be generated."
+        end
+      end
     end
   end
-
-
 
   def edit
     @client = Client.find(params[:id])
@@ -71,21 +72,6 @@ class ClientsController < ApplicationController
       redirect_to dashboard_path, notice: 'Client was successfully deleted.'
     else
       redirect_to dashboard_path, alert: 'Client could not be deleted.'
-    end
-  end
-
-  def export
-    @clients = Client.all # or apply your filtering logic here
-
-    respond_to do |format|
-      format.xlsx do
-        render xlsx: 'export', filename: "clients_#{Date.today}.xlsx"
-      end
-      format.pdf do
-        render pdf: "clients_#{Date.today}",
-               template: 'clients/export',
-               disposition: 'attachment' # This forces the browser to download the file instead of displaying it
-      end
     end
   end
 
@@ -135,8 +121,6 @@ class ClientsController < ApplicationController
   def client_params
     params.require(:client).permit(:title, :first_name, :middle_name, :last_name, :email, :birthday, :address, :phone, :home_number, :postal_code, :notes)
   end
-
-
 
   def authenticate_manager!
     unless current_staff&.role == "manager"

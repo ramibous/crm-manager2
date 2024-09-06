@@ -21,7 +21,7 @@
       width: 100%;
       z-index: 1040;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between; /* Align profile and logout link properly */
       align-items: center;
     }
 
@@ -42,6 +42,51 @@
     /* Adjust main content to avoid overlap */
     .main-content {
       margin-top: 50px; /* Adjust based on the height of the profile bar */
+    }
+
+    /* Bottom Navigation Bar Styles */
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
+      backdrop-filter: blur(10px); /* Blur effect for transparency */
+    }
+
+    .nav-link {
+      color: #000; /* Black color for icons and text */
+      text-align: center;
+      font-size: 12px; /* Adjust text size */
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .nav-link i {
+      font-size: 20px; /* Adjust icon size */
+      display: block;
+      margin-bottom: 2px; /* Spacing between icon and text */
+      padding: 8px;
+      background-color: #000; /* Black background for icon */
+      border-radius: 8px; /* Rounded corners */
+      color: #fff; /* White icon color */
+    }
+
+    .nav-link:hover i {
+      background-color: #007bff; /* Change icon background on hover */
+    }
+
+    .nav-link:hover {
+      color: #007bff; /* Hover effect to change text color */
+    }
+
+    /* Hide navbar on scroll down */
+    .navbar.hidden {
+      transform: translateY(100%);
+      transition: transform 0.3s ease-in-out;
     }
   </style>
 </head>
@@ -64,45 +109,67 @@
   </div>
 
   <!-- Bottom Navigation Bar -->
-  <nav class="navbar navbar-light navbar-scroll-off">
+  <nav class="navbar">
     <div class="container-fluid d-flex justify-content-around">
-      <%= link_to dashboard_path, class: "nav-link text-center" do %>
-        <i class="fas fa-home"></i><br>
+      <%= link_to dashboard_path, class: "nav-link" do %>
+        <i class="fas fa-home"></i>
         Home
       <% end %>
 
-      <%= link_to search_clients_path, class: "nav-link text-center" do %>
-        <i class="fas fa-search"></i><br>
+      <%= link_to search_clients_path, class: "nav-link" do %>
+        <i class="fas fa-search"></i>
         Search
       <% end %>
 
-      <%= link_to new_client_path, class: "nav-link text-center" do %>
-        <i class="fas fa-plus-circle"></i><br>
+      <%= link_to new_client_path, class: "nav-link" do %>
+        <i class="fas fa-plus-circle"></i>
         New Client
       <% end %>
 
-      <%= link_to appointments_path, class: "nav-link text-center" do %>
-        <i class="fas fa-calendar"></i><br>
+      <%= link_to appointments_path, class: "nav-link" do %>
+        <i class="fas fa-calendar"></i>
         Appointments
       <% end %>
 
-      <%= link_to campaigns_path, class: "nav-link text-center" do %>
-        <i class="fas fa-bullhorn"></i><br>
+      <%= link_to campaigns_path, class: "nav-link" do %>
+        <i class="fas fa-bullhorn"></i>
         Campaigns
       <% end %>
 
       <% if staff_signed_in? %>
-        <%= link_to destroy_staff_session_path, method: :delete, class: "nav-link text-center" do %>
-          <i class="fas fa-sign-out-alt"></i><br>
+        <%= link_to destroy_staff_session_path, method: :delete, class: "nav-link" do %>
+          <i class="fas fa-sign-out-alt"></i>
           Logout
         <% end %>
       <% else %>
-        <%= link_to new_staff_session_path, class: "nav-link text-center" do %>
-          <i class="fas fa-sign-in-alt"></i><br>
+        <%= link_to new_staff_session_path, class: "nav-link" do %>
+          <i class="fas fa-sign-in-alt"></i>
           Login
         <% end %>
       <% end %>
     </div>
   </nav>
+
+  <!-- JavaScript for scroll behavior -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navbar = document.querySelector('.navbar');
+      let lastScrollTop = 0;
+
+      window.addEventListener('scroll', () => {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+          // Scrolling down
+          navbar.classList.add('hidden');
+        } else {
+          // Scrolling up
+          navbar.classList.remove('hidden');
+        }
+        
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+      });
+    });
+  </script>
 </body>
 </html>

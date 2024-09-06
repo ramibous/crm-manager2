@@ -12,27 +12,28 @@
   </style>
 </head>
 <body>
-  <h1>Clients List</h1>
-  <table>
-    <thead>
+<h1>Client List</h1>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th> <!-- Ensure phone is included in the header -->
+      <th>Total Purchases</th>
+      <th>Segment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @clients.each do |client| %>
       <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Total Purchases</th>
+        <td><%= client.client_id %></td>
+        <td><%= client.first_name %> <%= client.last_name %></td>
+        <td><%= client.email %></td>
+        <td><%= client.phone %></td> <!-- Ensure phone is correctly referenced here -->
+        <td><%= number_to_currency(client.purchases.sum(:amount)) %></td>
+        <td><%= client.segment %></td>
       </tr>
-    </thead>
-    <tbody>
-      <% @clients.each do |client| %>
-        <tr>
-          <td><%= client.client_id %></td>
-          <td><%= client.first_name %> <%= client.last_name %></td>
-          <td><%= client.email %></td>
-          <td><%= number_to_currency(client.purchases.sum(:amount)) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</body>
-</html>
-# This is a minor change to trigger a new deployment
+    <% end %>
+  </tbody>
+</table>

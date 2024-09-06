@@ -19,7 +19,7 @@ gem 'bootstrap', '~> 5.1.3'
 gem 'sassc-rails'
 gem 'devise'
 gem 'groupdate'
-gem 'wkhtmltopdf-binary'
+
 
 # Optionally use CDN for Bootstrap Icons or keep the gem
 gem 'bootstrap-icons', '~> 1.0.14'
