@@ -11,23 +11,21 @@ gem "jbuilder"
 gem "redis", ">= 4.0.1"
 gem "tzinfo-data", platforms: %i[mswin mswin64 mingw x64_mingw jruby]
 gem "bootsnap", require: false
-gem 'wkhtmltopdf-binary'
-gem 'axlsx_rails'
+gem 'wicked_pdf'
+gem 'caxlsx_rails'  # Use caxlsx_rails instead of axlsx_rails
 
 # Additional gems
 gem 'bootstrap', '~> 5.1.3'
 gem 'sassc-rails'
-gem 'bootstrap-icons', '~> 1.0.14'
 gem 'devise'
 gem 'groupdate'
-gem 'caxlsx_rails'
-gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
-group :development, :test, :production do
-  gem 'faker' # Added to all environments
-end
+# Optionally use CDN for Bootstrap Icons or keep the gem
+gem 'bootstrap-icons', '~> 1.0.14'
 
 group :development, :test do
+  gem 'faker'  # Use faker only in development and test
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
   gem 'rspec-rails', '~> 5.0'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
