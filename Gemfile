@@ -11,6 +11,8 @@ gem "jbuilder"
 gem "redis", ">= 4.0.1"
 gem "tzinfo-data", platforms: %i[mswin mswin64 mingw x64_mingw jruby]
 gem "bootsnap", require: false
+gem 'wkhtmltopdf-binary'
+gem 'axlsx_rails'
 
 # Additional gems
 gem 'bootstrap', '~> 5.1.3'
