@@ -109,67 +109,47 @@
   </div>
 
   <!-- Bottom Navigation Bar -->
-  <nav class="navbar">
-    <div class="container-fluid d-flex justify-content-around">
-      <%= link_to dashboard_path, class: "nav-link" do %>
-        <i class="fas fa-home"></i>
-        Home
+<!-- Bottom Navigation Bar -->
+<nav class="navbar" data-controller="navbar" data-navbar-target="navbar">
+  <div class="container-fluid d-flex justify-content-around">
+    <%= link_to dashboard_path, class: "nav-link" do %>
+      <i class="fas fa-home"></i>
+      Home
+    <% end %>
+
+    <%= link_to search_clients_path, class: "nav-link" do %>
+      <i class="fas fa-search"></i>
+      Search
+    <% end %>
+
+    <%= link_to new_client_path, class: "nav-link" do %>
+      <i class="fas fa-plus-circle"></i>
+      New Client
+    <% end %>
+
+    <%= link_to appointments_path, class: "nav-link" do %>
+      <i class="fas fa-calendar"></i>
+      Appointments
+    <% end %>
+
+    <%= link_to campaigns_path, class: "nav-link" do %>
+      <i class="fas fa-bullhorn"></i>
+      Campaigns
+    <% end %>
+
+    <% if staff_signed_in? %>
+      <%= link_to destroy_staff_session_path, method: :delete, class: "nav-link" do %>
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
       <% end %>
-
-      <%= link_to search_clients_path, class: "nav-link" do %>
-        <i class="fas fa-search"></i>
-        Search
+    <% else %>
+      <%= link_to new_staff_session_path, class: "nav-link" do %>
+        <i class="fas fa-sign-in-alt"></i>
+        Login
       <% end %>
+    <% end %>
+  </div>
+</nav>
 
-      <%= link_to new_client_path, class: "nav-link" do %>
-        <i class="fas fa-plus-circle"></i>
-        New Client
-      <% end %>
-
-      <%= link_to appointments_path, class: "nav-link" do %>
-        <i class="fas fa-calendar"></i>
-        Appointments
-      <% end %>
-
-      <%= link_to campaigns_path, class: "nav-link" do %>
-        <i class="fas fa-bullhorn"></i>
-        Campaigns
-      <% end %>
-
-      <% if staff_signed_in? %>
-        <%= link_to destroy_staff_session_path, method: :delete, class: "nav-link" do %>
-          <i class="fas fa-sign-out-alt"></i>
-          Logout
-        <% end %>
-      <% else %>
-        <%= link_to new_staff_session_path, class: "nav-link" do %>
-          <i class="fas fa-sign-in-alt"></i>
-          Login
-        <% end %>
-      <% end %>
-    </div>
-  </nav>
-
-  <!-- JavaScript for scroll behavior -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const navbar = document.querySelector('.navbar');
-      let lastScrollTop = 0;
-
-      window.addEventListener('scroll', () => {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (scrollTop > lastScrollTop) {
-          // Scrolling down
-          navbar.classList.add('hidden');
-        } else {
-          // Scrolling up
-          navbar.classList.remove('hidden');
-        }
-        
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
-      });
-    });
-  </script>
 </body>
 </html>
