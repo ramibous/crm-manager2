@@ -19,14 +19,13 @@ gem 'bootstrap', '~> 5.1.3'
 gem 'sassc-rails'
 gem 'devise'
 gem 'groupdate'
-gem 'faker'
+gem 'faker'  # Available in all environments
 
 
 # Optionally use CDN for Bootstrap Icons or keep the gem
 gem 'bootstrap-icons', '~> 1.0.14'
 
 group :development, :test do
-  
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
   gem 'rspec-rails', '~> 5.0'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
