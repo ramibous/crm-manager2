@@ -142,17 +142,7 @@
       Campaigns
     <% end %>
 
-    <% if staff_signed_in? %>
-      <%= link_to destroy_staff_session_path, method: :delete, class: "nav-link" do %>
-        <i class="fas fa-sign-out-alt"></i>
-        Logout
-      <% end %>
-    <% else %>
-      <%= link_to new_staff_session_path, class: "nav-link" do %>
-        <i class="fas fa-sign-in-alt"></i>
-        Login
-      <% end %>
-    <% end %>
+
   </div>
 </nav>
 
