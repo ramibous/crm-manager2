@@ -17,7 +17,7 @@
         <%= form.text_field :customer_code, class: 'form-control', readonly: true, value: "" %>
       </div>
       <div class="col-md-6">
-        <%= link_to 'PDF File / Fichier PDF', '#', class: 'custom-btn-link float-end' %>
+        <%= link_to 'PDF File / Fichier PDF', '#', class: 'pdf-link float-end' %>
       </div>
     </div>
 
@@ -93,9 +93,9 @@
 
     <!-- Back, Save, and Search Buttons -->
     <div class="d-flex justify-content-between mt-4">
-      <%= link_to 'BACK / RETOUR', dashboard_path, class: 'custom-btn-back' %>
-      <%= form.submit 'SAVE / ENREGISTRER', class: 'custom-btn-save' %>
-      <%= link_to 'SEARCH CLIENT / RECHERCHER CLIENT', search_clients_path, class: 'custom-btn-search' %>
+      <%= link_to 'BACK / RETOUR', dashboard_path, class: 'custom-back-button' %>
+      <%= form.submit 'SAVE / ENREGISTRER', class: 'custom-save-button' %>
+      <%= link_to 'SEARCH CLIENT / RECHERCHER CLIENT', search_clients_path, class: 'custom-search-button' %>
     </div>
   <% end %>
 </div>
@@ -106,61 +106,59 @@
 
 
 
+/* Custom Button Styling for each button */
+/* Custom Button Styling for each button */
+.custom-back-button, .custom-save-button, .custom-search-button {
+  background-color: #4a4a4a; /* Dark grey background */
+  color: white;
+  text-decoration: none; /* Remove underline */
+  border: none;
+  padding: 8px 12px; /* Reduced padding for mobile */
+  font-size: 0.8rem; /* Smaller font size for mobile */
+  font-weight: 600;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+  width: 100%; /* Ensure buttons take up the full width in mobile */
+  max-width: 180px; /* Limit max width to prevent overly large buttons */
+  display: block;
+  margin: 5px auto; /* Center the buttons and add some margin */
+}
 
+/* Hover effect for buttons */
+.custom-back-button:hover, .custom-save-button:hover, .custom-search-button:hover {
+  background-color: #333; /* Darker grey on hover */
+}
 
+/* Adjusted container for better mobile experience */
+.container {
+  padding: 15px; /* Reduced padding */
+  margin: 0 auto; /* Center container */
+  max-width: 600px; /* Limit the width of the form on larger screens */
+}
+
+/* Remove the gap between the form elements for a more compact mobile view */
+.mb-3 {
+  margin-bottom: 10px !important;
+}
+
+/* Remove the underline from links */
+.pdf-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.pdf-link:hover {
+  text-decoration: underline;
+}
 
 
 
 
 
   
-/* Custom CSS for smaller buttons */
-.custom-btn-back, .custom-btn-save, .custom-btn-search {
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-  border-radius: 0.25rem;
-  border: 2px solid transparent;
-  text-align: center;
-  display: inline-block;
-}
 
-.custom-btn-back {
-  background-color: #343a40;
-  color: #ffffff;
-}
-
-.custom-btn-back:hover {
-  background-color: #495057;
-  border-color: #343a40;
-}
-
-.custom-btn-save {
-  background-color: #28a745;
-  color: #ffffff;
-}
-
-.custom-btn-save:hover {
-  background-color: #218838;
-  border-color: #1e7e34;
-}
-
-.custom-btn-search {
-  background-color: #007bff;
-  color: #ffffff;
-}
-
-.custom-btn-search:hover {
-  background-color: #0056b3;
-  border-color: #004085;
-}
-
-.fixed-icon {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 1.5rem;
-  color: #6c757d;
-}
 
 </style>
 

@@ -5,29 +5,36 @@
 
   <h2>Your Clients</h2>
 
-  <!-- Filter Form -->
-  <div class="mb-4">
-    <%= form_with url: dashboard_path, method: :get, local: true, class: "form-inline" do |form| %>
-      <div class="form-group mb-2">
-        <%= form.label :segment, "Filter by Segment", class: "mr-2" %>
-        <%= form.select :segment, options_for_select(Client::SEGMENTS.map { |name, _| [name.capitalize, name] }, params[:segment]), include_blank: "All Segments", class: "form-control" %>
-      </div>
-      <div class="form-group mx-sm-3 mb-2">
-        <%= form.label :period, "Filter by Period", class: "mr-2" %>
-        <%= form.select :period, options_for_select([["Yearly", "year"], ["Monthly", "month"], ["Quarterly", "quarter"]], params[:period]), include_blank: "All Periods", class: "form-control" %>
-      </div>
-      <div class="form-group mx-sm-3 mb-2">
-        <%= form.label :spend, "Min Spend", class: "mr-2" %>
-        <%= form.number_field :spend, value: params[:spend], class: "form-control", placeholder: "Min Spend" %>
-      </div>
-      <%= form.submit "Filter", class: "btn btn-dark mb-2" %>
-      <%= link_to "Export to Excel", export_clients_path(format: :xlsx, segment: params[:segment], period: params[:period], spend: params[:spend]), class: 'btn btn-success mb-2 ml-2 no-print' %>
-      <%= link_to "Export to PDF", export_clients_path(format: :pdf, segment: params[:segment], period: params[:period], spend: params[:spend]), class: 'btn btn-danger mb-2 ml-2 no-print' %>
-      <%= link_to "View Wishlist", wishlist_clients_path, class: 'btn btn-primary mb-2 ml-2 no-print' %>
-    <% end %>
-  </div>
+  <!-- Filter Form --><div class="mb-4">
+  <%= form_with url: dashboard_path, method: :get, local: true, class: "form-inline" do |form| %>
+    <div class="form-group mb-2">
+      <%= form.label :segment, "Filter by Segment", class: "mr-2" %>
+      <%= form.select :segment, options_for_select(Client::SEGMENTS.map { |name, _| [name.capitalize, name] }, params[:segment]), include_blank: "All Segments", class: "form-control" %>
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+      <%= form.label :period, "Filter by Period", class: "mr-2" %>
+      <%= form.select :period, options_for_select([["Yearly", "year"], ["Monthly", "month"], ["Quarterly", "quarter"]], params[:period]), include_blank: "All Periods", class: "form-control" %>
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+      <%= form.label :spend, "Min Spend", class: "mr-2" %>
+      <%= form.number_field :spend, value: params[:spend], class: "form-control", placeholder: "Min Spend" %>
+    </div>
+    
+    <!-- Change color for the Filter button -->
+    <%= form.submit "Filter", style: "background-color: #4a4a4a; color: white; border: none; padding: 8px 15px;", class: "btn mb-2" %>
+    
+    <!-- Change color for the Export buttons -->
+    <%= link_to "Export to Excel", export_clients_path(format: :xlsx, segment: params[:segment], period: params[:period], spend: params[:spend]), style: "background-color: #4a4a4a; color: white; border: none; padding: 8px 15px;", class: 'btn mb-2 ml-2 no-print' %>
+    
+    <%= link_to "Export to PDF", export_clients_path(format: :pdf, segment: params[:segment], period: params[:period], spend: params[:spend]), style: "background-color: #d9534f; color: white; border: none; padding: 8px 15px;", class: 'btn mb-2 ml-2 no-print' %>
+    
+    <%= link_to "View Wishlist", wishlist_clients_path, style: "background-color: #0275d8; color: white; border: none; padding: 8px 15px;", class: 'btn mb-2 ml-2 no-print' %>
+  <% end %>
+</div>
 
-  <%= link_to 'Create New Client', new_client_path, class: 'btn btn-dark btn-lg px-4 mb-3' %>
+<!-- Change color for the Create New Client button -->
+<%= link_to 'Create New Client', new_client_path, style: "background-color: #4a4a4a; color: white; border: none; padding: 8px 15px;", class: 'btn btn-lg px-4 mb-3' %>
+
 
   <% if @clients.present? %>
     <div class="list-group">

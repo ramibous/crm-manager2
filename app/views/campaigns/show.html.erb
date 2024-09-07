@@ -20,18 +20,18 @@
     <h2 class="section-title">Assigned Clients</h2>
     <div class="assigned-clients">
       <% @campaign.clients.includes(:messages, :campaign_assignments).each do |client| %>
-        <div class="client-task">
-          <h4 class="client-name"><%= client.full_name %></h4>
-          <% message = client.messages.find { |m| m.campaign_id == @campaign.id } %>
-          <p><strong>Subject:</strong> <%= message&.subject || "No subject available" %></p>
-          <p><strong>Message:</strong> <%= message&.body || "No message available" %></p>
-          <% assignment = client.campaign_assignments.find { |ca| ca.campaign_id == @campaign.id } %>
-          <% if assignment&.message_sent %>
-            <span class="badge badge-success">Message Sent</span>
-          <% else %>
-            <%= link_to 'Send Message', new_campaign_message_path(@campaign, client_id: client.id), class: "btn btn-primary btn-sm" %>
-          <% end %>
-        </div>
+        <% assignment = client.campaign_assignments.find { |ca| ca.campaign_id == @campaign.id } %>
+        <%= link_to new_campaign_message_path(@campaign, client_id: client.id), class: "client-task" do %>
+          <div class="client-content">
+            <h4 class="client-name"><%= client.full_name %></h4>
+            <% message = client.messages.find { |m| m.campaign_id == @campaign.id } %>
+            <p><strong>Subject:</strong> <%= message&.subject || "No subject available" %></p>
+            <p><strong>Message:</strong> <%= message&.body || "No message available" %></p>
+            <% if assignment&.message_sent %>
+              <span class="badge badge-success">Message Sent</span>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>
