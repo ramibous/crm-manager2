@@ -9,9 +9,9 @@ class ClientsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to dashboard_path }
+      format.html { render :index } # Ensure the HTML response renders the index view
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace("clients_list", partial: "campaigns/client_list", locals: { clients: @clients })
+        render turbo_stream: turbo_stream.replace("clients_list", partial: "clients/client_list", locals: { clients: @clients })
       end
     end
   end
@@ -31,6 +31,17 @@ class ClientsController < ApplicationController
   def new
     @client = Client.new
   end
+
+  def create
+    @client = Client.new(client_params)
+    if @client.save
+      redirect_to dashboard_path, notice: 'Client was successfully created.'
+    else
+      render :new
+    end
+  end
+
+
 
   def export
     @clients = Client.all # or apply your filtering logic here
@@ -60,18 +71,30 @@ class ClientsController < ApplicationController
   def update
     @client = Client.find(params[:id])
     if @client.update(client_params)
-      redirect_to dashboard_path, notice: 'Client was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to @client, notice: 'Client was successfully updated.' }
+        format.turbo_stream
+      end
     else
-      render :edit
+      respond_to do |format|
+        format.html { render :edit }
+        format.turbo_stream
+      end
     end
   end
 
   def destroy
     @client = Client.find(params[:id])
     if @client.destroy
-      redirect_to dashboard_path, notice: 'Client was successfully deleted.'
+      respond_to do |format|
+        format.html { redirect_to dashboard_path, notice: 'Client was successfully deleted.' }
+        format.turbo_stream { render turbo_stream: turbo_stream.remove("client_#{params[:id]}") }
+      end
     else
-      redirect_to dashboard_path, alert: 'Client could not be deleted.'
+      respond_to do |format|
+        format.html { redirect_to dashboard_path, alert: 'Client could not be deleted.' }
+        format.turbo_stream
+      end
     end
   end
 

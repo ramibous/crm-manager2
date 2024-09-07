@@ -29,7 +29,7 @@
 
   <%= link_to 'Create New Client', new_client_path, class: 'btn btn-dark btn-lg px-4 mb-3' %>
 
-  <% if @clients.present? && @clients.any? %>
+  <% if @clients.present? %>
     <div class="list-group">
       <% @clients.each do |client| %>
         <%= link_to client_path(client), class: 'list-group-item text-dark', style: 'text-decoration: none;' do %>
@@ -53,7 +53,7 @@
   <% if @upcoming_birthdays.any? %>
     <ul>
       <% @upcoming_birthdays.each do |client| %>
-        <li><%= client.first_name %> <%= client.last_name %> - <%= client.birthday.strftime('%B %d') %></li>
+        <li><%= "#{client.first_name} #{client.last_name} - #{client.birthday.strftime('%B %d')}" %></li>
       <% end %>
     </ul>
   <% else %>
@@ -64,74 +64,14 @@
   <% if @upcoming_campaigns.any? %>
     <ul>
       <% @upcoming_campaigns.each do |campaign| %>
-        <li><%= campaign.name %> - Starts on <%= campaign.start_date.strftime('%B %d') %></li>
+        <li><%= "#{campaign.name} - Starts on #{campaign.start_date.strftime('%B %d')}" %></li>
       <% end %>
     </ul>
   <% else %>
     <p>No upcoming campaigns.</p>
   <% end %>
-
 </div>
 
 <style>
 
-  
-  .container {
-    max-width: 100%;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  .list-group-item {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    padding: 15px;
-    transition: background-color 0.3s ease;
-  }
-
-  .list-group-item:hover {
-    background-color: #f1f1f1;
-  }
-
-  .list-group-item h5 {
-    margin-bottom: 5px;
-  }
-
-  .list-group-item p {
-    margin: 0;
-  }
-
-  .badge-pill {
-    padding: 5px 10px;
-    border-radius: 50px;
-    font-size: 0.9rem;
-  }
-
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    .btn-lg {
-      font-size: 1rem;
-      padding: 10px 20px;
-    }
-
-    .list-group-item {
-      padding: 10px;
-    }
-
-    .list-group-item h5 {
-      font-size: 1rem;
-    }
-
-    .list-group-item small,
-    .list-group-item p {
-      font-size: 0.9rem;
-    }
-
-    .badge-pill {
-      font-size: 0.8rem;
-      padding: 4px 8px;
-    }
-  }
 </style>

@@ -16,6 +16,17 @@
  // app/assets/stylesheets/application.scss
 
 @import "bootstrap";
+// Import config variables
+@import 'config/colors';
+@import 'config/fonts';
+
+// Import components
+@import 'components/index';
+
+// Import pages
+@import 'pages/dashboard';
+@import 'pages/index';
+
 
 body {
   
@@ -26,9 +37,7 @@ body {
   }
   
 
-  
 
-  
   label {
     font-weight: bold;
     font-size: 1rem;
@@ -53,5 +62,6 @@ body {
     color: #fff;
     text-align: center;
   }
+  
   
   

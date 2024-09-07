@@ -17,10 +17,10 @@ gem 'caxlsx_rails'  # Use caxlsx_rails instead of axlsx_rails
 # Additional gems
 gem 'bootstrap', '~> 5.1.3'
 gem 'sassc-rails'
+gem 'sassc'  # Add this if using sassc-rails
 gem 'devise'
 gem 'groupdate'
 gem 'faker'  # Available in all environments
-
 
 # Optionally use CDN for Bootstrap Icons or keep the gem
 gem 'bootstrap-icons', '~> 1.0.14'

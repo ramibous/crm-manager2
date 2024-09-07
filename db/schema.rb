@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_04_022632) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_06_021623) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -105,7 +105,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_04_022632) do
     t.text "notes"
     t.string "store_location"
     t.string "gender"
-    t.bigint "manager_id", null: false
+    t.bigint "manager_id"
+    t.index ["client_id"], name: "index_clients_on_client_id", unique: true
   end
 
   create_table "interactions", force: :cascade do |t|
@@ -117,6 +118,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_04_022632) do
     t.text "description"
     t.index ["client_id"], name: "index_interactions_on_client_id"
     t.index ["staff_id"], name: "index_interactions_on_staff_id"
+  end
+
+  create_table "managers", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_managers_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_managers_on_reset_password_token", unique: true
   end
 
   create_table "messages", force: :cascade do |t|

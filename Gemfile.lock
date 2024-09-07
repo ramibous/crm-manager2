@@ -360,6 +360,7 @@ DEPENDENCIES
   rails (~> 7.1.4)
   redis (>= 4.0.1)
   rspec-rails (~> 5.0)
+  sassc
   sassc-rails
   selenium-webdriver
   sprockets-rails

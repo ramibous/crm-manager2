@@ -1,9 +1,9 @@
 if Rails.env.production?
-  WickedPdf.config = {
-    exe_path: '/app/bin/wkhtmltopdf' # Heroku path for wkhtmltopdf
-  }
+  WickedPdf.configure do |config|
+    config.exe_path = '/app/bin/wkhtmltopdf' # Heroku path for wkhtmltopdf
+  end
 else
-  WickedPdf.config = {
-    exe_path: '/Users/ramiboussarsar/.rbenv/shims/wkhtmltopdf' # Your local path
-  }
+  WickedPdf.configure do |config|
+    config.exe_path = '/Users/ramiboussarsar/.rbenv/shims/wkhtmltopdf' # Your local path
+  end
 end
