@@ -9,6 +9,7 @@
     <div class="message-client-info">
       <% if @campaign.images.attached? %>
         <div class="main-image-wrapper">
+          <!-- Using url_for instead of service_url -->
           <%= image_tag url_for(@campaign.images.first), class: "main-campaign-image" %>
           <div class="logo-overlay">
             <%= image_tag "Logo_La_Canadienne_Redesign-No_R.png", class: "logo-image" %>
@@ -27,6 +28,7 @@
     <div class="secondary-images-grid">
       <% @campaign.images[1..].each do |image| %>
         <div class="image-wrapper">
+          <!-- Using url_for for secondary images -->
           <%= image_tag url_for(image), class: "secondary-campaign-image" %>
         </div>
       <% end %>
@@ -44,6 +46,3 @@
     </div>
   </div>
 <% end %>
-<style>
- 
-</style>

@@ -35,7 +35,8 @@ Rails.application.configure do
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Use local storage for Active Storage.
-  config.active_storage.service = :local
+  config.active_storage.service = :cloudinary
+
 
   # Ignore bad email addresses and do not raise email delivery errors.
   config.action_mailer.perform_caching = false

@@ -21,8 +21,11 @@ gem 'sassc'  # Add this if using sassc-rails
 gem 'devise'
 gem 'groupdate'
 gem 'faker'  # Available in all environments
+gem 'ruby-vips'
 gem 'cloudinary'
 gem 'activestorage-cloudinary-service'
+
+
 
 
 # Optionally use CDN for Bootstrap Icons or keep the gem
@@ -34,6 +37,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry'
   gem 'pry-rails'
+  gem "dotenv-rails"
 end
 
 group :development do

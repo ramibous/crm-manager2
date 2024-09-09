@@ -1,4 +1,7 @@
-# Preview all emails at http://localhost:3000/rails/mailers/campaign_mailer
 class CampaignMailerPreview < ActionMailer::Preview
-
+  def send_campaign_email
+    client = Client.first
+    campaign = Campaign.first
+    CampaignMailer.send_campaign_email(client, campaign)
+  end
 end
