@@ -13,25 +13,9 @@ class MessagesController < ApplicationController
     @message.client = @client
 
     if @message.save
-      campaign_assignment = CampaignAssignment.find_by(client_id: @message.client_id, campaign_id: @campaign.id)
-      if campaign_assignment
-        campaign_assignment.update_columns(message_sent: true)
-        Rails.logger.info "Message sent and CampaignAssignment updated for Client: #{campaign_assignment.client_id}, Campaign: #{campaign_assignment.campaign_id}"
-
-        respond_to do |format|
-          format.html { redirect_to campaign_path(@campaign), notice: 'Message was successfully sent.' }
-          format.turbo_stream {
-            render turbo_stream: turbo_stream.replace("task_status_#{campaign_assignment.id}",
-              partial: "success", locals: { campaign_assignment: campaign_assignment, client: @client })
-          }
-        end
-      else
-        Rails.logger.error "Failed to send message: #{@message.errors.full_messages.join(', ')}"
-        respond_to do |format|
-          format.html { render :new, status: :unprocessable_entity }
-          format.turbo_stream { render :new, status: :unprocessable_entity }
-        end
-      end
+      update_campaign_assignment
+    else
+      handle_message_failure
     end
   end
 
@@ -43,12 +27,40 @@ class MessagesController < ApplicationController
   end
 
   def set_client
-    Rails.logger.info "Params: #{params.inspect}"
     @client = Client.find(message_params[:client_id])
     Rails.logger.info "Set Client for Message: #{@client.id}"
   end
 
   def message_params
     params.require(:message).permit(:subject, :body, :client_id)
+  end
+
+  def update_campaign_assignment
+    campaign_assignment = CampaignAssignment.find_by(client_id: @message.client_id, campaign_id: @campaign.id)
+
+    if campaign_assignment
+      campaign_assignment.update_columns(message_sent: true)
+      Rails.logger.info "Message sent and CampaignAssignment updated for Client: #{campaign_assignment.client_id}, Campaign: #{campaign_assignment.campaign_id}"
+
+      respond_to do |format|
+        format.html { redirect_to campaign_path(@campaign), notice: 'Message was successfully sent.' }
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.replace("task_status_#{campaign_assignment.id}",
+            partial: "success", locals: { campaign_assignment: campaign_assignment, client: @client })
+        }
+      end
+    else
+      Rails.logger.error "Campaign assignment not found for Client ID: #{@client.id}, Campaign ID: #{@campaign.id}"
+      handle_message_failure
+    end
+  end
+
+  def handle_message_failure
+    Rails.logger.error "Failed to send message: #{@message.errors.full_messages.join(', ')}"
+
+    respond_to do |format|
+      format.html { render :new, status: :unprocessable_entity }
+      format.turbo_stream { render :new, status: :unprocessable_entity }
+    end
   end
 end

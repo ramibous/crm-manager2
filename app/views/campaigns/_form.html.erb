@@ -1,4 +1,3 @@
-<!-- app/views/campaigns/_form.html.erb -->
 <div data-controller="client-selector">
   <%= form_with(model: @campaign, local: true, id: 'campaign-form', data: { turbo: false }, html: { multipart: true }) do |form| %>
     <% if @campaign.errors.any? %>
@@ -12,38 +11,45 @@
       </div>
     <% end %>
 
+    <!-- Campaign Name Field -->
     <div class="form-group">
       <%= form.label :name %>
       <%= form.text_field :name, class: "form-control" %>
     </div>
 
+    <!-- Campaign Start Date Field -->
     <div class="form-group">
       <%= form.label :start_date %>
       <%= form.date_field :start_date, class: "form-control" %>
     </div>
 
+    <!-- Campaign End Date Field -->
     <div class="form-group">
       <%= form.label :end_date %>
       <%= form.date_field :end_date, class: "form-control" %>
     </div>
 
+    <!-- Campaign Description Field -->
     <div class="form-group">
       <%= form.label :description %>
       <%= form.text_area :description, class: "form-control" %>
     </div>
 
     <% if current_staff.manager? %>
+      <!-- Multiple Image Upload Field for Managers -->
       <div class="form-group">
         <%= form.label :images, "Upload Campaign Images" %>
         <%= form.file_field :images, multiple: true, class: "form-control" %>
       </div>
     <% end %>
 
+    <!-- Assign Staff Field -->
     <div class="form-group">
       <%= form.label :staff_id, "Assign Staff" %>
       <%= form.collection_select :staff_id, Staff.all, :id, :name, prompt: "Select a staff member", class: "form-control", id: "campaign_staff_id", data: { action: "change->client-selector#loadClients", client_selector_target: "staffSelect" } %>
     </div>
 
+    <!-- Select Segment Field -->
     <div class="form-group">
       <%= form.label :segment, "Select Segment" %>
       <select id="segment_select" class="form-control" data-action="change->client-selector#loadClients">
@@ -54,10 +60,12 @@
       </select>
     </div>
 
+    <!-- Client Selection Container (Filled dynamically by JS) -->
     <div id="client-select-container" class="form-group" data-client-selector-target="clientsContainer">
       <%= render partial: "campaigns/client_list", locals: { clients: @clients } %>
     </div>
 
+    <!-- Submit Button -->
     <%= form.submit "Save Campaign", class: "btn btn-primary" %>
   <% end %>
 </div>

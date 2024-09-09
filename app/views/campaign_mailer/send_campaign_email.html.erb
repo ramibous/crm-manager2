@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .email-container {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #f8f8f8;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .email-title {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    .main-image {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .secondary-images {
+      display: flex;
+      justify-content: space-between;
+    }
+    .secondary-image {
+      width: 48%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <h1 class="email-title">Campaign for <%= @client.full_name %></h1>
+    <img src="<%= @campaign.images.first.service_url %>" alt="Main Campaign Image" class="main-image">
+    <p>Check out our latest campaign in fresh fall colors.</p>
+    <div class="secondary-images">
+      <% @campaign.images[1..].each do |image| %>
+        <img src="<%= image.service_url %>" alt="Secondary Image" class="secondary-image">
+      <% end %>
+    </div>
+  </div>
+</body>
+</html>

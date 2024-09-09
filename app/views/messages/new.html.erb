@@ -1,37 +1,49 @@
-<!-- app/views/messages/new.html.erb-->
 <%= turbo_frame_tag "campaigns" do %>
   <div class="message-container">
     <% if @client.present? %>
-      <h1 class="message-title">Send Message to <%= @client.full_name %></h1>
+      <h1 class="message-title">Preview Campaign for <%= @client.full_name %></h1>
     <% else %>
       <h1 class="message-title">Client not found</h1>
     <% end %>
 
     <div class="message-client-info">
-      <% if @campaign&.images&.attached? %>
-        <div class="images-grid">
-          <% @campaign.images.each do |image| %>
-            <div class="image-wrapper">
-              <%= image_tag image, class: "client-image" %>
-            </div>
-          <% end %>
+      <% if @campaign.images.attached? %>
+        <div class="main-image-wrapper">
+          <%= image_tag url_for(@campaign.images.first), class: "main-campaign-image" %>
+          <div class="logo-overlay">
+            <%= image_tag "Logo_La_Canadienne_Redesign-No_R.png", class: "logo-image" %>
+          </div>
+        </div>
+      <% else %>
+        <p>No images attached for this campaign.</p>
+      <% end %>
+    </div>
+
+    <div class="campaign-info">
+      <p class="subtitle">Two luxurious styles without the luxury markup, in fresh fall colors. Starting at $100.</p>
+      <button class="shop-now-btn">Shop Now</button>
+    </div>
+
+    <div class="secondary-images-grid">
+      <% @campaign.images[1..].each do |image| %>
+        <div class="image-wrapper">
+          <%= image_tag url_for(image), class: "secondary-campaign-image" %>
         </div>
       <% end %>
     </div>
 
-    <%= form_with(model: @message, url: campaign_messages_path(@campaign), local: true, class: "message-form") do |form| %>
-      <div class="form-group">
-        <%= form.label :subject, "Subject" %>
-        <%= form.text_field :subject, value: "Regarding: #{@campaign.name}", class: "form-control" %>
-      </div>
+    <div class="form-group mt-4">
+      <!-- SMS Button -->
+      <a href="sms:<%= @client.phone || @client.home_number %>?body=Regarding: <%= @campaign.name %> - Campaign Details: <%= @campaign.description || 'Add your message details here.' %>" class="btn btn-primary submit-btn">Send via SMS</a>
 
-      <div class="form-group">
-        <%= form.label :body, "Message Body" %>
-        <%= form.text_area :body, class: "form-control" %>
-      </div>
+      <!-- Email Button -->
+      <a href="mailto:<%= @client.email %>?subject=Regarding: <%= @campaign.name %>&body=Campaign Details: <%= @campaign.description || 'Add your message details here.' %>" class="btn btn-secondary submit-btn">Send via Email</a>
 
-      <%= form.hidden_field :client_id, value: params[:client_id] %>
-      <%= form.submit "Send Message", class: "btn btn-primary submit-btn" %>
-    <% end %>
+      <!-- WhatsApp or General Messaging -->
+      <a href="whatsapp://send?text=Regarding: <%= @campaign.name %> - Campaign Details: <%= @campaign.description || 'Add your message details here.' %>" class="btn btn-success submit-btn">Send via WhatsApp</a>
+    </div>
   </div>
 <% end %>
+<style>
+ 
+</style>

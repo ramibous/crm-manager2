@@ -1,38 +1,153 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+
+
+  h1 {
+    font-size: 2rem;
+    color: #2C3E50;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 3px;
+  }
+
+  .campaign-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .campaign-card h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  .campaign-card p {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+  }
+
+  .campaign-card .stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    border-top: 1px solid #ecf0f1;
+    padding-top: 10px;
+  }
+
+  .stats div {
+    text-align: center;
+  }
+
+  .stats div p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #2c3e50;
+  }
+
+  .stats div span {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #ff9f43;
+    color: white;
+    font-size: 0.75rem;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* Button Styling */
+  .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 30px;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+
+  .btn-primary {
+    background-color: #3498db;
+    color: white;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .btn-warning {
+    background-color: #f39c12;
+    color: white;
+  }
+
+  .btn-danger {
+    background-color: #e74c3c;
+    color: white;
+  }
+
+  .btn-sm {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+
+  .actions {
+    margin-top: 10px;
+  }
+</style>
+
 <h1>Campaigns</h1>
 
+<!-- Create Campaign Button for Manager -->
 <% if current_staff.manager? %>
   <%= link_to 'Create New Campaign', new_campaign_path, class: 'btn btn-primary' %>
 <% else %>
   <p>Your role is: <%= current_staff.role %></p>
 <% end %>
 
-<turbo-frame id="campaigns">
-  <table class="table mt-4">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Description</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @campaigns.each do |campaign| %>
-        <tr id="<%= dom_id(campaign) %>">
-          <td><%= campaign.name %></td>
-          <td><%= campaign.start_date %></td>
-          <td><%= campaign.end_date %></td>
-          <td><%= campaign.description %></td>
-          <td>
-            <%= link_to 'Show', campaign_path(campaign), class: "btn btn-secondary btn-sm" %>
-            <% if current_staff.manager? %>
-              <%= link_to 'Edit', edit_campaign_path(campaign), class: "btn btn-warning btn-sm" %>
-              <%= link_to 'Delete', campaign_path(campaign), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
-            <% end %>
-          </td>
-        </tr>
+<!-- Campaign Cards -->
+<% @campaigns.each do |campaign| %>
+  <div class="campaign-card">
+    <h2><%= campaign.name %></h2>
+    <p>Last sent <%= campaign.start_date.strftime('%b %d %I:%M %p') %> • <%= campaign.contacts_count %> contacts</p>
+
+    <div class="stats">
+      <div>
+        <span><%= campaign.opens_percentage %>%</span>
+        <p>Opens</p>
+      </div>
+      <div>
+        <span><%= campaign.clicks_percentage %>%</span>
+        <p>Clicks</p>
+      </div>
+      <div>
+        <span><%= campaign.unsubscribes_percentage %>%</span>
+        <p>Unsubscribes</p>
+      </div>
+    </div>
+
+    <!-- Badge for Campaign Type -->
+    <span class="badge"><%= campaign.campaign_type %></span>
+
+    <!-- Action Buttons (Show, Edit, Delete) -->
+    <div class="actions">
+      <%= link_to 'Show', campaign_path(campaign), class: 'btn btn-secondary btn-sm' %>
+      <% if current_staff.manager? %>
+        <%= link_to 'Edit', edit_campaign_path(campaign), class: 'btn btn-warning btn-sm' %>
+        <%= link_to 'Delete', campaign_path(campaign), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
       <% end %>
-    </tbody>
-  </table>
-</turbo-frame>
+    </div>
+  </div>
+<% end %>

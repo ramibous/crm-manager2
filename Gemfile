@@ -21,6 +21,9 @@ gem 'sassc'  # Add this if using sassc-rails
 gem 'devise'
 gem 'groupdate'
 gem 'faker'  # Available in all environments
+gem 'cloudinary'
+gem 'activestorage-cloudinary-service'
+
 
 # Optionally use CDN for Bootstrap Icons or keep the gem
 gem 'bootstrap-icons', '~> 1.0.14'

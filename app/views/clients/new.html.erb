@@ -12,10 +12,7 @@
 
   <%= form_with model: @client, local: true do |form| %>
     <div class="row mb-3">
-      <div class="col-md-6">
-        <%= form.label :customer_code, "Customer Code / Code Client", class: "form-label" %>
-        <%= form.text_field :customer_code, class: 'form-control', readonly: true, value: "" %>
-      </div>
+    
       <div class="col-md-6">
         <%= link_to 'PDF File / Fichier PDF', '#', class: 'pdf-link float-end' %>
       </div>
@@ -25,13 +22,13 @@
       <!-- Type Field -->
       <div class="col-md-6 mb-3">
         <%= form.label :type, "Type * / Type *", class: "form-label" %>
-        <%= form.select :type, options_for_select(["Client", "VIP", "Partner", "Client", "VIP", "Partenaire"]), {}, class: 'form-control' %>
+        <%= form.select :type, options_for_select(["Client", "VIP", "Partner", "Partenaire"]), {}, class: 'form-control' %>
       </div>
 
       <!-- Title Field -->
       <div class="col-md-6 mb-3">
         <%= form.label :title, "Title * / Titre *", class: "form-label" %>
-        <%= form.select :title, options_for_select(["Mr.", "Mrs.", "Miss", "Dr.", "M.", "Mme", "Mlle", "Dr."]), {}, class: 'form-control' %>
+        <%= form.select :title, options_for_select(["Mr.", "Mrs.", "Miss", "Dr.", "M.", "Mme", "Mlle"]), {}, class: 'form-control' %>
       </div>
 
       <!-- Name Fields -->
@@ -99,7 +96,6 @@
     </div>
   <% end %>
 </div>
-
 
 <!-- Custom CSS for buttons -->
 <style>

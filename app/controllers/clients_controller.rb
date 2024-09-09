@@ -130,14 +130,15 @@ class ClientsController < ApplicationController
       if @clients.any?
         render :search_results
       else
-        flash[:alert] = "No matching client found."
+        flash.now[:alert] = "No matching client found."
         render :search
       end
     else
-      flash[:alert] = "Please enter at least one search criterion."
+      flash.now[:alert] = "Please enter at least one search criterion."
       render :search
     end
   end
+
 
   private
 

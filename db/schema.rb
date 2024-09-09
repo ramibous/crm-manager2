@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_06_021623) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_08_104306) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -75,6 +75,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_06_021623) do
     t.datetime "updated_at", null: false
     t.text "description"
     t.string "image"
+    t.integer "contacts_count"
+    t.string "campaign_type"
     t.index ["staff_id"], name: "index_campaigns_on_staff_id"
   end
 
@@ -146,6 +148,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_06_021623) do
     t.bigint "campaign_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "opened"
+    t.boolean "clicked"
+    t.boolean "unsubscribed"
     t.index ["campaign_id"], name: "index_messages_on_campaign_id"
     t.index ["client_id"], name: "index_messages_on_client_id"
   end
