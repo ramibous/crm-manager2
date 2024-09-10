@@ -26,7 +26,7 @@ class DashboardController < ApplicationController
     end
 
     # Sort clients alphabetically by last name and then first name
-    @clients = @clients.sort_by { |client| [client.first_name, client.last_name] }
+    @clients = @clients.sort_by { |client| [client.last_name&.downcase || '', client.first_name&.downcase || ''] }
 
     Rails.logger.debug "Filtered Clients: #{@clients.map(&:id)}"
 

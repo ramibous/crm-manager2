@@ -24,6 +24,7 @@ gem 'faker'  # Available in all environments
 gem 'ruby-vips'
 gem 'cloudinary'
 gem 'activestorage-cloudinary-service'
+gem 'rails-signature-pad'
 
 
 

@@ -9,6 +9,18 @@
 
   <h3>Personal Data / Données Personnelles</h3>
 
+  <!-- Display error messages if the client is not saved -->
+  <% if @client.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>There were errors with the form:</h4>
+      <ul>
+        <% @client.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <!-- Disable Turbo with data-turbo="false" -->
   <%= form_with model: @client, local: true, data: { turbo: false } do |form| %>
     <div class="row mb-3">
@@ -125,26 +137,36 @@
         </div>
       </div>
 
-      <!-- Signature Section -->
-      <div data-controller="signature" 
-           data-signature-readonly="<%= @readonly %>" 
-           data-signature-signature="<%= @client.signature %>">
-        <label for="signature" class="form-label">Signature</label>
-        <canvas id="signature-pad" class="signature-pad mb-2" data-signature-target="canvas" width="400" height="200" style="border: 1px solid black; background-color: white;"></canvas>
-        <button type="button" id="clear-signature" class="btn btn-warning mt-2" data-action="signature#clearSignature" <%= 'disabled' if @readonly %>>Clear Signature</button>
-      </div>
+<!-- Signature Section -->
+<div class="col-md-12 mb-3">
+  <%= form.label :signature, 'Signature' %>
+
+  <!-- Display the signature if it was already signed -->
+  <% if @client.signature.present? %>
+    <div class="mb-3">
+      <img src="<%= @client.signature %>" alt="Client Signature" style="border: 1px solid black; max-width: 400px;">
+    </div>
+    <!-- Show the button to allow re-signing -->
+    <button type="button" id="update-signature" class="custom-info-button">Update Signature</button>
+  <% else %>
+    <!-- Signature Pad for input -->
+    <canvas id="signature-pad" class="signature-pad" width="400" height="200" style="border: 1px solid black;"></canvas>
+    <%= form.hidden_field :signature, id: "signature-hidden-input" %>
+  <% end %>
+</div>
 
       <!-- Back, Save, and Search Buttons -->
-      <div class="d-flex justify-content-center mt-4">
-        <div class="button-group d-flex justify-content-around w-100">
-          <%= link_to 'BACK', dashboard_path, class: 'custom-back-button' %>
-          <% unless @readonly %>
-            <%= form.submit 'SAVE', class: 'custom-save-button' %>
-          <% end %>
-          <%= link_to 'SEARCH CLIENT', search_clients_path, class: 'custom-search-button' %>
-        </div>
-      </div>
-    </div>
+<div class="d-flex justify-content-center mt-4">
+  <div class="button-group d-flex justify-content-around w-100">
+    <%= link_to 'BACK', dashboard_path, class: 'custom-back-button' %>
+    <% unless @readonly %>
+      <!-- The SAVE button is initially disabled -->
+      <%= form.submit 'SAVE', class: 'custom-save-button', disabled: true, id: 'save-button' %>
+    <% end %>
+    <%= link_to 'SEARCH CLIENT', search_clients_path, class: 'custom-search-button' %>
+  </div>
+</div>
+
   <% end %>
 
   <% if flash[:notice] %>
@@ -155,6 +177,7 @@
 </div>
 
 <script>
+  // More info toggle logic
   document.getElementById("more-info-toggle").addEventListener("click", function() {
     var moreInfoSection = document.getElementById("more-info-section");
     if (moreInfoSection.style.display === "none" || moreInfoSection.style.display === "") {
@@ -165,68 +188,163 @@
       this.textContent = "More Info";
     }
   });
+
+function initializeSignaturePad() {
+  var canvas = document.getElementById('signature-pad');
+  var signatureInput = document.getElementById('signature-hidden-input');
+  var updateSignatureButton = document.getElementById('update-signature');
+  var signaturePad;
+  var submitButton = document.getElementById('save-button'); // Reference to save button
+
+  disableSubmitButton(); // Disable submit button on page load
+
+  // Only initialize the SignaturePad if the canvas element exists
+  if (canvas) {
+    signaturePad = new SignaturePad(canvas);
+    disableSignaturePad(); // Disable the signature pad on page load
+
+    // Check if there's a saved signature and if the update button exists
+    if (updateSignatureButton) {
+      <% if @client.signature.present? %>
+        // Hide the signature pad if the client already has a signature
+        canvas.style.display = 'none';
+
+        // Allow the user to update the signature when clicking the button
+        updateSignatureButton.addEventListener('click', function() {
+          canvas.style.display = 'block';  // Show the signature pad
+          updateSignatureButton.style.display = 'none';  // Hide the update button
+        });
+      <% end %>
+    }
+
+    // Attach event listeners to required fields to enable signature pad when completed
+    var requiredFields = ['input[name="client[first_name]"]', 'input[name="client[last_name]"]', 'input[name="client[email]"]', 'input[name="client[phone]"]'];
+    requiredFields.forEach(function(fieldSelector) {
+      var field = document.querySelector(fieldSelector);
+      if (field) {
+        field.addEventListener('input', checkIfSignatureShouldBeEnabled);
+      }
+    });
+
+    // Form submission logic
+    var form = document.querySelector('form');
+    if (form) {
+      form.addEventListener('submit', function (event) {
+        if (!signaturePad.isEmpty()) {
+          var signatureData = signaturePad.toDataURL();
+          signatureInput.value = signatureData;
+        } else if (!signatureInput.value) {
+          event.preventDefault(); // Prevent form submission if signature is missing
+          alert('Please provide a signature before submitting.');
+        }
+      });
+    }
+  }
+
+  // Disable the signature pad (freeze it)
+  function disableSignaturePad() {
+    if (signaturePad) {
+      signaturePad.off(); // Disable drawing
+      canvas.style.backgroundColor = '#f0f0f0'; // Optional: Change background to indicate it's disabled
+    }
+  }
+
+  // Enable the signature pad (allow drawing)
+  function enableSignaturePad() {
+    if (signaturePad) {
+      signaturePad.on(); // Enable drawing
+      canvas.style.backgroundColor = '#ffffff'; // Reset the background color
+    }
+  }
+
+  // Disable the submit button
+  function disableSubmitButton() {
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+  }
+
+  // Enable the submit button
+  function enableSubmitButton() {
+    if (submitButton) {
+      submitButton.disabled = false;
+    }
+  }
+
+  // Check if all required fields are filled, then enable the signature pad and submit button
+  function checkIfSignatureShouldBeEnabled() {
+    var firstName = document.querySelector('input[name="client[first_name]"]').value;
+    var lastName = document.querySelector('input[name="client[last_name]"]').value;
+    var email = document.querySelector('input[name="client[email]"]').value;
+    var phone = document.querySelector('input[name="client[phone]"]').value;
+
+    if (firstName && lastName && email && phone) {
+      enableSignaturePad(); // Enable signature pad when all required fields are filled
+      enableSubmitButton(); // Enable the submit button
+    } else {
+      disableSignaturePad(); // Disable signature pad if any required fields are empty
+      disableSubmitButton(); // Disable the submit button
+    }
+  }
+}
+
+// Initialize on full page load
+document.addEventListener('DOMContentLoaded', initializeSignaturePad);
+
+// Re-initialize after Turbo page changes (such as after creating a client)
+document.addEventListener('turbo:load', initializeSignaturePad);
+
 </script>
 
-
 <style>
-#signature-pad {
-  display: block;
-  margin: 0 auto;
-  background-color: white;
-  border: 1px solid black;
-  width: 400px;
-  height: 200px;
-}
+  #signature-pad {
+    display: block;
+    margin: 0 auto;
+    background-color: white;
+    border: 1px solid black;
+    width: 400px;
+    height: 200px;
+  }
 
-/* General button styling */
-.custom-back-button, .custom-save-button, .custom-search-button, .custom-info-button {
-  background-color: #4a4a4a;
-  color: white;
-  text-decoration: none;
-  padding: 12px 25px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  text-align: center;
-  width: 100%;
-  max-width: 200px;
-}
+  .custom-back-button, .custom-save-button, .custom-search-button, .custom-info-button {
+    background-color: #4a4a4a;
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    width: 100%;
+    max-width: 200px;
+  }
 
-.custom-back-button:hover, .custom-save-button:hover, .custom-search-button:hover, .custom-info-button:hover {
-  background-color: #333;
-}
+  .custom-back-button:hover, .custom-save-button:hover, .custom-search-button:hover, .custom-info-button:hover {
+    background-color: #333;
+  }
 
-/* Container layout */
-.container {
-  padding: 15px;
-  margin: 0 auto;
-  max-width: 800px;
-}
+  .container {
+    padding: 15px;
+    margin: 0 auto;
+    max-width: 800px;
+  }
 
-/* Center signature section */
-#signature-pad {
-  margin: 0 auto;
-}
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 600px;
+    width: 100%;
+  }
 
-/* Button group layout */
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px; /* Add space between buttons */
-  max-width: 600px; /* Ensure buttons don't spread too wide */
-  width: 100%;
-}
+  #more-info-section {
+    display: none;
+  }
 
-/* Hide 'More Info' section initially */
-#more-info-section {
-  display: none;
-}
-
-/* Horizontal checkboxes for payment types */
-.form-check-inline {
-  margin-right: 15px;
-}
+  .form-check-inline {
+    margin-right: 15px;
+  }
 </style>

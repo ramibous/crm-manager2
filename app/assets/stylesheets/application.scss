@@ -27,7 +27,7 @@
 @import 'pages/dashboard';
 @import 'pages/index';
 @import 'pages/send_message';
-
+@import 'pages/navbar';
 
 
 body {
@@ -55,16 +55,7 @@ body {
   
 
   
-  .navbar {
-    background-color: #333;
-    color: #fff;
-  }
-  
-  .nav-link {
-    color: #fff;
-    text-align: center;
-  }
-  
+
   
 
 

@@ -11,6 +11,10 @@ class Client < ApplicationRecord
 
   before_create :generate_client_id
 
+  # Ensure that mandatory fields are filled in
+  validates :first_name, :last_name, :email, :phone, presence: true
+  validate :validate_signature_after_required_fields
+
   SEGMENTS = [
     ['no_purchase', 0..0],
     ['sleepers', 1..500],
@@ -63,34 +67,34 @@ class Client < ApplicationRecord
   def timeline_items
     items = []
 
-    # Eager load associated records
     self.class.includes(:appointments, :wishlist_items, :purchases, :campaigns).find(id)
 
-    # Add appointments to the timeline
     appointments.each do |appointment|
       items << { date: appointment.scheduled_at, description: "Appointment: #{appointment.title}" }
     end
 
-    # Add wishlist items to the timeline
     wishlist_items.each do |wishlist_item|
       items << { date: wishlist_item.created_at, description: "Wishlist: #{wishlist_item.item_name} - Reference: #{wishlist_item.item_reference}" }
     end
 
-    # Add purchases to the timeline
     purchases.each do |purchase|
       items << { date: purchase.created_at, description: "Purchase at #{purchase.store}" }
     end
 
-    # Add campaigns to the timeline
     campaigns.each do |campaign|
       items << { date: campaign.start_date, description: "Campaign: #{campaign.name} - Start Date: #{campaign.start_date.strftime('%d %b %Y')} - End Date: #{campaign.end_date.strftime('%d %b %Y')}" }
     end
 
-    # Sort by date (newest first) and return
     items.sort_by { |item| item[:date] }.reverse
   end
 
   private
+
+  def validate_signature_after_required_fields
+    if first_name.present? && last_name.present? && email.present? && phone.present? && signature.blank?
+      errors.add(:signature, "must be provided after filling all required fields.")
+    end
+  end
 
   def generate_client_id
     last_client = Client.order(:created_at).last
