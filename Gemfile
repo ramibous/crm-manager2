@@ -28,6 +28,7 @@ gem 'activestorage-cloudinary-service'
 
 
 
+
 # Optionally use CDN for Bootstrap Icons or keep the gem
 gem 'bootstrap-icons', '~> 1.0.14'
 
@@ -38,6 +39,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-rails'
   gem "dotenv-rails"
+
 end
 
 group :development do

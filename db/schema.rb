@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_08_104306) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_10_000942) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -108,6 +108,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_08_104306) do
     t.string "store_location"
     t.string "gender"
     t.bigint "manager_id"
+    t.text "signature"
+    t.string "first_name_local"
+    t.string "last_name_local"
+    t.string "contact_preference"
+    t.string "time_to_contact"
+    t.string "size"
+    t.string "occupation"
+    t.string "vacation"
+    t.string "hobbies"
+    t.string "preference"
+    t.boolean "payment_type_visa"
+    t.boolean "payment_type_amex"
+    t.boolean "payment_type_mastercard"
+    t.boolean "payment_type_discover"
+    t.boolean "payment_type_other"
     t.index ["client_id"], name: "index_clients_on_client_id", unique: true
   end
 

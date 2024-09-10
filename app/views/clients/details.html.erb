@@ -1,7 +1,16 @@
 <ul class="list-unstyled">
-  <li><i class="fas fa-store"></i> <%= @client.store_location %></li>
-  <li><i class="fas fa-gift"></i> 2023: <%= number_to_currency(@client.purchase_total, unit: "CAD $") %></li>
-  <li><i class="fas fa-venus-mars"></i> <%= @client.gender %></li>
+  <li><i class="fas fa-store"></i> 
+    <%= @client.store_location.present? ? @client.store_location : 'Not provided' %>
+  </li>
+  
+  <li><i class="fas fa-gift"></i> 2023: 
+    <%= @client.purchase_total.present? ? number_to_currency(@client.purchase_total, unit: "CAD $") : 'Not provided' %>
+  </li>
+  
+  <li><i class="fas fa-venus-mars"></i> 
+    <%= @client.gender.present? ? @client.gender : 'Not provided' %>
+  </li>
+  
   <li><i class="fas fa-birthday-cake"></i> 
     Birthday: 
     <% if @client.birthday.present? %>
@@ -10,7 +19,45 @@
       Not provided
     <% end %>
   </li>
-  <li><i class="fas fa-phone"></i> Phone: <%= @client.phone %></li>
-  <li><i class="fas fa-envelope"></i> Email: <%= @client.email %></li>
-  <li><i class="fas fa-map-marker-alt"></i> Address: <%= @client.address %></li>
+  
+  <li><i class="fas fa-phone"></i> 
+    Phone: <%= @client.phone.present? ? @client.phone : 'Not provided' %>
+  </li>
+  
+  <li><i class="fas fa-envelope"></i> 
+    Email: <%= @client.email.present? ? @client.email : 'Not provided' %>
+  </li>
+  
+  <li><i class="fas fa-map-marker-alt"></i> 
+    Address: <%= @client.address.present? ? @client.address : 'Not provided' %>
+  </li>
+
+  <!-- New fields added below -->
+  <li><i class="fas fa-comment-dots"></i> 
+    Contact Preference: <%= @client.contact_preference.present? ? @client.contact_preference : 'Not provided' %>
+  </li>
+  
+  <li><i class="fas fa-clock"></i> 
+    Preferred Time to Contact: <%= @client.time_to_contact.present? ? @client.time_to_contact : 'Not provided' %>
+  </li>
+  
+  <li><i class="fas fa-ruler"></i> 
+    Size: <%= @client.size.present? ? @client.size : 'Not provided' %>
+  </li>
+  
+  <li><i class="fas fa-briefcase"></i> 
+    Occupation: <%= @client.occupation.present? ? @client.occupation : 'Not provided' %>
+  </li>
+  
+  <li><i class="fas fa-plane"></i> 
+    Vacation: <%= @client.vacation.present? ? @client.vacation : 'Not provided' %>
+  </li>
+  
+  <li><i class="fas fa-paint-brush"></i> 
+    Hobbies: <%= @client.hobbies.present? ? @client.hobbies : 'Not provided' %>
+  </li>
+  
+  <li><i class="fas fa-heart"></i> 
+    Preferences: <%= @client.preference.present? ? @client.preference : 'Not provided' %>
+  </li>
 </ul>

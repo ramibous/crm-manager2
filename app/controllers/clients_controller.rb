@@ -143,7 +143,12 @@ class ClientsController < ApplicationController
   private
 
   def client_params
-    params.require(:client).permit(:title, :first_name, :middle_name, :last_name, :email, :birthday, :address, :phone, :home_number, :postal_code, :notes)
+    params.require(:client).permit(
+      :type, :title, :first_name, :first_name_local, :last_name, :last_name_local,
+      :birthday, :email, :phone, :address, :postal_code, :notes, :contact_preference,
+      :time_to_contact, :size, :occupation, :vacation, :hobbies, :preference,
+      :payment_type_visa, :payment_type_amex, :payment_type_mastercard, :payment_type_discover, :payment_type_other
+    )
   end
 
   def authenticate_manager!
