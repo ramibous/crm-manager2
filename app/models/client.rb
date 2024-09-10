@@ -45,8 +45,6 @@ class Client < ApplicationRecord
     end
   end
 
-
-
   def segment
     total_spent = purchase_total
     SEGMENTS.each do |segment_name, range|

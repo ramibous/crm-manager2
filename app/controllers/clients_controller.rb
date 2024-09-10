@@ -25,21 +25,26 @@ class ClientsController < ApplicationController
 
   def details
     @client = Client.find(params[:id])
-    # Additional logic for fetching more detailed data if necessary
   end
 
   def new
     @client = Client.new
+    @readonly = false # New client form is editable
   end
 
   def create
     @client = Client.new(client_params)
+
     if @client.save
-      redirect_to dashboard_path, notice: 'Client was successfully created.'
+      # Redirect to the show page or wherever you want to go after saving the client
+      redirect_to @client, notice: 'Client was successfully created.'
     else
+      # Render the new form again with error messages
       render :new
     end
   end
+
+
 
 
 
@@ -142,14 +147,19 @@ class ClientsController < ApplicationController
 
   private
 
+  private
+
   def client_params
     params.require(:client).permit(
       :type, :title, :first_name, :first_name_local, :last_name, :last_name_local,
       :birthday, :email, :phone, :address, :postal_code, :notes, :contact_preference,
       :time_to_contact, :size, :occupation, :vacation, :hobbies, :preference,
-      :payment_type_visa, :payment_type_amex, :payment_type_mastercard, :payment_type_discover, :payment_type_other
+      :payment_type_visa, :payment_type_amex, :payment_type_mastercard,
+      :payment_type_discover, :payment_type_other, :signature  # Ensure signature is permitted
     )
   end
+
+
 
   def authenticate_manager!
     unless current_staff&.role == "manager"

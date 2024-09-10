@@ -9,7 +9,8 @@
 
   <h3>Personal Data / Données Personnelles</h3>
 
-  <%= form_with model: @client, local: true do |form| %>
+  <!-- Disable Turbo with data-turbo="false" -->
+  <%= form_with model: @client, local: true, data: { turbo: false } do |form| %>
     <div class="row mb-3">
       <div class="col-md-6">
         <%= link_to 'PDF File / Fichier PDF', '#', class: 'pdf-link float-end' %>
@@ -20,63 +21,63 @@
       <!-- Type Field -->
       <div class="col-md-6 mb-3">
         <%= form.label :type, "Type * / Type *", class: "form-label" %>
-        <%= form.select :type, options_for_select(["Client", "VIP", "Partner", "Partenaire"]), {}, class: 'form-control' %>
+        <%= form.select :type, options_for_select(["Client", "VIP", "Partner", "Partenaire"]), {}, class: 'form-control', disabled: @readonly %>
       </div>
 
       <!-- Title Field -->
       <div class="col-md-6 mb-3">
         <%= form.label :title, "Title * / Titre *", class: "form-label" %>
-        <%= form.select :title, options_for_select(["Mr.", "Mrs.", "Miss", "Dr.", "M.", "Mme", "Mlle"]), {}, class: 'form-control' %>
+        <%= form.select :title, options_for_select(["Mr.", "Mrs.", "Miss", "Dr.", "M.", "Mme", "Mlle"]), {}, class: 'form-control', disabled: @readonly %>
       </div>
 
       <!-- Name Fields -->
       <div class="col-md-6 mb-3">
         <%= form.label :first_name, "Name * / Prénom *", class: "form-label" %>
-        <%= form.text_field :first_name, class: 'form-control', data: { score_target: "firstName" } %>
+        <%= form.text_field :first_name, class: 'form-control', placeholder: "Enter First Name", data: { score_target: "firstName" }, disabled: @readonly %>
       </div>
       <div class="col-md-6 mb-3">
         <%= form.label :first_name_local, "Name (local) / Prénom (local)", class: "form-label" %>
-        <%= form.text_field :first_name_local, class: 'form-control' %>
+        <%= form.text_field :first_name_local, class: 'form-control', placeholder: "Enter Local First Name", disabled: @readonly %>
       </div>
 
       <!-- Surname Fields -->
       <div class="col-md-6 mb-3">
         <%= form.label :last_name, "Surname * / Nom de Famille *", class: "form-label" %>
-        <%= form.text_field :last_name, class: 'form-control', data: { score_target: "lastName" } %>
+        <%= form.text_field :last_name, class: 'form-control', placeholder: "Enter Last Name", data: { score_target: "lastName" }, disabled: @readonly %>
       </div>
       <div class="col-md-6 mb-3">
         <%= form.label :last_name_local, "Surname (local) / Nom de Famille (local)", class: "form-label" %>
-        <%= form.text_field :last_name_local, class: 'form-control' %>
+        <%= form.text_field :last_name_local, class: 'form-control', placeholder: "Enter Local Last Name", disabled: @readonly %>
       </div>
 
       <!-- Birthday and Email Fields -->
       <div class="col-md-6 mb-3">
         <%= form.label :birthday, "Birthday / Date de Naissance", class: "form-label" %>
-        <%= form.date_field :birthday, class: 'form-control', data: { score_target: "birthday" } %>
+        <%= form.date_field :birthday, class: 'form-control', placeholder: "Enter Birthday", data: { score_target: "birthday" }, disabled: @readonly %>
       </div>
       <div class="col-md-6 mb-3">
         <%= form.label :email, "E-mail / E-mail", class: "form-label" %>
-        <%= form.email_field :email, class: 'form-control', data: { score_target: "email" } %>
+        <%= form.email_field :email, class: 'form-control', placeholder: "Enter Email", data: { score_target: "email" }, disabled: @readonly %>
       </div>
 
       <!-- Phone and Address Fields -->
       <div class="col-md-6 mb-3">
         <%= form.label :phone, "Phone / Téléphone", class: "form-label" %>
-        <%= form.text_field :phone, class: 'form-control', data: { score_target: "phone" } %>
+        <%= form.text_field :phone, class: 'form-control', placeholder: "Enter Phone Number", data: { score_target: "phone" }, disabled: @readonly %>
       </div>
       <div class="col-md-6 mb-3">
         <%= form.label :address, "Address / Adresse", class: "form-label" %>
-        <%= form.text_field :address, class: 'form-control', data: { score_target: "address" } %>
+        <%= form.text_field :address, class: 'form-control', placeholder: "Enter Address", data: { score_target: "address" }, disabled: @readonly %>
       </div>
 
       <!-- Postal Code and Notes Fields -->
       <div class="col-md-6 mb-3">
         <%= form.label :postal_code, "Postal Code / Code Postal", class: "form-label" %>
-        <%= form.text_field :postal_code, class: 'form-control', data: { score_target: "postalCode" } %>
+        <%= form.text_field :postal_code, class: 'form-control', placeholder: "Enter Postal Code", data: { score_target: "postalCode" }, disabled: @readonly %>
       </div>
       <div class="col-md-6 mb-3">
         <%= form.label :notes, "Notes / Remarques", class: "form-label" %>
-        <%= form.text_area :notes, class: 'form-control', data: { score_target: "notes" } %>
+        <%= form.text_area :notes, class: 'form-control', placeholder: "Enter Notes", data: { score_target: "notes" }, disabled: @readonly %>
       </div>
 
       <!-- More Info Button -->
@@ -89,89 +90,66 @@
         <!-- Contact Preferences -->
         <div class="col-md-6 mb-3">
           <%= form.label :contact_preference, "Contact Preference", class: "form-label" %>
-          <%= form.select :contact_preference, options_for_select(["Phone", "Message", "Email", "Email/Work", "Home"]), {}, class: 'form-control' %>
+          <%= form.select :contact_preference, options_for_select(["Phone", "Message", "Email", "Email/Work", "Home"]), {}, class: 'form-control', disabled: @readonly %>
         </div>
 
         <!-- Time to Contact -->
         <div class="col-md-6 mb-3">
           <%= form.label :time_to_contact, "Preferred Time to Contact", class: "form-label" %>
-          <%= form.select :time_to_contact, options_for_select(["Morning", "Afternoon", "Evening"]), {}, class: 'form-control' %>
+          <%= form.select :time_to_contact, options_for_select(["Morning", "Afternoon", "Evening"]), {}, class: 'form-control', disabled: @readonly %>
         </div>
 
-        <!-- Payment Type (Now Horizontal) -->
-<div class="col-md-12 mb-3">
-  <%= form.label :payment_type, "Usual Payment Type", class: "form-label d-block" %>
-  <div class="form-check form-check-inline">
-    <%= form.check_box :payment_type_amex, { class: "form-check-input" }, true, false %>
-    <%= form.label :payment_type_amex, "AMEX", class: "form-check-label" %>
-  </div>
-  <div class="form-check form-check-inline">
-    <%= form.check_box :payment_type_visa, { class: "form-check-input" }, true, false %>
-    <%= form.label :payment_type_visa, "Visa", class: "form-check-label" %>
-  </div>
-  <div class="form-check form-check-inline">
-    <%= form.check_box :payment_type_mastercard, { class: "form-check-input" }, true, false %>
-    <%= form.label :payment_type_mastercard, "Mastercard", class: "form-check-label" %>
-  </div>
-  <div class="form-check form-check-inline">
-    <%= form.check_box :payment_type_discover, { class: "form-check-input" }, true, false %>
-    <%= form.label :payment_type_discover, "Discover", class: "form-check-label" %>
-  </div>
-  <div class="form-check form-check-inline">
-    <%= form.check_box :payment_type_other, { class: "form-check-input" }, true, false %>
-    <%= form.label :payment_type_other, "Other", class: "form-check-label" %>
-  </div>
-</div>
-
-
-        <!-- Size -->
-        <div class="col-md-6 mb-3">
-          <%= form.label :size, "Size", class: "form-label" %>
-          <%= form.text_field :size, class: 'form-control' %>
-        </div>
-
-        <!-- Occupation -->
-        <div class="col-md-6 mb-3">
-          <%= form.label :occupation, "Occupation", class: "form-label" %>
-          <%= form.text_field :occupation, class: 'form-control' %>
-        </div>
-
-        <!-- Vacation -->
-        <div class="col-md-6 mb-3">
-          <%= form.label :vacation, "Vacation", class: "form-label" %>
-          <%= form.text_field :vacation, class: 'form-control' %>
-        </div>
-
-        <!-- Hobbies -->
-        <div class="col-md-6 mb-3">
-          <%= form.label :hobbies, "Hobbies", class: "form-label" %>
-          <%= form.text_field :hobbies, class: 'form-control' %>
-        </div>
-
-        <!-- Preferences -->
-        <div class="col-md-6 mb-3">
-          <%= form.label :preference, "Preference", class: "form-label" %>
-          <%= form.text_field :preference, class: 'form-control' %>
+        <!-- Payment Type -->
+        <div class="col-md-12 mb-3">
+          <%= form.label :payment_type, "Usual Payment Type", class: "form-label d-block" %>
+          <div class="form-check form-check-inline">
+            <%= form.check_box :payment_type_amex, { class: "form-check-input", disabled: @readonly }, true, false %>
+            <%= form.label :payment_type_amex, "AMEX", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= form.check_box :payment_type_visa, { class: "form-check-input", disabled: @readonly }, true, false %>
+            <%= form.label :payment_type_visa, "Visa", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= form.check_box :payment_type_mastercard, { class: "form-check-input", disabled: @readonly }, true, false %>
+            <%= form.label :payment_type_mastercard, "Mastercard", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= form.check_box :payment_type_discover, { class: "form-check-input", disabled: @readonly }, true, false %>
+            <%= form.label :payment_type_discover, "Discover", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= form.check_box :payment_type_other, { class: "form-check-input", disabled: @readonly }, true, false %>
+            <%= form.label :payment_type_other, "Other", class: "form-check-label" %>
+          </div>
         </div>
       </div>
 
       <!-- Signature Section -->
-<!-- Signature Section -->
-<div class="col-md-12 mb-3 d-flex flex-column align-items-center" data-controller="signature">
-  <label for="signature" class="form-label">Signature</label>
-  <canvas id="signature-pad" class="signature-pad mb-2" data-signature-target="canvas" width="400" height="200" style="border: 1px solid black; background-color: white;"></canvas>
-  <button type="button" id="clear-signature" class="btn btn-warning mt-2" data-action="signature#clearSignature">Clear Signature</button>
-</div>
-
+      <div data-controller="signature" 
+           data-signature-readonly="<%= @readonly %>" 
+           data-signature-signature="<%= @client.signature %>">
+        <label for="signature" class="form-label">Signature</label>
+        <canvas id="signature-pad" class="signature-pad mb-2" data-signature-target="canvas" width="400" height="200" style="border: 1px solid black; background-color: white;"></canvas>
+        <button type="button" id="clear-signature" class="btn btn-warning mt-2" data-action="signature#clearSignature" <%= 'disabled' if @readonly %>>Clear Signature</button>
+      </div>
 
       <!-- Back, Save, and Search Buttons -->
       <div class="d-flex justify-content-center mt-4">
         <div class="button-group d-flex justify-content-around w-100">
           <%= link_to 'BACK', dashboard_path, class: 'custom-back-button' %>
-          <%= form.submit 'SAVE', class: 'custom-save-button' %>
+          <% unless @readonly %>
+            <%= form.submit 'SAVE', class: 'custom-save-button' %>
+          <% end %>
           <%= link_to 'SEARCH CLIENT', search_clients_path, class: 'custom-search-button' %>
         </div>
       </div>
+    </div>
+  <% end %>
+
+  <% if flash[:notice] %>
+    <div class="alert alert-success mt-4">
+      <%= flash[:notice] %>
     </div>
   <% end %>
 </div>
@@ -189,8 +167,8 @@
   });
 </script>
 
-<style>
 
+<style>
 #signature-pad {
   display: block;
   margin: 0 auto;
@@ -199,7 +177,6 @@
   width: 400px;
   height: 200px;
 }
-
 
 /* General button styling */
 .custom-back-button, .custom-save-button, .custom-search-button, .custom-info-button {

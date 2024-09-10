@@ -199,59 +199,78 @@
 <!-- JavaScript for "See More" functionality -->
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    let itemsPerPage = 3;
-    let currentPage = 1;
-    const totalItems = <%= @client.timeline_items.size %>;
-    const timelineItems = <%= @client.timeline_items.to_json.html_safe %>;
-    
-    function loadTimelineItems() {
-      const timelineContainer = document.querySelector(".timeline");
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      const endIndex = currentPage * itemsPerPage;
-      const itemsToLoad = timelineItems.slice(startIndex, endIndex);
+  let itemsPerPage = 3;
+  let currentPage = 1;
+  const totalItems = <%= @client.timeline_items.size %>;
+  const timelineItems = <%= @client.timeline_items.to_json.html_safe %>;
+  
+  function loadTimelineItems() {
+    const timelineContainer = document.querySelector(".timeline");
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = currentPage * itemsPerPage;
+    const itemsToLoad = timelineItems.slice(startIndex, endIndex);
 
-      itemsToLoad.forEach(item => {
-        const timelineItem = document.createElement("div");
-        timelineItem.classList.add("timeline-item");
+    itemsToLoad.forEach(item => {
+      const timelineItem = document.createElement("div");
+      timelineItem.classList.add("timeline-item");
 
-        const iconDiv = document.createElement("div");
-        iconDiv.classList.add("timeline-icon");
+      const iconDiv = document.createElement("div");
+      iconDiv.classList.add("timeline-icon");
 
-        const contentDiv = document.createElement("div");
-        contentDiv.classList.add("timeline-content");
+      const contentDiv = document.createElement("div");
+      contentDiv.classList.add("timeline-content");
 
-        const dateSpan = document.createElement("span");
-        dateSpan.classList.add("timeline-date");
-        dateSpan.textContent = new Date(item.date).toLocaleString('en-GB', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-
-        const descP = document.createElement("p");
-        descP.textContent = item.description;
-
-        contentDiv.appendChild(dateSpan);
-        contentDiv.appendChild(descP);
-
-        timelineItem.appendChild(iconDiv);
-        timelineItem.appendChild(contentDiv);
-
-        timelineContainer.appendChild(timelineItem);
+      const dateSpan = document.createElement("span");
+      dateSpan.classList.add("timeline-date");
+      dateSpan.textContent = new Date(item.date).toLocaleString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
       });
 
-      currentPage++;
-      if (currentPage * itemsPerPage >= totalItems) {
-        document.getElementById("see-more-btn").style.display = "none";
-      }
+      const descP = document.createElement("p");
+      descP.textContent = item.description;
+
+      contentDiv.appendChild(dateSpan);
+      contentDiv.appendChild(descP);
+
+      timelineItem.appendChild(iconDiv);
+      timelineItem.appendChild(contentDiv);
+
+      timelineContainer.appendChild(timelineItem);
+    });
+
+    currentPage++;
+    const seeMoreButton = document.getElementById("see-more-btn");
+    if (seeMoreButton && currentPage * itemsPerPage >= totalItems) {
+      seeMoreButton.style.display = "none";
     }
+  }
 
-    // Initial load of first set of items
-    loadTimelineItems();
+  // Initial load of first set of items
+  loadTimelineItems();
 
-    // Event listener for "See More" button
-    document.getElementById("see-more-btn").addEventListener("click", loadTimelineItems);
+  // Check if "See More" button exists before adding event listener
+  const seeMoreButton = document.getElementById("see-more-btn");
+  if (seeMoreButton) {
+    seeMoreButton.addEventListener("click", loadTimelineItems);
+  }
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  const signaturePad = new SignaturePad(document.getElementById('signature-pad'));
+
+  // Before form submission, ensure signature data is captured and set in the hidden field
+  document.querySelector('form').addEventListener('submit', function(event) {
+    if (!signaturePad.isEmpty()) {
+      document.getElementById('signature').value = signaturePad.toDataURL();
+    }
   });
+});
+
 </script>
