@@ -32,6 +32,8 @@ clients_data = 20.times.map do
     last_name: Faker::Name.last_name,
     email: Faker::Internet.email,
     birthday: Faker::Date.birthday(min_age: 18, max_age: 65),
+    phone: Faker::PhoneNumber.phone_number,          # Add phone number
+    signature: Faker::Lorem.sentence(word_count: 3), # Add signature
     staff: staff_members.sample,
     manager_id: [manager_one.id, manager_two.id].sample
   }
@@ -44,15 +46,21 @@ end
 
 # Create purchases for each client across different periods
 clients.each do |client|
-  purchase_data = {
-    client: client,
-    amount: Faker::Commerce.price(range: 0..5000.0),
-    date: Faker::Date.between(from: 1.year.ago, to: Date.today),
-    product_name: Faker::Commerce.product_name
-  }
-  puts "Creating Purchase for Client ID: #{client.id} - Amount: #{purchase_data[:amount]} - Date: #{purchase_data[:date]}"
-  Purchase.create!(purchase_data)
+  # Randomly decide whether to create a purchase for this client
+  if [true, false].sample  # This will randomly choose between true (create purchase) and false (no purchase)
+    purchase_data = {
+      client: client,
+      amount: Faker::Commerce.price(range: 0..5000.0),
+      date: Faker::Date.between(from: 1.year.ago, to: Date.today),
+      product_name: Faker::Commerce.product_name
+    }
+    puts "Creating Purchase for Client ID: #{client.id} - Amount: #{purchase_data[:amount]} - Date: #{purchase_data[:date]}"
+    Purchase.create!(purchase_data)
+  else
+    puts "No purchase created for Client ID: #{client.id}"
+  end
 end
+
 
 # Create more appointments for clients
 appointments_data = [

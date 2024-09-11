@@ -40,6 +40,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-rails'
   gem "dotenv-rails"
+  gem 'letter_opener'
 
 end
 

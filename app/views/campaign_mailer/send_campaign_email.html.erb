@@ -1,24 +1,11 @@
-<!-- app/views/campaign_mailer/send_campaign_email.html.erb -->
 <div class="email-container">
   <h1 class="email-title">Campaign for <%= @client.full_name %></h1>
 
-  <!-- Display Main Image -->
-  <% if @campaign.images.attached? %>
-    <% main_image_url = url_for(@campaign.images.first) %>
-    <%= image_tag main_image_url, alt: "Main Campaign Image", class: "main-image" %>
-    <p>Main Image URL: <%= main_image_url %></p> <!-- Debugging line -->
+  <% if @image_url.present? %>
+    <%= image_tag @image_url, alt: "Campaign Image", class: "campaign-image" %>
   <% else %>
-    <p>No images attached for this campaign.</p>
+    <p>No image available for this campaign.</p>
   <% end %>
 
   <p>Check out our latest campaign in fresh fall colors.</p>
-
-  <!-- Display Secondary Images -->
-  <div class="secondary-images">
-    <% @campaign.images[1..].each do |image| %>
-      <% secondary_image_url = url_for(image) %>
-      <%= image_tag secondary_image_url, alt: "Secondary Image", class: "secondary-image" %>
-      <p>Secondary Image URL: <%= secondary_image_url %></p> <!-- Debugging line -->
-    <% end %>
-  </div>
 </div>

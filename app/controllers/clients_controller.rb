@@ -19,6 +19,8 @@ class ClientsController < ApplicationController
   def show
     @client = Client.find(params[:id])
     @interactions = @client.interactions.order(created_at: :desc)
+    Rails.logger.info "Client Purchase Total: #{@client.purchase_total}"
+    Rails.logger.info "Client Segment: #{@client.segment}"
   end
 
   def details
@@ -32,6 +34,10 @@ class ClientsController < ApplicationController
 
   def create
     @client = Client.new(client_params)
+
+    # If staff_id is not provided, default to current_staff (for managers)
+    @client.staff_id ||= current_staff.id if current_staff.manager?
+
     if @client.save
       @readonly = true # Set the form to read-only after creating the client
       respond_to do |format|
@@ -53,6 +59,7 @@ class ClientsController < ApplicationController
 
   def update
     @client = Client.find(params[:id])
+
     if @client.update(client_params)
       @readonly = true # Set the form to read-only after update
       respond_to do |format|
@@ -70,6 +77,7 @@ class ClientsController < ApplicationController
 
   def destroy
     @client = Client.find(params[:id])
+
     if @client.destroy
       respond_to do |format|
         format.html { redirect_to dashboard_path, notice: 'Client was successfully deleted.' }
@@ -80,6 +88,48 @@ class ClientsController < ApplicationController
         format.html { redirect_to dashboard_path, alert: 'Client could not be deleted.' }
         format.turbo_stream
       end
+    end
+  end
+
+  def wishlist
+    @wishlist_items = WishlistItem.includes(:client).all
+
+    respond_to do |format|
+      format.html # renders the wishlist view
+      format.pdf do
+        render pdf: "wishlist_items_#{Date.today}",
+               template: 'clients/wishlist.pdf.erb',
+               layout: 'pdf.html',
+               disposition: 'attachment'
+      end
+    end
+  end
+
+  def search
+    search_params = params.permit(:first_name, :last_name, :email, :first_name_local, :last_name_local, :company, :location, :passport, :mobile, :customer_code)
+
+    if search_params.values.any?(&:present?)
+      query = []
+      query_params = []
+
+      search_params.each do |key, value|
+        if value.present?
+          query << "#{key} ILIKE ?"
+          query_params << "%#{value}%"
+        end
+      end
+
+      @clients = Client.where(query.join(" OR "), *query_params)
+
+      if @clients.any?
+        render :search_results
+      else
+        flash.now[:alert] = "No matching client found."
+        render :search
+      end
+    else
+      flash.now[:alert] = "Please enter at least one search criterion."
+      render :search
     end
   end
 

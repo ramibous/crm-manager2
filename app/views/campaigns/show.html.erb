@@ -15,6 +15,8 @@
           <%= image_tag image, class: "campaign-image-small" %>
         <% end %>
       </div>
+    <% else %>
+      <p>No images available for this campaign.</p>
     <% end %>
 
     <h2 class="section-title">Assigned Clients</h2>
@@ -38,163 +40,55 @@
 <% end %>
 
 <style>
-  
-
-
-
   .campaign-details {
-    max-width: 100%;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    margin: 0 auto 20px;
-    font-size: 0.9rem;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
   }
-
   .campaign-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ecf0f1;
-    padding-bottom: 5px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
   }
-
   .campaign-info {
-    margin-top: 10px;
-    color: #7f8c8d;
+    margin-bottom: 20px;
   }
-
-  .campaign-info p {
-    margin: 5px 0;
-  }
-
   .campaign-images {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
-    justify-content: center;
     flex-wrap: wrap;
+    gap: 10px;
   }
-
   .campaign-image-small {
-    width: 70px;
+    max-width: 100px;
     height: auto;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-
   .section-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2c3e50;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    text-align: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #7e94a7;
   }
-
   .assigned-clients {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 15px;
   }
-
   .client-task {
-    background-color: #ffffff;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px;
     text-decoration: none;
-    color: #2c3e50;
-    font-size: 0.85rem;
   }
-
-  .client-task:hover {
-    background-color: #f9f9f9;
+  .client-content {
+    padding: 10px;
+    background-color: #abc9ec;
+    border-radius: 6px;
   }
-
   .client-name {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 18px;
   }
-
   .badge-success {
-    background-color: #27ae60;
+    background-color: #28a745;
+    padding: 5px;
+    border-radius: 5px;
     color: white;
-    padding: 3px 8px;
-    font-size: 0.75rem;
-    border-radius: 15px;
-    text-transform: uppercase;
-    font-weight: 600;
-    display: inline-block;
-  }
-
-  /* Enhanced Mobile Responsiveness */
-  @media (max-width: 768px) {
-    .campaign-details {
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    .campaign-title {
-      font-size: 1.3rem;
-    }
-
-    .campaign-info p {
-      font-size: 0.85rem;
-    }
-
-    .campaign-images {
-      flex-direction: row;
-      justify-content: space-around;
-    }
-
-    .campaign-image-small {
-      width: 50px;
-    }
-
-    .client-task {
-      padding: 8px;
-      font-size: 0.8rem;
-    }
-
-    .client-name {
-      font-size: 0.9rem;
-    }
-
-    .badge-success {
-      font-size: 0.7rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .campaign-title {
-      font-size: 1.2rem;
-    }
-
-    .campaign-info p {
-      font-size: 0.8rem;
-    }
-
-    .campaign-image-small {
-      width: 40px;
-    }
-
-    .client-task {
-      padding: 6px;
-      font-size: 0.75rem;
-    }
-
-    .client-name {
-      font-size: 0.85rem;
-    }
-
-    .badge-success {
-      font-size: 0.65rem;
-    }
+    font-size: 12px;
   }
 </style>

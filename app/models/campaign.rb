@@ -1,6 +1,5 @@
 class Campaign < ApplicationRecord
   has_many :campaign_assignments, dependent: :destroy
-  has_many :staffs, through: :campaign_assignments
   has_many :clients, through: :campaign_assignments
   has_many :messages, dependent: :destroy
 
@@ -11,6 +10,8 @@ class Campaign < ApplicationRecord
   validates :name, :start_date, :end_date, presence: true
 
   after_create :add_to_client_timelines
+
+
 
   # Retrieve the URL of the first image (main image)
   def main_image_url

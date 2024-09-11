@@ -1,6 +1,6 @@
 class CampaignsController < ApplicationController
   before_action :authenticate_staff!
-  before_action :authenticate_manager!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :authenticate_manager!, only: [:new, :create, :edit, :update, :destroy, :send_campaign_email]
   before_action :set_campaign, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -30,6 +30,13 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def send_campaign_email
+    client = Client.find(params[:client_id])
+    campaign = Campaign.find(params[:campaign_id])
+    CampaignMailer.send_campaign_email(client, campaign).deliver_now
+    redirect_to campaign_path(campaign), notice: 'Campaign email sent successfully!'
+  end
+
   def new
     @campaign = Campaign.new
     @clients = Client.none # Initialize as empty relation
@@ -37,26 +44,43 @@ class CampaignsController < ApplicationController
   end
 
   def edit
-    @campaign = Campaign.find(params[:id])
     @clients = Client.where(staff_id: @campaign.staff_id) # Filter clients by staff_id
     Rails.logger.info "Editing Campaign: #{@campaign.id}, Clients: #{@clients.map(&:id).join(', ')}"
   end
 
   def create
-    @campaign = Campaign.new(campaign_params)
-    Rails.logger.info "Creating Campaign with params: #{campaign_params}"
+    # Log the client_ids to verify that they are being passed correctly
+    Rails.logger.info "Params: #{params[:campaign][:client_ids]}"
 
-    if params[:campaign][:client_ids].blank?
-      flash.now[:alert] = "Please select clients before saving the campaign."
+    @campaign = Campaign.new(campaign_params.except(:client_ids))
+    Rails.logger.info "Creating Campaign with params: #{campaign_params.except(:client_ids)}"
+
+    # Check if any of the selected clients are invalid
+    invalid_clients = Client.where(id: params[:campaign][:client_ids]).reject(&:valid?)
+
+    if invalid_clients.any?
+      Rails.logger.error "Invalid clients: #{invalid_clients.map(&:full_name).join(', ')}"
+      flash.now[:alert] = "Some clients are invalid: #{invalid_clients.map(&:full_name).join(', ')}. Please ensure they have a valid phone number and signature."
       @clients = Client.where(staff_id: params[:campaign][:staff_id])
       render :new
     elsif @campaign.save
-      assign_clients_to_campaign(@campaign)
+      params[:campaign][:client_ids].each do |client_id|
+        client = Client.find(client_id)
+        assignment = CampaignAssignment.new(campaign: @campaign, client: client, staff_id: @campaign.staff_id)
+
+        if assignment.save
+          Rails.logger.info "Assigned client #{client_id} to campaign #{@campaign.id}"
+        else
+          Rails.logger.error "Failed to assign client #{client_id} to campaign #{@campaign.id}: #{assignment.errors.full_messages.join(', ')}"
+        end
+      end
+
       respond_to do |format|
         format.html { redirect_to campaigns_path, notice: 'Campaign was successfully created.' }
         format.turbo_stream
       end
     else
+      Rails.logger.error "Failed to create campaign: #{@campaign.errors.full_messages.join(', ')}"
       flash.now[:alert] = "Failed to create campaign."
       @clients = Client.where(staff_id: params[:campaign][:staff_id])
       render :new
@@ -82,7 +106,6 @@ class CampaignsController < ApplicationController
   end
 
   def destroy
-    @campaign = Campaign.find(params[:id])
     @campaign.destroy
     Rails.logger.info "Destroyed Campaign: #{@campaign.id}"
 
@@ -93,7 +116,7 @@ class CampaignsController < ApplicationController
   end
 
   def load_clients
-    staff_id = params[:staff_id] || params[:campaign][:staff_id]
+    staff_id = params[:staff_id]
     segment = params[:segment]
 
     Rails.logger.info "Loading clients for staff_id: #{staff_id}, segment: #{segment}"
@@ -101,9 +124,12 @@ class CampaignsController < ApplicationController
     if staff_id.present?
       @clients = Client.where(staff_id: staff_id)
 
-      # Filter clients by segment if a segment is selected
-      if segment.present?
-        @clients = @clients.select { |client| client.segment == segment }
+      # Apply segment filter
+      case segment
+      when 'no_purchase'
+        @clients = @clients.left_outer_joins(:purchases).where(purchases: { id: nil })
+      else
+        @clients = @clients.select { |client| client.segment == segment } if segment.present?
       end
 
       Rails.logger.info "Clients loaded: #{@clients.map(&:id).join(', ')}"
@@ -132,8 +158,19 @@ class CampaignsController < ApplicationController
 
   def assign_clients_to_campaign(campaign)
     Array(params[:campaign][:client_ids]).each do |client_id|
-      CampaignAssignment.find_or_create_by!(campaign: campaign, client_id: client_id, staff_id: campaign.staff_id)
-      Rails.logger.info "Assigned Client #{client_id} to Campaign #{campaign.id}"
+      client = Client.find_by(id: client_id)
+
+      if client
+        assignment = CampaignAssignment.new(campaign: campaign, client: client, staff_id: campaign.staff_id)
+
+        if assignment.save
+          Rails.logger.info "Successfully assigned Client #{client_id} to Campaign #{campaign.id}"
+        else
+          Rails.logger.error "Failed to assign Client #{client_id} to Campaign #{campaign.id}: #{assignment.errors.full_messages.join(', ')}"
+        end
+      else
+        Rails.logger.error "Client #{client_id} not found. Skipping assignment."
+      end
     end
   end
 end

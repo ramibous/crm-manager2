@@ -7,10 +7,14 @@
     <% end %>
 
     <div class="message-client-info">
-      <% if @campaign.images.attached? %>
+      <% if @campaign.images.attached? && @campaign.images.any? %>
         <div class="main-image-wrapper">
           <!-- Using url_for instead of service_url -->
-          <%= image_tag url_for(@campaign.images.first), class: "main-campaign-image" %>
+          <% if @campaign.images.first.present? %>
+            <%= image_tag url_for(@campaign.images.first), class: "main-campaign-image" %>
+          <% else %>
+            <p>Main image not available.</p>
+          <% end %>
           <div class="logo-overlay">
             <%= image_tag "Logo_La_Canadienne_Redesign-No_R.png", class: "logo-image" %>
           </div>
@@ -26,11 +30,15 @@
     </div>
 
     <div class="secondary-images-grid">
-      <% @campaign.images[1..].each do |image| %>
-        <div class="image-wrapper">
-          <!-- Using url_for for secondary images -->
-          <%= image_tag url_for(image), class: "secondary-campaign-image" %>
-        </div>
+      <% if @campaign.images.attached? && @campaign.images[1..].any? %>
+        <% @campaign.images[1..].each do |image| %>
+          <div class="image-wrapper">
+            <!-- Using url_for for secondary images -->
+            <%= image_tag url_for(image), class: "secondary-campaign-image" %>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No additional images available for this campaign.</p>
       <% end %>
     </div>
 
