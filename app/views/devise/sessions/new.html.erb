@@ -1,20 +1,41 @@
-<h2>Log in</h2>
+<div class="form-structor">
+  <!-- Flash Messages -->
+  <% if flash[:alert] %>
+    <div class="alert-message">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <!-- Login Form -->
+  <div class="login">
+    <!-- Add the logo here -->
+    <div class="logo-container">
+      <%= image_tag 'Logo_La_Canadienne_Redesign-No_R.png', alt: 'Logo', class: 'login-logo' %>
+    </div>
+    
+    <h2 class="form-title" id="login"><span></span>Log in</h2>
+    
+    <div class="form-holder">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="field">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "input" %>
+        </div>
+
+        <div class="field">
+          <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password", class: "input" %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Log in", class: "submit-btn" %>
+        </div>
+      <% end %>
+    </div>
+    <%= render "devise/shared/links" %>
   </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
+</div>
 
 
-<%= render "devise/shared/links" %>
+
+<style>
+
+</style>

@@ -16,23 +16,63 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#007bff">
 
+  <!-- Loading Screen Styles -->
+  <style>
+    /* Loading screen styles */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999; /* Ensure it stays on top */
+    }
+
+    .loading-logo {
+      width: 150px;
+      height: auto;
+      display: block;
+    }
+
+    /* Optional Spinner (below the logo) */
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-top: 4px solid #007bff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-top: 20px;
+    }
+
+    /* Spinner animation */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 
 <body>
 
-  <!-- Profile bar with logged-in staff's email -->
-  <div class="profile-bar">
-    <% if staff_signed_in? %>
-      <span>Welcome, <%= current_staff.email %></span>
-      <%= link_to 'Logout', destroy_staff_session_path, method: :delete, class: "logout-link" %>
-    <% else %>
-      <%= link_to 'Login', new_staff_session_path, class: "logout-link" %>
-    <% end %>
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="loading-screen">
+    <%= image_tag 'Logo_La_Canadienne_Redesign-No_R.png', alt: 'Logo', class: 'loading-logo' %>
+    <div class="spinner"></div> <!-- Optional Spinner -->
   </div>
+
+  <!-- Profile bar with logged-in staff's email -->
 
   <!-- Flash messages -->
   <div class="main-content">
-    <%= render 'shared/flash' %>
+    <!-- Render flash messages only if not on specific pages like 'sessions#new' (login page) -->
+    <% unless controller.controller_name == 'sessions' && controller.action_name == 'new' %>
+      <%= render 'shared/flash' %>
+    <% end %>
     <%= yield %>
   </div>
 
@@ -82,7 +122,12 @@
         });
     }
 
-
+    // Simulate delay for testing the loading screen
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.getElementById('loading-screen').style.display = 'none';
+      }, 3000); // 3 second delay for testing purposes
+    });
   </script>
 
 </body>
