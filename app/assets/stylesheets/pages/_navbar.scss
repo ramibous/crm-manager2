@@ -1,33 +1,29 @@
 /* Profile info bar */
-@media (max-width: 768px) {
-  .profile-bar {
-    position: sticky;
-    top: 0;
-  }
-}
-
-
+/* Profile info bar */
 .profile-bar {
   background-color: #abc9ec;
   padding: 10px 20px;
   border-bottom: 1px solid #dee2e6;
-  position: fixed;
+  position: fixed !important; /* Force fixed position */
   top: 0;
+  left: 0;
+  right: 0; /* Ensure it stretches full width */
   width: 100%;
-  z-index: 9999; /* Increased z-index to ensure it's on top */
+  z-index: 10000; /* Ensure it’s above everything else */
   display: flex;
-  justify-content: space-between; /* Align profile and logout link properly */
+  justify-content: space-between;
   align-items: center;
 }
 
-.profile-bar span {
-  font-weight: bold;
-  margin-right: 15px;
+
+/* Ensure the body has enough padding to prevent content from overlapping */
+body {
+  padding-top: 70px; /* Adjust based on the height of the profile bar */
 }
 
-.profile-bar .logout-link {
-  color: #007bff;
-  text-decoration: none;
+/* Adjust main content to avoid overlap with profile bar */
+.main-content {
+  margin-top: 50px;
 }
 
 .profile-bar .logout-link:hover {
