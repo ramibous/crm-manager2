@@ -94,17 +94,18 @@
     }
 
     /* Bottom Navigation Bar Styles */
-    .navbar {
-      background-color: #abc9ec; /* Slight transparency */
-      padding: 5px 0; /* Reduce padding to fit better on smaller screens */
-      position: fixed !important;
-      bottom: 0;
-      width: 100%;
-      box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
-      backdrop-filter: blur(10px); /* Blur effect for transparency */
-      z-index: 1040; /* Ensure navbar stays above other content */
-      padding-bottom: calc(5px + env(safe-area-inset-bottom)); /* Safe area padding for iPhone */
-    }
+.navbar {
+  background-color: #abc9ec;
+  padding: 5px 0;
+  position: fixed !important;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  z-index: 1040;
+  padding-bottom: calc(5px + env(safe-area-inset-bottom));
+}
+
 
     .nav-link {
       color: #000; /* Black color for icons and text */
