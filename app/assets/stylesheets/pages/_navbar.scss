@@ -1,44 +1,35 @@
 /* Profile info bar */
-/* Profile info bar */
 .profile-bar {
   background-color: #abc9ec;
   padding: 10px 20px;
   border-bottom: 1px solid #dee2e6;
-  position: fixed !important; /* Force fixed position */
+  position: fixed;
   top: 0;
   left: 0;
-  right: 0; /* Ensure it stretches full width */
+  right: 0; /* Ensure it stretches the full width */
   width: 100%;
-  z-index: 10000; /* Ensure it’s above everything else */
+  z-index: 10000; /* Ensure it stays above other elements */
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-
-/* Ensure the body has enough padding to prevent content from overlapping */
+/* Ensure there’s enough space for content below the fixed profile bar */
 body {
-  padding-top: 70px; /* Adjust based on the height of the profile bar */
+  padding-top: 80px; /* Increase padding-top to create space for the profile bar */
 }
 
-/* Adjust main content to avoid overlap with profile bar */
-.main-content {
-  margin-top: 50px;
+/* For smaller screens, adjust margins and padding to prevent overlap */
+@media (max-width: 768px) {
+  body {
+    padding-top: 100px; /* Ensure enough space on mobile for the profile bar */
+  }
+
+  .main-content {
+    margin-top: 50px;
+  }
 }
 
-.profile-bar .logout-link:hover {
-  text-decoration: underline;
-}
-
-body {
-  padding-top: 60px; /* Add padding to account for fixed profile bar */
-}
-
-    /* Adjust main content to avoid overlap with profile bar and navbar */
-    .main-content {
-      margin-top: 50px; /* Adjust based on the height of the profile bar */
-      margin-bottom: 120px; /* Add margin to the bottom to avoid overlap with the navbar */
-    }
 
     /* Bottom Navigation Bar Styles */
     .navbar {
