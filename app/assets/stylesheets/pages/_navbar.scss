@@ -49,42 +49,44 @@ body {
 }
 
     /* Bottom Navigation Bar Styles */
-    .navbar {
-      background-color: #abc9ec ;/* Slight transparency */
-      padding: 5px 0; /* Reduce padding to fit better on smaller screens */
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
-      backdrop-filter: blur(10px); /* Blur effect for transparency */
-      z-index: 1040; /* Ensure navbar stays above other content */
-    }
+  /* Bottom Navigation Bar Styles */
+.navbar {
+  background-color: #abc9ec; /* Slight transparency */
+  padding: 5px 0; /* Reduce padding to fit better on smaller screens */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
+  backdrop-filter: blur(10px); /* Blur effect for transparency */
+  z-index: 1040; /* Ensure navbar stays above other content */
+  padding-bottom: calc(5px + env(safe-area-inset-bottom)); /* Safe area padding for iPhone */
+}
 
-    .nav-link {
-      color: #000; /* Black color for icons and text */
-      text-align: center;
-      font-size: 10px; /* Adjust text size to fit better on mobile */
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+.nav-link {
+  color: #000; /* Black color for icons and text */
+  text-align: center;
+  font-size: 10px; /* Adjust text size to fit better on mobile */
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-    .nav-link i {
-      font-size: 22px; /* Adjust icon size slightly larger */
-      display: block;
-      margin-bottom: 3px; /* Increase spacing between icon and text */
-      padding: 6px; /* Adjust padding to reduce extra space */
-      background-color: #000; /* Black background for icon */
-      border-radius: 50%; /* Fully rounded corners */
-      color: #fff; /* White icon color */
-    }
+.nav-link i {
+  font-size: 22px; /* Adjust icon size slightly larger */
+  display: block;
+  margin-bottom: 3px; /* Increase spacing between icon and text */
+  padding: 6px; /* Adjust padding to reduce extra space */
+  background-color: #000; /* Black background for icon */
+  border-radius: 50%; /* Fully rounded corners */
+  color: #fff; /* White icon color */
+}
 
-    .nav-link:hover i {
-      background-color: #007bff; /* Change icon background on hover */
-    }
+.nav-link:hover i {
+  background-color: #007bff; /* Change icon background on hover */
+}
 
-    .nav-link:hover {
-      color: #007bff; /* Hover effect to change text color */
-    }
+.nav-link:hover {
+  color: #007bff; /* Hover effect to change text color */
+}
