@@ -65,9 +65,7 @@
     <div class="spinner"></div> <!-- Optional Spinner -->
   </div>
 
-  <!-- Profile bar with logged-in staff's email -->
-
-  <!-- Flash messages -->
+  <!-- Main Content -->
   <div class="main-content">
     <!-- Render flash messages only if not on specific pages like 'sessions#new' (login page) -->
     <% unless controller.controller_name == 'sessions' && controller.action_name == 'new' %>
@@ -122,9 +120,21 @@
         });
     }
 
-    // Hide the loading screen when the page is fully loaded
-    window.addEventListener('load', function() {
-      document.getElementById('loading-screen').style.display = 'none';
+    // Show loading screen only on the first visit with Turbo support
+    document.addEventListener('turbo:load', function() {
+      var loadingScreen = document.getElementById('loading-screen');
+
+      // Check if the loading screen has been shown before
+      if (localStorage.getItem('loadingScreenShown') === null) {
+        // First visit, show the loading screen
+        setTimeout(function() {
+          loadingScreen.style.display = 'none';
+          localStorage.setItem('loadingScreenShown', 'true'); // Mark that the loading screen has been shown
+        }, 2000); // Optional delay for effect
+      } else {
+        // Subsequent visits, hide the loading screen immediately
+        loadingScreen.style.display = 'none';
+      }
     });
   </script>
 

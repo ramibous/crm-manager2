@@ -4,21 +4,27 @@
   }
   
   .login-logo {
-    width: 150px; /* Adjust the size as needed */
+    width: 150px;
     max-width: 100%;
     height: auto;
   }
   
+  /* Global styles */
   html, body {
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
     margin: 0;
     padding: 0;
     background-color: #E1E8EE;
-    overflow: hidden; /* Prevent scrolling */
+    font-family: "Fira Sans", sans-serif;
+  }
+  
+  /* Apply overflow: hidden only for login page */
+  .login-page {
+    height: 100vh;
+    overflow: hidden; /* Prevent scrolling on the login page */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: "Fira Sans", sans-serif;
   }
   
   .form-structor {
@@ -44,25 +50,24 @@
       background-position: center;
       background-size: cover;
       background-image: url(asset-path('login.png'));
-
     }
   
     .login {
       z-index: 5;
-      background-color: rgba(255, 255, 255, 0.3); /* Slight transparency */
+      background-color: rgba(255, 255, 255, 0.3);
       padding: 30px;
       border-radius: 15px;
-      width: 350px; /* Wider form */
+      width: 350px;
       max-width: 90%;
     }
   
     .form-title {
-      color: #fff; /* Make the title white and stand out */
+      color: #fff;
       font-size: 2.2em;
       text-align: center;
       margin-bottom: 20px;
-      position: relative; /* Ensure it's outside the box */
-      top: -130px; /* Move it above the box */
+      position: relative;
+      top: -130px;
     }
   
     .form-holder {
@@ -70,21 +75,17 @@
       border-radius: 15px;
       overflow: hidden;
       padding: 20px;
+    }
   
-      .input {
-        border: 0;
-        display: block;
-        height: 40px;
-        padding: 10px 15px;
-        width: 100%;
-        font-size: 14px;
-        border-bottom: 1px solid #eee;
-        margin-bottom: 10px;
-  
-        &:last-child {
-          border-bottom: 0;
-        }
-      }
+    .input {
+      border: 0;
+      display: block;
+      height: 40px;
+      padding: 10px 15px;
+      width: 100%;
+      font-size: 14px;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 10px;
     }
   
     .submit-btn {
@@ -99,10 +100,10 @@
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
+    }
   
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.8);
-      }
+    .submit-btn:hover {
+      background-color: rgba(0, 0, 0, 0.8);
     }
   }
   
@@ -121,3 +122,4 @@
     max-width: 400px;
     z-index: 10;
   }
+  
