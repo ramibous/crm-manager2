@@ -1,0 +1,160 @@
+
+  .text-muted {
+    color: #6c757d !important;
+  }
+  
+  .badge {
+    font-size: 0.9rem;
+    padding: 0.5em 0.75em;
+    border-radius: 0.25rem;
+  }
+  
+  .bg-light {
+    background-color: #f8f9fa !important;
+  }
+  
+  .bg-secondary {
+    background-color: #6c757d !important;
+  }
+  
+  .bg-warning {
+    background-color: #ffc107 !important;
+  }
+  
+  .text-dark {
+    color: #343a40 !important;
+  }
+  
+  .text-light {
+    color: #f8f9fa !important;
+  }
+  
+  .d-flex {
+    display: flex !important;
+  }
+  
+  .align-items-center {
+    align-items: center !important;
+  }
+  
+  .justify-content-between {
+    justify-content: space-between !important;
+  }
+  
+  .mb-3, .mb-4 {
+    margin-bottom: 1rem !important;
+  }
+  
+  .me-2 {
+    margin-right: 0.5rem !important;
+  }
+  
+  .rounded-circle {
+    border-radius: 50% !important;
+  }
+  
+  .border {
+    border: 1px solid #dee2e6 !important;
+  }
+  
+  .border-success {
+    border-color: #28a745 !important;
+  }
+  
+  .text-success {
+    color: #28a745 !important;
+  }
+  
+  .appointment-icon,
+  .wishlist-icon {
+    padding: 10px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #4A4A4A;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .appointment-icon:hover,
+  .wishlist-icon:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .wishlist-icon {
+    margin-left: 10px;
+  }
+  
+  .timeline {
+    position: relative;
+    padding: 20px 0;
+    list-style-type: none;
+    margin: 0;
+  }
+  
+  .timeline:before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #c4c4c4;
+  }
+  
+  .timeline-item {
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 40px;
+  }
+  
+  .timeline-icon {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    background: #007bff;
+    border-radius: 50%;
+  }
+  
+  .timeline-content {
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .timeline-date {
+    font-weight: bold;
+  }
+  
+  .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .btn-dark {
+    background-color: #343a40;
+    color: #fff;
+    border: none;
+  }
+  
+  .btn-dark:hover {
+    background-color: #23272b;
+  }
+  
+  .btn-link {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .btn-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  

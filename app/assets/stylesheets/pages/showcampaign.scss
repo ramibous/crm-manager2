@@ -1,0 +1,43 @@
+
+
+.campaign-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.campaign-info {
+  margin-bottom: 20px;
+}
+
+.campaign-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.campaign-image-small {
+  max-width: 100px;
+  height: auto;
+}
+
+.section-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #7e94a7;
+}
+
+
+
+
+
+.client-content {
+  padding: 10px;
+  background-color: #abc9ec;
+  border-radius: 6px;
+}
+
+.client-name {
+  font-weight: bold;
+  font-size: 18px;
+}

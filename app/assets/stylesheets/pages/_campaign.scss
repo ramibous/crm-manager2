@@ -32,19 +32,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Client Content */
-.client-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
 
-.client-name {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #333; /* Darker text */
-}
 
 p {
   margin-bottom: 8px;
@@ -55,9 +43,97 @@ strong {
   color: #333;
 }
 
-.badge-success {
-  background-color: #28a745;
+
+
+
+
+
+
+
+h1 {
+  font-size: 2rem;
+  color: #2C3E50;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 3px;
+}
+
+.campaign-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+
+
+.campaign-card p {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 10px;
+}
+
+.campaign-card .stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  border-top: 1px solid #ecf0f1;
+  padding-top: 10px;
+}
+
+.stats div {
+  text-align: center;
+}
+
+.stats div p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #2c3e50;
+}
+
+.stats div span {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+
+
+/* Button Styling */
+.btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 30px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+
+
+.btn-secondary {
+  background-color: #6c757d;
   color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
+}
+
+.btn-warning {
+  background-color: #f39c12;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-sm {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+}
+
+.actions {
+  margin-top: 10px;
 }

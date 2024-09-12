@@ -1,11 +1,14 @@
-
 @import "bootstrap";
 // Import config variables
 @import 'config/colors';
 @import 'config/fonts';
 
-// Import components
+// Import consolidated styles
+@import 'components/buttons';
+@import 'components/containers';
+@import 'components/badges';
 
+// Import components
 
 // Import pages
 @import 'pages/dashboard';
@@ -13,32 +16,27 @@
 @import 'pages/send_message';
 @import 'pages/navbar';
 @import 'pages/login';
-
-
+@import 'pages/campaign';
+@import 'pages/showclient';
+@import 'pages/showcampaign';
+@import "pages/campaignform";
+@import 'pages/searchclient';
 body {
-  
     background-color: #E5ECF6; // Light blue background
     font-family: 'Arial', sans-serif; // Match the font
     margin: 0;
     padding: 0;
-    
-  }
-  
+}
 
-
-  label {
+label {
     font-weight: bold;
     font-size: 1rem;
-  }
-  
-  input, select, textarea {
+}
+
+input, select, textarea {
     background-color: #ffffff;
     border: 1px solid #ccc;
     border-radius: 4px; /* You might want to add a value here */
     padding: 8px;
     width: 100%;
-  }
-  
-  
-
-
+}

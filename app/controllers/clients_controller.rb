@@ -1,5 +1,4 @@
 class ClientsController < ApplicationController
-  before_action :authenticate_manager!, only: [:destroy]
 
   def index
     if current_staff.manager?
@@ -8,10 +7,28 @@ class ClientsController < ApplicationController
       @clients = current_staff.clients # Staff sees only their clients
     end
 
+    Rails.logger.info "Clients in index: #{@clients.inspect}"
+
     respond_to do |format|
       format.html { render :index }
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace("clients_list", partial: "clients/client_list", locals: { clients: @clients })
+      end
+    end
+  end
+
+  def export
+    if current_staff.manager?
+      @clients = Client.all # Managers can export all clients
+    else
+      @clients = current_staff.clients # Staff exports only their clients
+    end
+
+    Rails.logger.info "Clients being exported: #{@clients.inspect}"
+
+    respond_to do |format|
+      format.xlsx do
+        render xlsx: "export", template: "clients/export"
       end
     end
   end
@@ -30,6 +47,7 @@ class ClientsController < ApplicationController
   def new
     @client = Client.new
     @readonly = false # New client form is editable
+    Rails.logger.info "New client initialized: #{@client.inspect}"
   end
 
   def create

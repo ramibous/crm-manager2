@@ -1,15 +1,21 @@
 wb = xlsx_package.workbook
 wb.add_worksheet(name: "Clients") do |sheet|
-  sheet.add_row ["ID", "First Name", "Last Name", "Email", "Phone", "Segment"]
+  # Add the header row
+  sheet.add_row ["ID", "First Name", "Last Name", "Email", "Phone"]
 
-  @clients.each do |client|
-    sheet.add_row [
-      client.client_id,
-      client.first_name,
-      client.last_name,
-      client.email,
-      client.phone,    # Ensure phone is correctly referenced here
-      client.segment
-    ]
+  # Check if @clients is present and iterate over it
+  if @clients.present? && @clients.any?
+    @clients.each do |client|
+      sheet.add_row [
+        client.client_id,
+        client.first_name,
+        client.last_name,
+        client.email,
+        client.phone
+      ]
+    end
+  else
+    # If no clients, add a row to indicate no data
+    sheet.add_row ["No clients found"]
   end
 end
