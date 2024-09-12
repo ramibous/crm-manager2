@@ -8,7 +8,7 @@
   width: 100%;
   z-index: 10000;
   padding: 10px 20px; /* Adjust padding to make the text sit properly */
-  height: calc(60px + env(safe-area-inset-top)); /* Set a fixed height with safe area consideration */
+  height: calc(40px + env(safe-area-inset-top)); /* Set a fixed height with safe area consideration */
   background-color: #abc9ec;
   padding-top: env(safe-area-inset-top); /* Ensure padding for the notch area */
   display: flex; /* Add flexbox to align content properly */
