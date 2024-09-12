@@ -8,7 +8,7 @@
   width: 100%;
   z-index: 10000;
   padding: 10px 20px; /* Adjust padding to make the text sit properly */
-  height: calc(40px + env(safe-area-inset-top)); /* Set a fixed height with safe area consideration */
+  height: calc(60px + env(safe-area-inset-top)); /* Slightly increased height with safe area consideration */
   background-color: #abc9ec;
   padding-top: env(safe-area-inset-top); /* Ensure padding for the notch area */
   display: flex; /* Add flexbox to align content properly */
@@ -37,8 +37,8 @@ body {
 
 /* Adjust main content to avoid overlap with profile bar and navbar */
 .main-content {
-  margin-top: 60px; /* Ensure space between content and profile bar */
-  margin-bottom: 120px; /* Avoid overlap with the bottom navbar */
+  margin-top: calc(60px + env(safe-area-inset-top)); /* Ensure space between content and profile bar */
+  margin-bottom: calc(80px + env(safe-area-inset-bottom)); /* Avoid overlap with the bottom navbar */
 }
 
 /* Mobile-specific adjustments */
@@ -48,8 +48,7 @@ body {
   }
 }
 
-    /* Bottom Navigation Bar Styles */
-  /* Bottom Navigation Bar Styles */
+/* Bottom Navigation Bar Styles */
 .navbar {
   background-color: #abc9ec; /* Slight transparency */
   padding: 5px 0; /* Reduce padding to fit better on smaller screens */
