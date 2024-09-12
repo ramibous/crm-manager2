@@ -2,8 +2,7 @@
 <html>
 <head>
   <title>CrmApp</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
@@ -17,60 +16,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#007bff">
 
-  <!-- Loading Screen Styles -->
   <style>
-    /* Loading screen styles */
-    .loading-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999; /* Ensure it stays on top */
-    }
-
-    .loading-logo {
-      width: 150px;
-      height: auto;
-      display: block;
-    }
-
-    /* Optional Spinner (below the logo) */
-    .spinner {
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      border-top: 4px solid #007bff;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-      margin-top: 20px;
-    }
-
-    /* Spinner animation */
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
     /* Profile info bar */
     .profile-bar {
+      background-color: #f8f9fa;
+      padding: 10px 20px;
+      border-bottom: 1px solid #dee2e6;
       position: fixed;
       top: 0;
-      left: 0;
-      right: 0;
-      transform: translateZ(0); /* Fix iOS position issues */
       width: 100%;
-      z-index: 10000;
-      padding: 10px 20px; /* Adjust padding to make the text sit properly */
-      height: calc(40px + env(safe-area-inset-top)); /* Set a fixed height with safe area consideration */
-      background-color: #abc9ec;
-      padding-top: env(safe-area-inset-top); /* Ensure padding for the notch area */
-      display: flex; /* Add flexbox to align content properly */
-      align-items: center; /* Vertically center the content */
+      z-index: 1040;
+      display: flex;
+      justify-content: space-between; /* Align profile and logout link properly */
+      align-items: center;
     }
 
     .profile-bar span {
@@ -89,23 +47,21 @@
 
     /* Adjust main content to avoid overlap with profile bar and navbar */
     .main-content {
-      margin-top: 60px; /* Ensure space between content and profile bar */
-      margin-bottom: 120px; /* Avoid overlap with the bottom navbar */
+      margin-top: 50px; /* Adjust based on the height of the profile bar */
+      margin-bottom: 120px; /* Add margin to the bottom to avoid overlap with the navbar */
     }
 
     /* Bottom Navigation Bar Styles */
-.navbar {
-  background-color: #abc9ec;
-  padding: 5px 0;
-  position: fixed !important;
-  bottom: 0;
-  width: 100%;
-  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  z-index: 1040;
-  padding-bottom: calc(5px + env(safe-area-inset-bottom));
-}
-
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+      padding: 5px 0; /* Reduce padding to fit better on smaller screens */
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
+      backdrop-filter: blur(10px); /* Blur effect for transparency */
+      z-index: 1040; /* Ensure navbar stays above other content */
+    }
 
     .nav-link {
       color: #000; /* Black color for icons and text */
@@ -135,37 +91,24 @@
     .nav-link:hover {
       color: #007bff; /* Hover effect to change text color */
     }
-
-    /* Adjust body padding for iOS standalone mode */
-    body {
-      padding-top: calc(60px + env(safe-area-inset-top)); /* Adjust padding to include the safe area inset */
-      padding-bottom: calc(80px + env(safe-area-inset-bottom)); /* Add padding for safe area on iPhone */
-    }
-
-    /* Mobile-specific adjustments */
-    @media (max-width: 768px) {
-      body {
-        padding-top: calc(80px + env(safe-area-inset-top)); /* Further increase padding for smaller screens */
-        padding-bottom: calc(80px + env(safe-area-inset-bottom)); /* Add padding for safe area on iPhone */
-      }
-    }
   </style>
 </head>
 
 <body>
 
-  <!-- Loading Screen -->
-  <div id="loading-screen" class="loading-screen">
-    <%= image_tag 'Logo_La_Canadienne_Redesign-No_R.png', alt: 'Logo', class: 'loading-logo' %>
-    <div class="spinner"></div> <!-- Optional Spinner -->
+  <!-- Profile bar with logged-in staff's email -->
+  <div class="profile-bar">
+    <% if staff_signed_in? %>
+      <span>Welcome, <%= current_staff.email %></span>
+      <%= link_to 'Logout', destroy_staff_session_path, method: :delete, class: "logout-link" %>
+    <% else %>
+      <%= link_to 'Login', new_staff_session_path, class: "logout-link" %>
+    <% end %>
   </div>
 
-  <!-- Main Content -->
+  <!-- Flash messages -->
   <div class="main-content">
-    <!-- Render flash messages only if not on specific pages like 'sessions#new' (login page) -->
-    <% unless controller.controller_name == 'sessions' && controller.action_name == 'new' %>
-      <%= render 'shared/flash' %>
-    <% end %>
+    <%= render 'shared/flash' %>
     <%= yield %>
   </div>
 
@@ -215,26 +158,6 @@
         });
     }
 
-    // Show loading screen only on the first visit with Turbo support
-    document.addEventListener('turbo:load', function() {
-      var loadingScreen = document.getElementById('loading-screen');
-
-      // Check if the loading screen has been shown before
-      if (localStorage.getItem('loadingScreenShown') === null) {
-        // First visit, show the loading screen
-        setTimeout(function() {
-          loadingScreen.style.display = 'none';
-          localStorage.setItem('loadingScreenShown', 'true'); 
-        }, 3000); // 
-      } else {
-        loadingScreen.style.display = 'none';
-      }
-    });
-
-    // Standalone mode for iOS
-    if (window.navigator.standalone) {
-      document.body.style.paddingTop = '80px'; // Increase padding to account for the fixed bar in standalone mode
-    }
 
   </script>
 
