@@ -122,11 +122,9 @@
         });
     }
 
-    // Simulate delay for testing the loading screen
+    // Hide the loading screen when the page is fully loaded
     window.addEventListener('load', function() {
-      setTimeout(function() {
-        document.getElementById('loading-screen').style.display = 'none';
-      }, 3000); // 3 second delay for testing purposes
+      document.getElementById('loading-screen').style.display = 'none';
     });
   </script>
 
