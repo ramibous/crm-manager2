@@ -4,11 +4,15 @@
   top: 0;
   left: 0;
   right: 0;
-  transform: translateZ(0); /* Ensure iOS treats the position fixed properly */
+  transform: translateZ(0); /* Fix iOS position issues */
   width: 100%;
   z-index: 10000;
-  padding: 10px 20px;
+  padding: 10px 20px; /* Adjust padding to make the text sit properly */
+  height: calc(60px + env(safe-area-inset-top)); /* Set a fixed height with safe area consideration */
   background-color: #abc9ec;
+  padding-top: env(safe-area-inset-top); /* Ensure padding for the notch area */
+  display: flex; /* Add flexbox to align content properly */
+  align-items: center; /* Vertically center the content */
 }
 
 /* Profile bar content styling */
@@ -26,21 +30,21 @@
   text-decoration: underline;
 }
 
-/* Remove conflicting padding-top */
+/* Body padding to account for fixed bar */
 body {
-  padding-top: 80px; /* Increase to 80px to ensure enough space */
+  padding-top: calc(60px + env(safe-area-inset-top)); /* Adjust padding to include the safe area inset */
 }
 
 /* Adjust main content to avoid overlap with profile bar and navbar */
 .main-content {
-  margin-top: 50px; /* Ensure space between content and profile bar */
+  margin-top: 60px; /* Ensure space between content and profile bar */
   margin-bottom: 120px; /* Avoid overlap with the bottom navbar */
 }
 
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
   body {
-    padding-top: 100px; /* Further increase padding for smaller screens if needed */
+    padding-top: calc(80px + env(safe-area-inset-top)); /* Further increase padding for smaller screens */
   }
 }
 
