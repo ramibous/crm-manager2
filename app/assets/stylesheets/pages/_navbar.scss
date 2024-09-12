@@ -1,35 +1,48 @@
 /* Profile info bar */
 .profile-bar {
-  background-color: #abc9ec;
-  padding: 10px 20px;
-  border-bottom: 1px solid #dee2e6;
   position: fixed;
   top: 0;
   left: 0;
-  right: 0; /* Ensure it stretches the full width */
+  right: 0;
+  transform: translateZ(0); /* Force iOS to apply fixed position properly */
   width: 100%;
-  z-index: 10000; /* Ensure it stays above other elements */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  z-index: 10000;
+  padding: 10px 20px;
+  background-color: #abc9ec;
 }
 
-/* Ensure there’s enough space for content below the fixed profile bar */
+/* Profile bar content styling */
+.profile-bar span {
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.profile-bar .logout-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.profile-bar .logout-link:hover {
+  text-decoration: underline;
+}
+
+/* Remove conflicting padding-top */
 body {
-  padding-top: 80px; /* Increase padding-top to create space for the profile bar */
+  padding-top: 60px; /* Padding for the fixed profile bar */
 }
 
-/* For smaller screens, adjust margins and padding to prevent overlap */
+/* Adjust main content to avoid overlap with profile bar and navbar */
+.main-content {
+  margin-top: 50px; /* Ensure space between content and profile bar */
+  margin-bottom: 120px; /* Avoid overlap with the bottom navbar */
+}
+
+/* Mobile-specific adjustments */
 @media (max-width: 768px) {
   body {
-    padding-top: 100px; /* Ensure enough space on mobile for the profile bar */
-  }
-
-  .main-content {
-    margin-top: 50px;
+    padding-top: 80px; /* Increase padding for smaller screens if necessary */
   }
 }
-
 
     /* Bottom Navigation Bar Styles */
     .navbar {
