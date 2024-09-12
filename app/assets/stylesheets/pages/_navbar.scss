@@ -1,4 +1,12 @@
 /* Profile info bar */
+@media (max-width: 768px) {
+  .profile-bar {
+    position: sticky;
+    top: 0;
+  }
+}
+
+
 .profile-bar {
   background-color: #abc9ec;
   padding: 10px 20px;
