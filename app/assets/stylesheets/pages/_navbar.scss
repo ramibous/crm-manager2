@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   right: 0;
-  transform: translateZ(0); /* Force iOS to apply fixed position properly */
+  transform: translateZ(0); /* Ensure iOS treats the position fixed properly */
   width: 100%;
   z-index: 10000;
   padding: 10px 20px;
@@ -28,7 +28,7 @@
 
 /* Remove conflicting padding-top */
 body {
-  padding-top: 60px; /* Padding for the fixed profile bar */
+  padding-top: 80px; /* Increase to 80px to ensure enough space */
 }
 
 /* Adjust main content to avoid overlap with profile bar and navbar */
@@ -40,7 +40,7 @@ body {
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
   body {
-    padding-top: 80px; /* Increase padding for smaller screens if necessary */
+    padding-top: 100px; /* Further increase padding for smaller screens if needed */
   }
 }
 

@@ -2,7 +2,8 @@
 <html>
 <head>
   <title>CrmApp</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
 
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
@@ -130,13 +131,19 @@
         // First visit, show the loading screen
         setTimeout(function() {
           loadingScreen.style.display = 'none';
-          localStorage.setItem('loadingScreenShown', 'true'); // Mark that the loading screen has been shown
-        }, 2000); // Optional delay for effect
+          localStorage.setItem('loadingScreenShown', 'true'); 
+        }, 3000); // 
       } else {
-        // Subsequent visits, hide the loading screen immediately
+      
         loadingScreen.style.display = 'none';
       }
     });
+
+
+    if (window.navigator.standalone) {
+  document.body.style.paddingTop = '80px';
+}
+
   </script>
 
 </body>
