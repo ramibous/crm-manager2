@@ -83,6 +83,26 @@
         });
     }
 
+    // Show loading screen only on the first visit with Turbo support
+    document.addEventListener('turbo:load', function() {
+      var loadingScreen = document.getElementById('loading-screen');
+
+      // Check if the loading screen has been shown before
+      if (localStorage.getItem('loadingScreenShown') === null) {
+        // First visit, show the loading screen
+        setTimeout(function() {
+          loadingScreen.style.display = 'none';
+          localStorage.setItem('loadingScreenShown', 'true'); 
+        }, 3000); // 
+      } else {
+        loadingScreen.style.display = 'none';
+      }
+    });
+
+    // Standalone mode for iOS
+    if (window.navigator.standalone) {
+      document.body.style.paddingTop = '80px'; // Increase padding to account for the fixed bar in standalone mode
+    }
 
   </script>
 
