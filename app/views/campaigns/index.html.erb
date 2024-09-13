@@ -3,7 +3,7 @@
 
 <!-- Create Campaign Button for Manager -->
 <% if current_staff.manager? %>
-  <%= link_to 'Create New Campaign', new_campaign_path, class: 'btn btn-primary' %>
+  <%= link_to 'Create New Campaign', new_campaign_path, class: 'btn-custom' %>
 <% else %>
   <p>Your role is: <%= current_staff.role %></p>
 <% end %>

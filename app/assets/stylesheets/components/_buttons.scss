@@ -1,20 +1,29 @@
 .btn-custom {
-    background-color: #4a4a4a;
+    background-color: #4a4a4a; /* Dark gray background */
     color: white;
     text-decoration: none;
     border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 6px;
+    padding: 8px 16px; /* Reduced padding to make it less bulky */
+    font-size: 0.875rem; /* Slightly smaller font size */
+    font-weight: 500; /* Lighter font weight for a cleaner look */
+    border-radius: 30px; /* Make it more pill-shaped */
     cursor: pointer;
     text-transform: uppercase;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     max-width: 160px;
     width: 100%;
     display: block;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
 }
 
 .btn-custom:hover {
-    background-color: #333;
+    background-color: #333; /* Slightly darker background on hover */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Elevate shadow on hover */
+    transform: translateY(-2px); /* Subtle hover lift effect */
+}
+
+.btn-custom:active {
+    background-color: #1a1a1a; /* Darker background when pressed */
+    transform: translateY(0); /* Remove lift when button is pressed */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Return shadow to normal */
 }

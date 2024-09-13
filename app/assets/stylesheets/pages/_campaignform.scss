@@ -40,23 +40,7 @@
   }
   
   /* Button Styling */
-  .btn-primary {
-    background-color: #7e94a7;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 50px;
-    font-size: 18px;
-    text-transform: uppercase;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-    display: block;
-    width: 100%;
-  }
-  
-  .btn-primary:hover {
-    background-color: #abc9ec;
-  }
+
   
   /* Error Messages Styling */
   #error_explanation {

@@ -94,7 +94,7 @@
 
       <!-- More Info Button -->
       <div class="col-md-12 mb-3 text-center">
-        <button type="button" class="custom-info-button" id="more-info-toggle">More Info</button>
+        <button type="button" class="btn-custom" id="more-info-toggle">More Info</button>
       </div>
 
       <!-- More Info Section (Initially Hidden) -->
@@ -158,12 +158,12 @@
       <!-- Back, Save, and Search Buttons -->
 <div class="d-flex justify-content-center mt-4">
   <div class="button-group d-flex justify-content-around w-100">
-    <%= link_to 'BACK', dashboard_path, class: 'custom-back-button' %>
+    
     <% unless @readonly %>
       <!-- The SAVE button is initially disabled -->
-      <%= form.submit 'SAVE', class: 'custom-save-button', disabled: true, id: 'save-button' %>
+      <%= form.submit 'SAVE', class: 'btn-custom', disabled: true, id: 'save-button' %>
     <% end %>
-    <%= link_to 'SEARCH CLIENT', search_clients_path, class: 'custom-search-button' %>
+   
   </div>
 </div>
 
