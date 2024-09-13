@@ -75,13 +75,15 @@
 </div>
 
 <script>
-    // app/javascript/packs/clients_edit.js
-// app/javascript/packs/clients_edit.js
-
 document.addEventListener("DOMContentLoaded", function() {
   const editSaveButton = document.getElementById('edit-save-button');
   const formControls = document.querySelectorAll('.form-control');
   const form = document.querySelector('form');
+
+  if (!editSaveButton || !formControls.length || !form) {
+    console.error("Required elements not found on the page.");
+    return;
+  }
 
   editSaveButton.addEventListener('click', function() {
     if (editSaveButton.textContent === 'EDIT') {
@@ -89,10 +91,8 @@ document.addEventListener("DOMContentLoaded", function() {
       formControls.forEach(function(control) {
         control.removeAttribute('readonly');
         control.removeAttribute('disabled');
-        control.classList.remove('text-muted');  // Remove faded text color
+        control.classList.remove('text-muted');
       });
-
-      // Change button text to 'SAVE'
       editSaveButton.textContent = 'SAVE';
     } else {
       // Submit the form via AJAX
@@ -115,12 +115,10 @@ document.addEventListener("DOMContentLoaded", function() {
       })
       .then(data => {
         alert('Saved');
-        // Re-disable the form fields
         formControls.forEach(function(control) {
           control.setAttribute('readonly', true);
           control.setAttribute('disabled', true);
         });
-        // Change button text back to 'EDIT'
         editSaveButton.textContent = 'EDIT';
       })
       .catch(error => {

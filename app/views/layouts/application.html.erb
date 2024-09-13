@@ -14,9 +14,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
- 
-
-
 </head>
 
 <body>
@@ -38,34 +35,33 @@
   </div>
 
   <nav class="navbar">
-  <div class="container-fluid d-flex justify-content-around">
-    <%= link_to dashboard_path, class: "nav-link" do %>
-      <i class="fas fa-home"></i>
-      Home
-    <% end %>
+    <div class="container-fluid d-flex justify-content-around">
+      <%= link_to dashboard_path, class: "nav-link" do %>
+        <i class="fas fa-home"></i>
+        Home
+      <% end %>
 
-    <%= link_to search_clients_path, class: "nav-link" do %>
-      <i class="fas fa-search"></i>
-      Search
-    <% end %>
+      <%= link_to search_clients_path, class: "nav-link" do %>
+        <i class="fas fa-search"></i>
+        Search
+      <% end %>
 
-    <%= link_to new_client_path, class: "nav-link" do %>
-      <i class="fas fa-plus-circle"></i>
-      New Client
-    <% end %>
+      <%= link_to new_client_path, class: "nav-link" do %>
+        <i class="fas fa-plus-circle"></i>
+        New Client
+      <% end %>
 
-    <%= link_to appointments_path, class: "nav-link" do %>
-      <i class="fas fa-calendar"></i>
-      Appointments
-    <% end %>
+      <%= link_to appointments_path, class: "nav-link" do %>
+        <i class="fas fa-calendar"></i>
+        Appointments
+      <% end %>
 
-    <%= link_to campaigns_path, class: "nav-link" do %>
-      <i class="fas fa-bullhorn"></i>
-      Campaigns
-    <% end %>
-  </div>
-</nav>
-
+      <%= link_to campaigns_path, class: "nav-link" do %>
+        <i class="fas fa-bullhorn"></i>
+        Campaigns
+      <% end %>
+    </div>
+  </nav>
 
   <!-- Signature Pad Script -->
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js" defer></script>
@@ -86,16 +82,18 @@
     // Show loading screen only on the first visit with Turbo support
     document.addEventListener('turbo:load', function() {
       var loadingScreen = document.getElementById('loading-screen');
-
-      // Check if the loading screen has been shown before
-      if (localStorage.getItem('loadingScreenShown') === null) {
-        // First visit, show the loading screen
-        setTimeout(function() {
+      
+      if (loadingScreen) {
+        // Check if the loading screen has been shown before
+        if (localStorage.getItem('loadingScreenShown') === null) {
+          // First visit, show the loading screen
+          setTimeout(function() {
+            loadingScreen.style.display = 'none';
+            localStorage.setItem('loadingScreenShown', 'true'); 
+          }, 3000); // Hide after 3 seconds
+        } else {
           loadingScreen.style.display = 'none';
-          localStorage.setItem('loadingScreenShown', 'true'); 
-        }, 3000); // 
-      } else {
-        loadingScreen.style.display = 'none';
+        }
       }
     });
 
@@ -104,7 +102,10 @@
       document.body.style.paddingTop = '80px'; // Increase padding to account for the fixed bar in standalone mode
     }
 
-  </script>
+    // Check for an element on Turbo load and hide it
 
+
+  </script>
+  
 </body>
 </html>

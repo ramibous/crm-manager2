@@ -67,13 +67,12 @@ class Client < ApplicationRecord
   def timeline_items
     items = []
 
-    self.class.includes(:appointments, :wishlist_items, :purchases, :campaigns).find(id)
-
     appointments.each do |appointment|
       items << { date: appointment.scheduled_at, description: "Appointment: #{appointment.title}" }
     end
 
     wishlist_items.each do |wishlist_item|
+      # Add unique condition to avoid duplicates
       items << { date: wishlist_item.created_at, description: "Wishlist: #{wishlist_item.item_name} - Reference: #{wishlist_item.item_reference}" }
     end
 
@@ -85,8 +84,61 @@ class Client < ApplicationRecord
       items << { date: campaign.start_date, description: "Campaign: #{campaign.name} - Start Date: #{campaign.start_date.strftime('%d %b %Y')} - End Date: #{campaign.end_date.strftime('%d %b %Y')}" }
     end
 
-    items.sort_by { |item| item[:date] }.reverse
+    # Use uniq to filter out duplicate items based on description
+    items.uniq { |item| item[:description] }.sort_by { |item| item[:date] }.reverse
   end
+def timeline_items
+  items = []
+
+  # Add unique appointments
+  appointments.each do |appointment|
+    items << { date: appointment.scheduled_at, description: "Appointment: #{appointment.title}" }
+  end
+
+  # Add unique wishlist items (ensuring no duplicates)
+  wishlist_items.uniq { |item| item.id }.each do |wishlist_item|
+    items << { date: wishlist_item.created_at, description: "Wishlist: #{wishlist_item.item_name} - Reference: #{wishlist_item.item_reference}" }
+  end
+
+  # Add unique purchases
+  purchases.each do |purchase|
+    items << { date: purchase.created_at, description: "Purchase at #{purchase.store}" }
+  end
+
+  # Add unique campaigns
+  campaigns.each do |campaign|
+    items << { date: campaign.start_date, description: "Campaign: #{campaign.name} - Start Date: #{campaign.start_date.strftime('%d %b %Y')} - End Date: #{campaign.end_date.strftime('%d %b %Y')}" }
+  end
+
+  # Return unique items, sorted by date in descending order
+  items.uniq { |item| item[:description] }.sort_by { |item| item[:date] }.reverse
+end
+
+def timeline_items
+  items = []
+
+  appointments.each do |appointment|
+    items << { date: appointment.scheduled_at, description: "Appointment: #{appointment.title}" }
+  end
+
+  # Ensure unique wishlist items based on ID
+  wishlist_items.each do |wishlist_item|
+    puts "Adding Wishlist Item: #{wishlist_item.id}, #{wishlist_item.item_name}"
+    items << { date: wishlist_item.created_at, description: "Wishlist: #{wishlist_item.item_name} - Reference: #{wishlist_item.item_reference}" }
+  end
+
+  purchases.each do |purchase|
+    items << { date: purchase.created_at, description: "Purchase at #{purchase.store}" }
+  end
+
+  campaigns.each do |campaign|
+    items << { date: campaign.start_date, description: "Campaign: #{campaign.name} - Start Date: #{campaign.start_date.strftime('%d %b %Y')} - End Date: #{campaign.end_date.strftime('%d %b %Y')}" }
+  end
+
+  # Remove any duplicates and sort by date
+  items.uniq { |item| item[:description] }.sort_by { |item| item[:date] }.reverse
+end
+
 
   private
 

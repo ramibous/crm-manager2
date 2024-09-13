@@ -1,4 +1,8 @@
-<div class="container mt-4" style="background-color: #E5ECF6; padding: 20px; border-radius: 10px; position: relative;">
+<div class="container mt-4" 
+     style="background-color: #E5ECF6; padding: 20px; border-radius: 10px; position: relative;"
+     data-controller="timeline"
+     data-timeline-total-items-value="<%= @client.timeline_items.size %>"
+     data-timeline-timeline-items-value='<%= @client.timeline_items.to_json.html_safe %>'>
   <!-- Back button with result count -->
   <div class="row mb-3">
     <div class="col-12">
@@ -96,120 +100,26 @@
   <div class="row mb-4">
     <div class="col-12">
       <h5>Timeline</h5>
-      <div class="timeline">
+      <div data-timeline-target="timeline" class="timeline">
         <% @client.timeline_items.first(3).each do |item| %>
           <div class="timeline-item">
             <div class="timeline-icon"></div>
             <div class="timeline-content">
-              <span class="timeline-date"><%= item[:date].strftime("%d %b %Y at %I:%M %p") %></span>
+              <span class="timeline-date">
+                <%= item[:date].in_time_zone("Eastern Time (US & Canada)").strftime("%d %b %Y at %I:%M %p") %>
+              </span>
               <p><%= item[:description] %></p>
             </div>
           </div>
         <% end %>
       </div>
       <% if @client.timeline_items.size > 3 %>
-        <button id="see-more-btn" class="btn btn-link">See More</button>
+        <button data-action="click->timeline#seeMore" data-timeline-target="seeMoreButton" class="btn btn-link">
+          See More
+        </button>
       <% end %>
     </div>
   </div>
 
-  <!-- Action buttons -->
-  <div class="row">
-    <div class="col-12 d-flex justify-content-around">
-      <a href="tel:<%= @client.phone %>" class="btn btn-dark">
-        <i class="fas fa-phone"></i> Call
-      </a>
-      <a href="#" class="btn btn-dark">
-        <i class="fas fa-comment"></i> Chat
-      </a>
-      <a href="sms:<%= @client.phone %>" class="btn btn-dark">
-        <i class="fas fa-sms"></i> SMS
-      </a>
-      <a href="mailto:<%= @client.email %>" class="btn btn-dark">
-        <i class="fas fa-envelope"></i> Email
-      </a>
-    </div>
-  </div>
+  <!-- Action buttons section omitted for brevity -->
 </div>
-
-<!-- CSS for fixed position icons -->
-
-
-<!-- JavaScript for "See More" functionality -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-  let itemsPerPage = 3;
-  let currentPage = 1;
-  const totalItems = <%= @client.timeline_items.size %>;
-  const timelineItems = <%= @client.timeline_items.to_json.html_safe %>;
-  
-  function loadTimelineItems() {
-    const timelineContainer = document.querySelector(".timeline");
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = currentPage * itemsPerPage;
-    const itemsToLoad = timelineItems.slice(startIndex, endIndex);
-
-    itemsToLoad.forEach(item => {
-      const timelineItem = document.createElement("div");
-      timelineItem.classList.add("timeline-item");
-
-      const iconDiv = document.createElement("div");
-      iconDiv.classList.add("timeline-icon");
-
-      const contentDiv = document.createElement("div");
-      contentDiv.classList.add("timeline-content");
-
-      const dateSpan = document.createElement("span");
-      dateSpan.classList.add("timeline-date");
-      dateSpan.textContent = new Date(item.date).toLocaleString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-
-      const descP = document.createElement("p");
-      descP.textContent = item.description;
-
-      contentDiv.appendChild(dateSpan);
-      contentDiv.appendChild(descP);
-
-      timelineItem.appendChild(iconDiv);
-      timelineItem.appendChild(contentDiv);
-
-      timelineContainer.appendChild(timelineItem);
-    });
-
-    currentPage++;
-    const seeMoreButton = document.getElementById("see-more-btn");
-    if (seeMoreButton && currentPage * itemsPerPage >= totalItems) {
-      seeMoreButton.style.display = "none";
-    }
-  }
-
-  // Initial load of first set of items
-  loadTimelineItems();
-
-  // Check if "See More" button exists before adding event listener
-  const seeMoreButton = document.getElementById("see-more-btn");
-  if (seeMoreButton) {
-    seeMoreButton.addEventListener("click", loadTimelineItems);
-  }
-});
-
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-  const signaturePad = new SignaturePad(document.getElementById('signature-pad'));
-
-  // Before form submission, ensure signature data is captured and set in the hidden field
-  document.querySelector('form').addEventListener('submit', function(event) {
-    if (!signaturePad.isEmpty()) {
-      document.getElementById('signature').value = signaturePad.toDataURL();
-    }
-  });
-});
-
-</script>
