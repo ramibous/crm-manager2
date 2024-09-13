@@ -11,18 +11,19 @@ export default class extends Controller {
       const timelineItemsRaw = this.data.get("timelineItemsValue");
 
       if (timelineItemsRaw) {
-        this.timelineItems = JSON.parse(timelineItemsRaw);  // Parse timeline items data
+        this.timelineItems = JSON.parse(timelineItemsRaw);
         this.totalItems = parseInt(this.data.get("totalItemsValue"), 10);
+        console.log("Timeline items loaded:", this.timelineItems);
       } else {
         console.error("No timeline items found");
         this.timelineItems = [];
         this.totalItems = 0;
       }
 
-      this.loadTimelineItems();  // Load first batch of items
+      this.loadTimelineItems();
 
       if (this.hasSeeMoreButtonTarget) {
-        this.checkSeeMoreButton();  // Check button status
+        this.checkSeeMoreButton();
       } else {
         console.error("See More button target not found");
       }
@@ -38,6 +39,7 @@ export default class extends Controller {
       return;
     }
 
+    console.log("Loading timeline items...");
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = this.currentPage * this.itemsPerPage;
     const itemsToLoad = this.timelineItems.slice(startIndex, endIndex);
@@ -72,30 +74,33 @@ export default class extends Controller {
         timelineItem.appendChild(iconDiv);
         timelineItem.appendChild(contentDiv);
 
-        this.timelineTarget.appendChild(timelineItem);  // Add the item to the timeline
+        this.timelineTarget.appendChild(timelineItem);
       }
     });
 
-    this.currentPage++;  // Increment the page counter
-
-    this.checkSeeMoreButton();  // Check if we should hide the "See More" button
+    this.currentPage++;
+    this.checkSeeMoreButton();
   }
 
   seeMore() {
-    this.loadTimelineItems();  // Load more items on click
+    this.loadTimelineItems();
   }
 
   checkSeeMoreButton() {
-    if (this.hasSeeMoreButtonTarget && this.seeMoreButtonTarget) {
-      // Hide the button if there are no more items
-      if (this.currentPage * this.itemsPerPage >= this.totalItems) {
-        console.log("Hiding See More button");
-        this.seeMoreButtonTarget.style.display = "none";  // Hide button
+    if (!this.timelineItems || this.timelineItems.length === 0) {
+      console.log("No timeline items to load.");
+      if (this.hasSeeMoreButtonTarget) {
+        this.seeMoreButtonTarget.style.display = "none";
       } else {
-        console.log("See More button should be visible");
+        console.error("See More button target not found.");
       }
     } else {
-      console.error("See More button target not found in checkSeeMoreButton");
+      const shouldHideButton = this.currentPage * this.itemsPerPage >= this.totalItems;
+      if (this.hasSeeMoreButtonTarget) {
+        this.seeMoreButtonTarget.style.display = shouldHideButton ? "none" : "block";
+      } else {
+        console.error("See More button target not found.");
+      }
     }
   }
 }
