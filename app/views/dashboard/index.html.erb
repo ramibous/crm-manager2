@@ -29,7 +29,7 @@
     </div>
     
     <!-- Change color for the Filter button -->
-    <%= form.submit "Filter", style: "background-color: #4a4a4a; color: white; border: none; padding: 8px 5px;", class: "btn mb-2" %>
+    <%= form.submit "Filter", style: "background-color: #4a4a4a; color: white; border: none; padding: 8px 15px;", class: "btn mb-2" %>
     
     <!-- Change color for the Export buttons -->
     <%= link_to "Export Client list to Excel", export_clients_path(format: :xlsx, segment: params[:segment], period: params[:period], spend: params[:spend]), style: "background-color: #4a4a4a; color: white; border: none; padding: 8px 15px;", class: 'btn mb-2 ml-2 no-print' %>
@@ -41,7 +41,7 @@
 </div>
 
 <!-- Change color for the Create New Client button -->
-
+<%= link_to 'Create New Client', new_client_path, style: "background-color: #4a4a4a; color: white; border: none; padding: 8px 15px;", class: 'btn btn-lg px-4 mb-3' %>
 
 
   <% if @clients.present? %>
