@@ -109,56 +109,60 @@
       bindLoadMoreButton();
     });
 
-    function bindLoadMoreButton() {
-      const loadMoreButton = document.getElementById('load-more');
-      const timelineContainer = document.getElementById('timeline-items');
+function bindLoadMoreButton() {
+  const loadMoreButton = document.getElementById('load-more');
+  const timelineContainer = document.getElementById('timeline-items');
 
-      if (loadMoreButton && timelineContainer) {
-        loadMoreButton.addEventListener('click', async function(event) {
-          event.preventDefault();
+  if (loadMoreButton && timelineContainer) {
+    loadMoreButton.addEventListener('click', async function(event) {
+      event.preventDefault();
 
-          const nextUrl = timelineContainer.getAttribute('data-timeline-next-url');
+      // Disable the button immediately to prevent multiple clicks
+      loadMoreButton.disabled = true;
 
-          if (nextUrl) {
-            try {
-              const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-              const response = await fetch(nextUrl, {
-                method: 'GET',
-                headers: {
-                  'Accept': 'text/javascript',
-                  'X-CSRF-Token': token,
-                }
-              });
+      const nextUrl = timelineContainer.getAttribute('data-timeline-next-url');
 
-              if (response.ok) {
-                const script = await response.text();
-                eval(script); // Evaluate and execute the response script
-
-                // Check if there are more items to load
-                const newNextUrl = timelineContainer.getAttribute('data-timeline-next-url');
-                if (!newNextUrl) {
-                  // Disable the button and change the text if no more items
-                  loadMoreButton.disabled = true;
-                  loadMoreButton.textContent = 'No More Items';
-                } else {
-                  // Rebind the button if there are more items
-                  bindLoadMoreButton();
-                }
-
-                // Ensure button is always at the end
-                timelineContainer.appendChild(loadMoreButton);
-              } else {
-                console.error("Failed to load more items:", response.statusText);
-              }
-            } catch (error) {
-              console.error("Error during fetch:", error);
+      if (nextUrl) {
+        try {
+          const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+          const response = await fetch(nextUrl, {
+            method: 'GET',
+            headers: {
+              'Accept': 'text/javascript',
+              'X-CSRF-Token': token,
             }
+          });
+
+          if (response.ok) {
+            const script = await response.text();
+            eval(script); // Evaluate and execute the response script
+
+            // Check if there are more items to load
+            const newNextUrl = timelineContainer.getAttribute('data-timeline-next-url');
+            if (!newNextUrl) {
+              loadMoreButton.disabled = true;
+              loadMoreButton.textContent = 'No More Items';
+            } else {
+              loadMoreButton.disabled = false; // Re-enable if more items are available
+            }
+
+            // Ensure button is always at the end
+            timelineContainer.appendChild(loadMoreButton);
           } else {
-            console.log("No next URL found.");
+            console.error("Failed to load more items:", response.statusText);
+            loadMoreButton.disabled = false; // Re-enable on failure
           }
-        });
+        } catch (error) {
+          console.error("Error during fetch:", error);
+          loadMoreButton.disabled = false; // Re-enable on error
+        }
+      } else {
+        console.log("No next URL found.");
       }
-    }
+    });
+  }
+}
+
   </script>
   
 </body>
