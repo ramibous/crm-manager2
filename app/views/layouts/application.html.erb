@@ -81,70 +81,64 @@
     }
 
     // Show loading screen only on the first visit with Turbo support
-   function bindLoadMoreButton() {
-  const loadMoreButton = document.getElementById('load-more');
-  const timelineContainer = document.getElementById('timeline-items');
+    function bindLoadMoreButton() {
+      const loadMoreButton = document.getElementById('load-more');
+      const timelineContainer = document.getElementById('timeline-items');
 
-  if (loadMoreButton && timelineContainer) {
-    loadMoreButton.addEventListener('click', async function(event) {
-      event.preventDefault();
+      if (loadMoreButton && timelineContainer) {
+        loadMoreButton.addEventListener('click', async function(event) {
+          event.preventDefault();
 
-      // Disable the button to prevent multiple clicks
-      loadMoreButton.disabled = true;
+          // Disable the button to prevent multiple clicks
+          loadMoreButton.disabled = true;
 
-      const nextUrl = timelineContainer.getAttribute('data-timeline-next-url');
+          const nextUrl = timelineContainer.getAttribute('data-timeline-next-url');
 
-      if (nextUrl) {
-        try {
-          const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-          const response = await fetch(nextUrl, {
-            method: 'GET',
-            headers: {
-              'Accept': 'text/javascript',
-              'X-CSRF-Token': token,
-            }
-          });
+          if (nextUrl) {
+            try {
+              const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+              const response = await fetch(nextUrl, {
+                method: 'GET',
+                headers: {
+                  'Accept': 'text/javascript',
+                  'X-CSRF-Token': token,
+                }
+              });
 
-          if (response.ok) {
-            const script = await response.text();
-            eval(script); // Evaluate and execute the response script
+              if (response.ok) {
+                const script = await response.text();
+                eval(script); // Evaluate and execute the response script
 
-            // Check if there are more items to load
-            const newNextUrl = timelineContainer.getAttribute('data-timeline-next-url');
-            if (!newNextUrl) {
-              // If no more items, disable the button
-              loadMoreButton.disabled = true;
-              loadMoreButton.textContent = 'No More Items';
-            } else {
-              // Re-enable the button if more items are available
+                // Check if there are more items to load
+                const newNextUrl = timelineContainer.getAttribute('data-timeline-next-url');
+                if (!newNextUrl) {
+                  // Disable or hide the button if no more items
+                  loadMoreButton.disabled = true;
+                  loadMoreButton.textContent = 'No More Items';
+                } else {
+                  loadMoreButton.disabled = false;
+                }
+
+                // Ensure button is always at the end
+                timelineContainer.appendChild(loadMoreButton);
+              } else {
+                console.error("Failed to load more items:", response.statusText);
+                loadMoreButton.disabled = false;
+              }
+            } catch (error) {
+              console.error("Error during fetch:", error);
               loadMoreButton.disabled = false;
             }
-
-            // Ensure button is always at the end
-            timelineContainer.appendChild(loadMoreButton);
           } else {
-            console.error("Failed to load more items:", response.statusText);
-            loadMoreButton.disabled = false; // Re-enable the button on failure
+            console.log("No next URL found.");
           }
-        } catch (error) {
-          console.error("Error during fetch:", error);
-          loadMoreButton.disabled = false; // Re-enable the button on error
-        }
-      } else {
-        console.log("No next URL found.");
+        });
       }
-    });
-  }
-}
+    }
 
-// Call this function after the Turbo or DOM load to bind the button event
-document.addEventListener('turbo:load', function() {
-  bindLoadMoreButton();
-});
-document.addEventListener('DOMContentLoaded', function() {
-  bindLoadMoreButton();
-});
-
+    // Call this function after the Turbo or DOM load to bind the button event
+    document.addEventListener('turbo:load', bindLoadMoreButton);
+    document.addEventListener('DOMContentLoaded', bindLoadMoreButton);
   </script>
   
 </body>

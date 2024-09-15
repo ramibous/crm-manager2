@@ -191,8 +191,10 @@ class ClientsController < ApplicationController
       client.wishlist_items.map { |w| { id: w.id, date: w.created_at, description: "Wishlist: #{w.item_name}" } } +
       client.purchases.map { |p| { id: p.id, date: p.date, description: "Purchase: #{p.product_name}" } } +
       client.campaigns.map { |c| { id: c.id, date: c.created_at, description: "Campaign: #{c.name}" } }
-    ).uniq { |item| item[:id] } # Ensure uniqueness by `id`
+    ).uniq { |item| [item[:id], item[:description]] } # Ensure items are unique by id and description
 
     Kaminari.paginate_array(timeline_items).page(params[:page]).per(3)
   end
+
+
 end

@@ -71,8 +71,9 @@ class Client < ApplicationRecord
     items += purchases.map { |p| { date: p.created_at, description: "Purchase at #{p.store}" } }
     items += campaigns.map { |c| { date: c.start_date, description: "Campaign: #{c.name} - Start Date: #{c.start_date} - End Date: #{c.end_date}" } }
 
-    items
+    items.uniq { |item| [item[:date], item[:description]] } # Avoid duplicates based on date and description
   end
+
 
 
   private
