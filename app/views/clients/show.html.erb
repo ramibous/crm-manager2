@@ -111,6 +111,9 @@
     <button id="load-more" class="btn btn-primary" disabled>No More Items</button>
   </div>
 <% end %>
-    </div>
+
+<script>
+  console.log("Next page URL:", "<%= @timeline_items.next_page ? timeline_items_client_path(@client, page: @timeline_items.next_page) : 'No more items' %>");
+</script>
   </div>
 </div>

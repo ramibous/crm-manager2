@@ -65,15 +65,14 @@ class Client < ApplicationRecord
   end
 
   def timeline_items
-    items = appointments.map { |a| { date: a.scheduled_at, description: "Appointment: #{a.title}" } }
-    items += wishlist_items.map { |w| { date: w.created_at, description: "Wishlist: #{w.item_name} - Reference: #{w.item_reference}" } }
+    # Fetch items specific to the client
+    items = appointments.map { |a| { id: a.id, date: a.scheduled_at, description: "Appointment: #{a.title}" } }
+    items += wishlist_items.map { |w| { id: w.id, date: w.created_at, description: "Wishlist: #{w.item_name} - Reference: #{w.item_reference}" } }
+    items += purchases.map { |p| { id: p.id, date: p.created_at, description: "Purchase at #{p.store}" } if p.store.present? }.compact
+    items += campaigns.map { |c| { id: c.id, date: c.start_date, description: "Campaign: #{c.name} - Start Date: #{c.start_date} - End Date: #{c.end_date}" } }
 
-    # Filter out purchases with missing store names and ensure no duplicates
-    items += purchases.map { |p| { date: p.created_at, description: "Purchase at #{p.store}" } if p.store.present? }.compact
-    items += campaigns.map { |c| { date: c.start_date, description: "Campaign: #{c.name}" } }
-
-    # Ensure uniqueness of items based on both date and description
-    items.uniq { |item| [item[:date], item[:description]] }.sort_by { |item| item[:date] }.reverse
+    # Ensure uniqueness based on ID, date, and description
+    items.uniq { |item| [item[:id], item[:date].to_s, item[:description]] }.sort_by { |item| item[:date] }.reverse
   end
 
 
@@ -87,7 +86,7 @@ class Client < ApplicationRecord
 
   def generate_client_id
     last_client = Client.order(:created_at).last
-    last_id = last_client && last_client.client_id.present? ? last_client.client_id.to_i : 0
+    last_id = last_client&.client_id.present? ? last_client.client_id.to_i : 0
     self.client_id = (last_id + 1).to_s
   end
 end

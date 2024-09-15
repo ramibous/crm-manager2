@@ -39,7 +39,7 @@ class ClientsController < ApplicationController
   def show
     @timeline_items = paginate_timeline_items(@client)
 
-    Rails.logger.info "Next page: #{@timeline_items.next_page}"
+    Rails.logger.info "Timeline items for client #{@client.id}: #{@timeline_items.map { |item| item[:description] }}"
 
     respond_to do |format|
       format.html
@@ -48,25 +48,20 @@ class ClientsController < ApplicationController
   end
 
   def load_more_timeline_items
-    @client = Client.find(params[:id])
-    timeline_items = @client.timeline_items
+    page = (params[:page] || 1).to_i
+    @timeline_items = paginate_timeline_items(@client).page(page).per(3)
 
-    page = params[:page].to_i
-    per_page = 3 # Adjust this value to the number of items you want per page
-
-    # Paginate timeline items, ensure it's unique per page load
-    @timeline_items = Kaminari.paginate_array(timeline_items).page(page).per(per_page)
-
-    if @timeline_items.empty?
-      Rails.logger.info "No more timeline items to load for client ##{@client.id}"
-    else
-      Rails.logger.info "Timeline items loaded: #{@timeline_items.inspect}"
-    end
+    Rails.logger.info "Loading timeline items for page #{page}: #{@timeline_items.map { |item| item[:description] }}"
 
     respond_to do |format|
       format.js
     end
   end
+
+
+
+
+
 
 
 

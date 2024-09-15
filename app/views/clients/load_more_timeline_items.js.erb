@@ -1,18 +1,28 @@
+// Disable the Load More button to prevent multiple clicks
+const loadMoreButton = document.getElementById('load-more');
+if (loadMoreButton) {
+  loadMoreButton.disabled = true;
+  console.log("Load More button clicked. Disabled to prevent multiple requests.");
+}
+
 // Insert the new timeline items into the timeline container
 console.log("Inserting new items into timeline...");
-document.getElementById('timeline-items').insertAdjacentHTML('beforeend', "<%= j render partial: 'timeline_item', collection: @timeline_items, as: :timeline_item %>");
+<% @timeline_items.each do |timeline_item| %>
+  if (!document.querySelector(`[data-item-id='<%= timeline_item[:id] %>']`)) {
+    document.getElementById('timeline-items').insertAdjacentHTML('beforeend', "<%= j render partial: 'timeline_item', locals: { timeline_item: timeline_item } %>");
+  } else {
+    console.log("Item already exists in the timeline: <%= timeline_item[:description] %>");
+  }
+<% end %>
 
-// Set the next page URL if there are more pages, disable the button if no more pages
+// Check if there are more pages to load, and re-enable the button only if there are more pages
 <% if @timeline_items.next_page %>
   var nextPageUrl = "<%= timeline_items_client_path(@client, page: @timeline_items.next_page) %>";
   document.getElementById('timeline-items').setAttribute('data-timeline-next-url', nextPageUrl);
-  console.log("Next page URL set to: ", nextPageUrl);
+  loadMoreButton.disabled = false;
+  console.log("Next page URL updated to: ", nextPageUrl);
 <% else %>
-  const loadMoreButton = document.getElementById('load-more');
-  if (loadMoreButton) {
-    loadMoreButton.disabled = true;
-    loadMoreButton.classList.add('disabled'); // Add a class to change appearance
-    loadMoreButton.innerText = 'No More Items'; // Update button text
-    console.log("No more items. Load More button disabled.");
-  }
+  loadMoreButton.disabled = true;
+  loadMoreButton.innerText = 'No More Items';
+  console.log("No more items. Load More button disabled.");
 <% end %>
