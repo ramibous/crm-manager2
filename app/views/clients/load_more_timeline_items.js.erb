@@ -1,14 +1,18 @@
-// Insert the new timeline items into the timeline container
-document.getElementById('timeline-items').insertAdjacentHTML('beforeend', "<%= j render partial: 'timeline_item', collection: @timeline_items, as: :timeline_item %>");
+// Check if timeline container exists
+const timelineContainer = document.getElementById('timeline-items');
+if (timelineContainer) {
+  // Insert the new timeline items into the timeline container
+  timelineContainer.insertAdjacentHTML('beforeend', "<%= j render partial: 'timeline_item', collection: @timeline_items, as: :timeline_item %>");
 
-// Set the next page URL if there are more pages, disable the button if no more pages
-<% if @timeline_items.next_page %>
-  document.getElementById('timeline-items').setAttribute('data-timeline-next-url', "<%= timeline_items_client_path(@client, page: @timeline_items.next_page) %>");
-<% else %>
-  const loadMoreButton = document.getElementById('load-more');
-  if (loadMoreButton) {
-    loadMoreButton.disabled = true; // Disable the button
-    loadMoreButton.classList.add('disabled'); // Optional: Add a class to change appearance
-    loadMoreButton.innerText = 'No More Items'; // Update button text
-  }
-<% end %>
+  // Set the next page URL if there are more pages, or disable the button if no more pages
+  <% if @timeline_items.next_page %>
+    timelineContainer.setAttribute('data-timeline-next-url', "<%= timeline_items_client_path(@client, page: @timeline_items.next_page) %>");
+  <% else %>
+    const loadMoreButton = document.getElementById('load-more');
+    if (loadMoreButton) {
+      loadMoreButton.disabled = true; // Disable the button
+      loadMoreButton.classList.add('disabled'); // Optional: Add a class to change appearance
+      loadMoreButton.innerText = 'No More Items'; // Update button text
+    }
+  <% end %>
+}

@@ -103,6 +103,7 @@
   <%= render partial: 'timeline_item', collection: @timeline_items, as: :timeline_item %>
 </div>
 
+
 <!-- Button should come after the timeline items -->
 <div id="load-more-container">
   <% if @timeline_items.next_page %>
@@ -111,6 +112,7 @@
     <button id="load-more" class="btn btn-primary" disabled>No More Items</button>
   <% end %>
 </div>
+
 
 </div>
     <!-- Debugging Output for Helper -->
