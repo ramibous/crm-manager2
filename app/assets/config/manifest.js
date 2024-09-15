@@ -3,3 +3,4 @@
 //= link_tree ../../javascript .js
 //= link_tree ../../../vendor/javascript .js
 //= link rails-ujs.js
+//= link Logo_La_Canadienne_Redesign-No_R.png

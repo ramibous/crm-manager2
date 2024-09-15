@@ -13,17 +13,17 @@
     max-width: 160px;
     width: 100%;
     display: block;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
 }
 
 .btn-custom:hover {
     background-color: #333; /* Slightly darker background on hover */
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Elevate shadow on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Elevate shadow on hover */
     transform: translateY(-2px); /* Subtle hover lift effect */
 }
 
 .btn-custom:active {
     background-color: #1a1a1a; /* Darker background when pressed */
     transform: translateY(0); /* Remove lift when button is pressed */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Return shadow to normal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Return shadow to normal */
 }

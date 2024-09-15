@@ -29,10 +29,8 @@
 
 .client-task:hover {
   background-color: #f0f4f8; /* Change background on hover */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Increased shadow on hover */
 }
-
-
 
 p {
   margin-bottom: 8px;
@@ -42,13 +40,6 @@ p {
 strong {
   color: #333;
 }
-
-
-
-
-
-
-
 
 h1 {
   font-size: 2rem;
@@ -61,12 +52,10 @@ h1 {
 .campaign-card {
   background-color: white;
   border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Updated shadow */
   padding: 20px;
   margin-bottom: 20px;
 }
-
-
 
 .campaign-card p {
   font-size: 0.9rem;
@@ -97,21 +86,12 @@ h1 {
   font-weight: 600;
 }
 
-
-
 /* Button Styling */
 .btn {
-
   margin-top: 10px;
- 
 }
 
-
-
-
-
-
-
+/* Actions section */
 .actions {
   margin-top: 10px;
 }

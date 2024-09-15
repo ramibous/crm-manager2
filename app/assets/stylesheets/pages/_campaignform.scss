@@ -32,7 +32,7 @@
 
 #campaign-form .form-control:focus {
   border-color: #7e94a7;
-  box-shadow: 0 0 5px rgba(126, 148, 167, 0.5);
+  box-shadow: 0 0 5px rgba(126, 148, 167, 0.5); /* Changed to rgba */
   outline: none;
 }
 

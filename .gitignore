@@ -32,3 +32,5 @@
 # Ignore BFG tool reports (if using BFG for cleaning repo)
 /.bfg-report/
 /bfg.jar
+
+/config/credentials/production.key

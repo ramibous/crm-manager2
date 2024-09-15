@@ -1,5 +1,5 @@
 .profile-bar {
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 10px 20px;
   border-bottom: 1px solid #dee2e6;
   position: fixed;
@@ -33,12 +33,12 @@
 
 /* Bottom Navigation Bar Styles */
 .navbar {
-  background-color: rgba(255, 255, 255, 0.9); 
+  background-color: rgba(255, 255, 255, 0.9); /* Changed to rgba */
   padding: 5px 0; 
   position: fixed;
   bottom: 0;
   width: 100%;
-  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1); /* Changed to rgba */
   backdrop-filter: blur(10px); 
   z-index: 1040; 
 }
