@@ -81,35 +81,7 @@
     }
 
     // Show loading screen only on the first visit with Turbo support
-    document.addEventListener('turbo:load', function() {
-      const loadingScreen = document.getElementById('loading-screen');
-
-      if (loadingScreen) {
-        if (localStorage.getItem('loadingScreenShown') === null) {
-          setTimeout(function() {
-            loadingScreen.style.display = 'none';
-            localStorage.setItem('loadingScreenShown', 'true');
-          }, 3000); // Hide after 3 seconds
-        } else {
-          loadingScreen.style.display = 'none';
-        }
-      }
-
-      // Bind Load More button on turbo visit
-      bindLoadMoreButton();
-    });
-
-    // Standalone mode for iOS
-    if (window.navigator.standalone) {
-      document.body.style.paddingTop = '80px'; // Increase padding for standalone mode on iOS
-    }
-
-    // Bind Load More button for the first time when DOM content is ready
-    document.addEventListener('DOMContentLoaded', function() {
-      bindLoadMoreButton();
-    });
-
-function bindLoadMoreButton() {
+   function bindLoadMoreButton() {
   const loadMoreButton = document.getElementById('load-more');
   const timelineContainer = document.getElementById('timeline-items');
 
@@ -117,7 +89,7 @@ function bindLoadMoreButton() {
     loadMoreButton.addEventListener('click', async function(event) {
       event.preventDefault();
 
-      // Disable the button immediately to prevent multiple clicks
+      // Disable the button to prevent multiple clicks
       loadMoreButton.disabled = true;
 
       const nextUrl = timelineContainer.getAttribute('data-timeline-next-url');
@@ -140,21 +112,23 @@ function bindLoadMoreButton() {
             // Check if there are more items to load
             const newNextUrl = timelineContainer.getAttribute('data-timeline-next-url');
             if (!newNextUrl) {
+              // If no more items, disable the button
               loadMoreButton.disabled = true;
               loadMoreButton.textContent = 'No More Items';
             } else {
-              loadMoreButton.disabled = false; // Re-enable if more items are available
+              // Re-enable the button if more items are available
+              loadMoreButton.disabled = false;
             }
 
             // Ensure button is always at the end
             timelineContainer.appendChild(loadMoreButton);
           } else {
             console.error("Failed to load more items:", response.statusText);
-            loadMoreButton.disabled = false; // Re-enable on failure
+            loadMoreButton.disabled = false; // Re-enable the button on failure
           }
         } catch (error) {
           console.error("Error during fetch:", error);
-          loadMoreButton.disabled = false; // Re-enable on error
+          loadMoreButton.disabled = false; // Re-enable the button on error
         }
       } else {
         console.log("No next URL found.");
@@ -162,6 +136,14 @@ function bindLoadMoreButton() {
     });
   }
 }
+
+// Call this function after the Turbo or DOM load to bind the button event
+document.addEventListener('turbo:load', function() {
+  bindLoadMoreButton();
+});
+document.addEventListener('DOMContentLoaded', function() {
+  bindLoadMoreButton();
+});
 
   </script>
   
