@@ -1,0 +1,8 @@
+<div class="timeline-item" data-item-id="<%= timeline_item[:id] || timeline_item[:date].to_i %>">
+  <div class="timeline-date">
+    <%= l(timeline_item[:date], format: :long) %>
+  </div>
+  <div class="timeline-content">
+    <p><%= timeline_item[:description] %></p>
+  </div>
+</div>

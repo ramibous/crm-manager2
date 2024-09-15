@@ -66,32 +66,13 @@ class Client < ApplicationRecord
 
 
   def timeline_items
-    items = []
+    items = appointments.map { |a| { date: a.scheduled_at, description: "Appointment: #{a.title}" } }
+    items += wishlist_items.map { |w| { date: w.created_at, description: "Wishlist: #{w.item_name} - Reference: #{w.item_reference}" } }
+    items += purchases.map { |p| { date: p.created_at, description: "Purchase at #{p.store}" } }
+    items += campaigns.map { |c| { date: c.start_date, description: "Campaign: #{c.name} - Start Date: #{c.start_date} - End Date: #{c.end_date}" } }
 
-    # Add appointments
-    appointments.each do |appointment|
-      items << { date: appointment.scheduled_at, description: "Appointment: #{appointment.title}" }
-    end
-
-    # Add unique wishlist items
-    wishlist_items.uniq { |item| item.id }.each do |wishlist_item|
-      items << { date: wishlist_item.created_at, description: "Wishlist: #{wishlist_item.item_name} - Reference: #{wishlist_item.item_reference}" }
-    end
-
-    # Add purchases
-    purchases.each do |purchase|
-      items << { date: purchase.created_at, description: "Purchase at #{purchase.store}" }
-    end
-
-    # Add campaigns
-    campaigns.each do |campaign|
-      items << { date: campaign.start_date, description: "Campaign: #{campaign.name} - Start Date: #{campaign.start_date.strftime('%d %b %Y')} - End Date: #{campaign.end_date.strftime('%d %b %Y')}" }
-    end
-
-    # Sort by date descending and remove duplicates
-    items.uniq { |item| item[:description] }.sort_by { |item| item[:date] }.reverse
+    items
   end
-
 
 
   private

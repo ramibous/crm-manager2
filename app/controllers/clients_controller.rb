@@ -1,11 +1,14 @@
 class ClientsController < ApplicationController
+  protect_from_forgery except: :load_more_timeline_items
+  before_action :set_client, only: [:show, :edit, :update, :destroy, :details, :load_more_timeline_items]
+  before_action :authenticate_manager!, only: :destroy
 
   def index
-    if current_staff.manager?
-      @clients = Client.all # Managers can see all clients
-    else
-      @clients = current_staff.clients # Staff sees only their clients
-    end
+    @clients = if current_staff.manager?
+                 Client.page(params[:page]).per(10)
+               else
+                 current_staff.clients.page(params[:page]).per(10)
+               end
 
     Rails.logger.info "Clients in index: #{@clients.inspect}"
 
@@ -18,11 +21,11 @@ class ClientsController < ApplicationController
   end
 
   def export
-    if current_staff.manager?
-      @clients = Client.all # Managers can export all clients
-    else
-      @clients = current_staff.clients # Staff exports only their clients
-    end
+    @clients = if current_staff.manager?
+                 Client.all
+               else
+                 current_staff.clients
+               end
 
     Rails.logger.info "Clients being exported: #{@clients.inspect}"
 
@@ -34,58 +37,66 @@ class ClientsController < ApplicationController
   end
 
   def show
-    @client = Client.find(params[:id])
-    @interactions = @client.interactions.order(created_at: :desc)
-    Rails.logger.info "Client Purchase Total: #{@client.purchase_total}"
-    Rails.logger.info "Client Segment: #{@client.segment}"
+    @timeline_items = paginate_timeline_items(@client)
+
+    Rails.logger.info "Next page: #{@timeline_items.next_page}"
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
+
+  def load_more_timeline_items
+    @timeline_items = paginate_timeline_items(@client)
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def details
-    @client = Client.find(params[:id])
+    # Logic for details action
   end
 
   def new
     @client = Client.new
-    @readonly = false # New client form is editable
+    @readonly = false
     Rails.logger.info "New client initialized: #{@client.inspect}"
   end
 
   def create
     @client = Client.new(client_params)
-
-    # If staff_id is not provided, default to current_staff (for managers)
     @client.staff_id ||= current_staff.id if current_staff.manager?
 
     if @client.save
-      @readonly = true # Set the form to read-only after creating the client
+      @readonly = true
       respond_to do |format|
-        format.html { render :new, notice: 'Client created successfully.' } # Stay on the same page
+        format.html { render :new, notice: 'Client created successfully.' }
         format.turbo_stream
       end
     else
-      @readonly = false # Keep form editable if validation fails
+      @readonly = false
       respond_to do |format|
-        format.html { render :new } # Render the same form with errors
+        format.html { render :new }
         format.turbo_stream
       end
     end
   end
 
   def edit
-    @client = Client.find(params[:id])
+    # Logic for edit action
   end
 
   def update
-    @client = Client.find(params[:id])
-
     if @client.update(client_params)
-      @readonly = true # Set the form to read-only after update
+      @readonly = true
       respond_to do |format|
-        format.html { render :edit, notice: 'Client was successfully updated.' } # Stay on the same page
+        format.html { render :edit, notice: 'Client was successfully updated.' }
         format.turbo_stream
       end
     else
-      @readonly = false # Keep form editable if validation fails
+      @readonly = false
       respond_to do |format|
         format.html { render :edit }
         format.turbo_stream
@@ -94,8 +105,6 @@ class ClientsController < ApplicationController
   end
 
   def destroy
-    @client = Client.find(params[:id])
-
     if @client.destroy
       respond_to do |format|
         format.html { redirect_to dashboard_path, notice: 'Client was successfully deleted.' }
@@ -113,7 +122,7 @@ class ClientsController < ApplicationController
     @wishlist_items = WishlistItem.includes(:client).all
 
     respond_to do |format|
-      format.html # renders the wishlist view
+      format.html
       format.pdf do
         render pdf: "wishlist_items_#{Date.today}",
                template: 'clients/wishlist.pdf.erb',
@@ -153,11 +162,17 @@ class ClientsController < ApplicationController
 
   private
 
+  def set_client
+    @client = Client.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to dashboard_path, alert: 'Client not found.'
+  end
+
   def client_params
     params.require(:client).permit(
       :type, :title, :first_name, :first_name_local, :last_name, :last_name_local,
       :birthday, :email, :phone, :address, :postal_code, :notes, :contact_preference,
-      :time_to_contact, :signature,  # Ensure `signature` is permitted
+      :time_to_contact, :signature,
       :size, :occupation, :vacation, :hobbies, :preference,
       :payment_type_visa, :payment_type_amex, :payment_type_mastercard,
       :payment_type_discover, :payment_type_other
@@ -168,5 +183,16 @@ class ClientsController < ApplicationController
     unless current_staff&.role == "manager"
       redirect_to dashboard_path, alert: 'Only managers can delete clients.'
     end
+  end
+
+  def paginate_timeline_items(client)
+    timeline_items = (
+      client.appointments.map { |a| { id: a.id, date: a.scheduled_at, description: "Appointment: #{a.title}" } } +
+      client.wishlist_items.map { |w| { id: w.id, date: w.created_at, description: "Wishlist: #{w.item_name}" } } +
+      client.purchases.map { |p| { id: p.id, date: p.date, description: "Purchase: #{p.product_name}" } } +
+      client.campaigns.map { |c| { id: c.id, date: c.created_at, description: "Campaign: #{c.name}" } }
+    ).sort_by { |item| item[:date] }.reverse
+
+    Kaminari.paginate_array(timeline_items).page(params[:page]).per(3)
   end
 end

@@ -25,7 +25,7 @@ gem 'ruby-vips'
 gem 'cloudinary'
 gem 'activestorage-cloudinary-service'
 gem 'rails-signature-pad'
-
+gem 'kaminari'
 
 
 

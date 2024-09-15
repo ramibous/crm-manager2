@@ -1,125 +1,174 @@
-<div class="container mt-4" 
-     style="background-color: #E5ECF6; padding: 20px; border-radius: 10px; position: relative;"
-     data-controller="timeline"
-     data-timeline-total-items-value="<%= @client.timeline_items.size %>"
-     data-timeline-timeline-items-value='<%= @client.timeline_items.to_json.html_safe %>'>
-  <!-- Back button with result count -->
-  <div class="row mb-3">
-    <div class="col-12">
-      <a href="<%= clients_path %>" class="text-muted d-inline-flex align-items-center">
-        <i class="fas fa-arrow-left"></i>
-        <span>Back</span>
-      </a>
-    </div>
-  </div>
+<div class="container mt-4" style="background-color: #E5ECF6; padding: 20px; border-radius: 10px; position: relative;">
+  <div id="timeline-items" data-controller="infinite-scroll"
+       data-timeline-next-url="<%= next_page_url(@timeline_items, @client) %>"
+       data-infinite-scroll-total-items-value="<%= @client.timeline_items.size %>"
+       data-infinite-scroll-timeline-items-value="<%= @client.timeline_items.to_json.html_safe %>">
   
-  <!-- Client information header -->
-  <div class="row">
-    <div class="col-12">
-      <div class="d-flex align-items-center justify-content-between mb-3">
-        <div>
-          <span class="badge bg-light text-dark">Client</span>
-          <h2><%= @client.first_name %> <%= @client.last_name %></h2>
-          <p>ID <%= @client.client_id %></p>
-          <p><i class="fas fa-map-marker-alt"></i> <%= @client.address %></p>
-          <p><i class="fas fa-user-circle"></i> Assigned To <%= @client.staff&.name || "Unassigned" %></p>
-        </div>
-        <div>
-          <div class="rounded-circle border border-success text-success d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-            <span><%= @client.initials %></span>
+    <!-- Back button with result count -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <a href="<%= clients_path %>" class="text-muted d-inline-flex align-items-center">
+          <i class="fas fa-arrow-left"></i>
+          <span>Back</span>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Client information header -->
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <span class="badge bg-light text-dark">Client</span>
+            <h2><%= @client.first_name %> <%= @client.last_name %></h2>
+            <p>ID <%= @client.client_id %></p>
+            <p><i class="fas fa-map-marker-alt"></i> <%= @client.address %></p>
+            <p><i class="fas fa-user-circle"></i> Assigned To <%= @client.staff&.name || "Unassigned" %></p>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Icons for Appointment and Wishlist in Top-Right Corner -->
-  <div style="position: absolute; top: 10px; right: 10px;">
-    <%= link_to new_client_appointment_path(@client), title: 'Add Appointment', class: 'appointment-icon' do %>
-      <i class="fas fa-calendar-alt"></i>
-    <% end %>
-    <%= link_to new_client_wishlist_item_path(@client), title: 'Add to Wishlist', class: 'wishlist-icon ml-2' do %>
-      <i class="fas fa-heart"></i>
-    <% end %>
-  </div>
-  
-  <!-- VIP Badges and Segment -->
-  <div class="row mb-4">
-    <div class="col-12">
-      <div class="d-flex justify-content-start">
-        <% case @client.segment %>
-        <% when 'no_purchase' %>
-          <span class="badge bg-secondary text-light">No Purchase</span>
-        <% when 'sleepers' %>
-          <span class="badge bg-warning text-dark me-2">Sleepers</span>
-        <% when 'aspiring' %>
-          <span class="badge bg-warning text-dark me-2">Aspiring</span>
-        <% when 'experiencer' %>
-          <span class="badge bg-warning text-dark me-2">Experiencer</span>
-        <% when 'potential_vic' %>
-          <span class="badge bg-warning text-dark me-2">Potential VIC</span>
-        <% when 'vic1' %>
-          <span class="badge bg-warning text-dark me-2">VIC1</span>
-        <% when 'vic2' %>
-          <span class="badge bg-warning text-dark me-2">VIC2</span>
-        <% when 'vic3' %>
-          <span class="badge bg-warning text-dark me-2">VIC3</span>
-        <% when 'vic4' %>
-          <span class="badge bg-warning text-dark me-2">VIC4</span>
-        <% when 'vic5' %>
-          <span class="badge bg-warning text-dark me-2">VIC5</span>
-        <% else %>
-          <span class="badge bg-secondary text-light">Unknown Segment</span>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-  <!-- KPI & Client Discovery -->
-  <div class="row mb-4">
-    <div class="col-12">
-      <h5>KPI & Client Discovery 
-        <%= link_to '>', details_client_path(@client), class: 'text-muted small-arrow' %>
-      </h5>
-      <ul class="list-unstyled">
-        <li><i class="fas fa-store"></i> <%= @client.store_location || "La Canadienne 273 av. Laurier | Montréal" %></li>
-        <li><i class="fas fa-gift"></i> 2023: <%= number_to_currency(@client.purchase_total, unit: "CAD $") %></li>
-        <li><i class="fas fa-venus-mars"></i> <%= @client.gender || "[Gender Placeholder]" %></li>
-        <li><i class="fas fa-birthday-cake"></i> Birthday: <%= @client.birthday ? @client.birthday.strftime("%d %b %Y") : "Not provided" %></li>
-        <li><i class="fas fa-phone"></i> Phone: <%= @client.phone || "Not provided" %></li>
-        <li><i class="fas fa-envelope"></i> Email: <%= @client.email || "Not provided" %></li>
-        <li><i class="fas fa-map-marker-alt"></i> Address: <%= @client.address || "Not provided" %></li>
-        <li><i class="fas fa-shopping-cart"></i> Total Orders: <%= @client.purchases.count %></li>
-        <li><i class="fas fa-hand-holding-usd"></i> Average Purchase Value: <%= number_to_currency(@client.purchases.average(:amount) || 0, unit: "CAD $") %></li>
-        <li><i class="fas fa-history"></i> Last Purchase: <%= @client.purchases.order(created_at: :desc).first&.created_at&.strftime("%d %b %Y") || "No purchases" %></li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Timeline -->
-  <div class="row mb-4">
-    <div class="col-12">
-      <h5>Timeline</h5>
-      <div data-timeline-target="timeline" class="timeline">
-        <% @client.timeline_items.first(3).each do |item| %>
-          <div class="timeline-item">
-            <div class="timeline-icon"></div>
-            <div class="timeline-content">
-              <span class="timeline-date">
-                <%= item[:date].in_time_zone("Eastern Time (US & Canada)").strftime("%d %b %Y at %I:%M %p") %>
-              </span>
-              <p><%= item[:description] %></p>
+          <div>
+            <div class="rounded-circle border border-success text-success d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+              <span><%= @client.initials %></span>
             </div>
           </div>
-        <% end %>
+        </div>
       </div>
-      <% if @client.timeline_items.size > 3 %>
-        <button data-action="click->timeline#seeMore" data-timeline-target="seeMoreButton" class="btn btn-link">
-          See More
-        </button>
+    </div>
+
+    <!-- Icons for Appointment and Wishlist in Top-Right Corner -->
+    <div style="position: absolute; top: 10px; right: 10px;">
+      <%= link_to new_client_appointment_path(@client), title: 'Add Appointment', class: 'appointment-icon' do %>
+        <i class="fas fa-calendar-alt"></i>
+      <% end %>
+      <%= link_to new_client_wishlist_item_path(@client), title: 'Add to Wishlist', class: 'wishlist-icon ml-2' do %>
+        <i class="fas fa-heart"></i>
       <% end %>
     </div>
-  </div>
+    
+    <!-- VIP Badges and Segment -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-start">
+          <% case @client.segment %>
+          <% when 'no_purchase' %>
+            <span class="badge bg-secondary text-light">No Purchase</span>
+          <% when 'sleepers' %>
+            <span class="badge bg-warning text-dark me-2">Sleepers</span>
+          <% when 'aspiring' %>
+            <span class="badge bg-warning text-dark me-2">Aspiring</span>
+          <% when 'experiencer' %>
+            <span class="badge bg-warning text-dark me-2">Experiencer</span>
+          <% when 'potential_vic' %>
+            <span class="badge bg-warning text-dark me-2">Potential VIC</span>
+          <% when 'vic1' %>
+            <span class="badge bg-warning text-dark me-2">VIC1</span>
+          <% when 'vic2' %>
+            <span class="badge bg-warning text-dark me-2">VIC2</span>
+          <% when 'vic3' %>
+            <span class="badge bg-warning text-dark me-2">VIC3</span>
+          <% when 'vic4' %>
+            <span class="badge bg-warning text-dark me-2">VIC4</span>
+          <% when 'vic5' %>
+            <span class="badge bg-warning text-dark me-2">VIC5</span>
+          <% else %>
+            <span class="badge bg-secondary text-light">Unknown Segment</span>
+          <% end %>
+        </div>
+      </div>
+    </div>
 
-  <!-- Action buttons section omitted for brevity -->
+    <!-- KPI & Client Discovery -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <h5>KPI & Client Discovery 
+          <%= link_to '>', details_client_path(@client), class: 'text-muted small-arrow' %>
+        </h5>
+        <ul class="list-unstyled">
+          <li><i class="fas fa-store"></i> <%= @client.store_location || "La Canadienne 273 av. Laurier | Montréal" %></li>
+          <li><i class="fas fa-gift"></i> 2023: <%= number_to_currency(@client.purchase_total, unit: "CAD $") %></li>
+          <li><i class="fas fa-venus-mars"></i> <%= @client.gender || "[Gender Placeholder]" %></li>
+          <li><i class="fas fa-birthday-cake"></i> Birthday: <%= @client.birthday ? @client.birthday.strftime("%d %b %Y") : "Not provided" %></li>
+          <li><i class="fas fa-phone"></i> Phone: <%= @client.phone || "Not provided" %></li>
+          <li><i class="fas fa-envelope"></i> Email: <%= @client.email || "Not provided" %></li>
+          <li><i class="fas fa-map-marker-alt"></i> Address: <%= @client.address || "Not provided" %></li>
+          <li><i class="fas fa-shopping-cart"></i> Total Orders: <%= @client.purchases.count %></li>
+          <li><i class="fas fa-hand-holding-usd"></i> Average Purchase Value: <%= number_to_currency(@client.purchases.average(:amount) || 0, unit: "CAD $") %></li>
+          <li><i class="fas fa-history"></i> Last Purchase: <%= @client.purchases.order(created_at: :desc).first&.created_at&.strftime("%d %b %Y") || "No purchases" %></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Timeline Items -->
+<!-- Timeline Items -->
+<div id="timeline-items" data-timeline-next-url="<%= next_page_url(@timeline_items, @client) %>">
+  <%= render partial: 'timeline_item', collection: @timeline_items, as: :timeline_item %>
 </div>
+
+<!-- Button should come after the timeline items -->
+<div id="load-more-container">
+  <% if @timeline_items.next_page %>
+    <%= button_to 'Load More', timeline_items_client_path(@client, page: @timeline_items.next_page), method: :get, remote: true, id: 'load-more', class: 'btn btn-primary' %>
+  <% else %>
+    <button id="load-more" class="btn btn-primary" disabled>No More Items</button>
+  <% end %>
+</div>
+
+</div>
+    <!-- Debugging Output for Helper -->
+    
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  bindLoadMoreButton();
+});
+
+function bindLoadMoreButton() {
+  const loadMoreButton = document.getElementById('load-more');
+
+  if (loadMoreButton) {
+    loadMoreButton.addEventListener('click', async function(event) {
+      event.preventDefault();
+
+      const timelineContainer = document.getElementById('timeline-items');
+      const nextUrl = timelineContainer.getAttribute('data-timeline-next-url');
+
+      if (nextUrl) {
+        try {
+          const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); 
+          const response = await fetch(nextUrl, {
+            method: 'GET',
+            headers: {
+              'Accept': 'text/javascript',
+              'X-CSRF-Token': token 
+            }
+          });
+
+          if (response.ok) {
+            const script = await response.text(); 
+            eval(script); 
+
+            // Rebind the button after new items load
+            bindLoadMoreButton();
+
+            // Move the "No More Items" or "Load More" button to the end of the timeline items
+            const loadMoreContainer = document.getElementById('load-more-container');
+            timelineContainer.appendChild(loadMoreContainer); // Move the button to the end
+          } else {
+            console.error("Failed to load more items:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error during fetch:", error);
+        }
+      } else {
+        console.log("No next URL found.");
+      }
+    });
+  }
+}
+
+</script>
+
+<style>
+  #load-more-container {
+  text-align: center; /* Center the button */
+  margin-top: 20px; /* Add some space between the last item and the button */
+}
+</style>

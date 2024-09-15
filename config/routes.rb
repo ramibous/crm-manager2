@@ -1,3 +1,4 @@
+# config/routes.rb
 Rails.application.routes.draw do
   devise_for :managers
   devise_for :staffs
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
   end
 
   resources :purchases
+
   resources :clients do
     resources :interactions, only: [:new, :create]
     resources :appointments, only: [:new, :create]
@@ -28,6 +30,7 @@ Rails.application.routes.draw do
 
     member do
       get 'details', to: 'clients#details'
+      get 'timeline_items', to: 'clients#load_more_timeline_items'
     end
 
     collection do
