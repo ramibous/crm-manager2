@@ -1,12 +1,12 @@
 class Client < ApplicationRecord
   belongs_to :staff, optional: true
   belongs_to :manager, optional: true
-  has_many :purchases, dependent: :destroy
+  has_many :purchases, -> { distinct }, dependent: :destroy
   has_many :interactions, dependent: :destroy
-  has_many :appointments, dependent: :destroy
-  has_many :wishlist_items, dependent: :destroy
-  has_many :campaign_assignments, dependent: :destroy
-  has_many :campaigns, through: :campaign_assignments
+  has_many :appointments, -> { distinct }, dependent: :destroy
+  has_many :wishlist_items, -> { distinct }, dependent: :destroy
+  has_many :campaign_assignments, -> { distinct }, dependent: :destroy
+  has_many :campaigns, -> { distinct }, through: :campaign_assignments
   has_many :messages, dependent: :destroy
 
   before_create :generate_client_id
@@ -64,16 +64,17 @@ class Client < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-
   def timeline_items
     items = appointments.map { |a| { date: a.scheduled_at, description: "Appointment: #{a.title}" } }
     items += wishlist_items.map { |w| { date: w.created_at, description: "Wishlist: #{w.item_name} - Reference: #{w.item_reference}" } }
-    items += purchases.map { |p| { date: p.created_at, description: "Purchase at #{p.store}" } }
-    items += campaigns.map { |c| { date: c.start_date, description: "Campaign: #{c.name} - Start Date: #{c.start_date} - End Date: #{c.end_date}" } }
 
-    items.uniq { |item| [item[:date], item[:description]] } # Avoid duplicates based on date and description
+    # Filter out purchases with missing store names and ensure no duplicates
+    items += purchases.map { |p| { date: p.created_at, description: "Purchase at #{p.store}" } if p.store.present? }.compact
+    items += campaigns.map { |c| { date: c.start_date, description: "Campaign: #{c.name}" } }
+
+    # Ensure uniqueness of items based on both date and description
+    items.uniq { |item| [item[:date], item[:description]] }.sort_by { |item| item[:date] }.reverse
   end
-
 
 
   private

@@ -98,22 +98,19 @@
     </div>
 
     <!-- Timeline Items -->
-<!-- Timeline Items -->
-<div id="timeline-items" data-timeline-next-url="<%= next_page_url(@timeline_items, @client) %>">
+<div id="timeline-items" data-timeline-next-url="<%= url_for(controller: 'clients', action: 'load_more_timeline_items', id: @client.id, page: 2) %>">
   <%= render partial: 'timeline_item', collection: @timeline_items, as: :timeline_item %>
 </div>
 
-
-<!-- Button should come after the timeline items -->
-<div id="load-more-container">
-  <% if @timeline_items.next_page %>
+<% if @timeline_items.next_page %>
+  <div id="load-more-container">
     <%= button_to 'Load More', timeline_items_client_path(@client, page: @timeline_items.next_page), method: :get, remote: true, id: 'load-more', class: 'btn btn-primary' %>
-  <% else %>
+  </div>
+<% else %>
+  <div id="load-more-container">
     <button id="load-more" class="btn btn-primary" disabled>No More Items</button>
-  <% end %>
+  </div>
+<% end %>
+    </div>
+  </div>
 </div>
-
-
-</div>
-    <!-- Debugging Output for Helper -->
-    

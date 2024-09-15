@@ -48,12 +48,28 @@ class ClientsController < ApplicationController
   end
 
   def load_more_timeline_items
-    @timeline_items = paginate_timeline_items(@client)
+    @client = Client.find(params[:id])
+    timeline_items = @client.timeline_items
+
+    page = params[:page].to_i
+    per_page = 3 # Adjust this value to the number of items you want per page
+
+    # Paginate timeline items, ensure it's unique per page load
+    @timeline_items = Kaminari.paginate_array(timeline_items).page(page).per(per_page)
+
+    if @timeline_items.empty?
+      Rails.logger.info "No more timeline items to load for client ##{@client.id}"
+    else
+      Rails.logger.info "Timeline items loaded: #{@timeline_items.inspect}"
+    end
 
     respond_to do |format|
       format.js
     end
   end
+
+
+
 
   def details
     # Logic for details action
@@ -188,13 +204,16 @@ class ClientsController < ApplicationController
   def paginate_timeline_items(client)
     timeline_items = (
       client.appointments.map { |a| { id: a.id, date: a.scheduled_at, description: "Appointment: #{a.title}" } } +
-      client.wishlist_items.map { |w| { id: w.id, date: w.created_at, description: "Wishlist: #{w.item_name}" } } +
-      client.purchases.map { |p| { id: p.id, date: p.date, description: "Purchase: #{p.product_name}" } } +
-      client.campaigns.map { |c| { id: c.id, date: c.created_at, description: "Campaign: #{c.name}" } }
-    ).uniq { |item| [item[:id], item[:description]] } # Ensure items are unique by id and description
+      client.wishlist_items.map { |w| { id: w.id, date: w.created_at, description: "Wishlist: #{w.item_name} - Reference: #{w.item_reference}" } } +
+      client.purchases.map { |p| { id: p.id, date: p.created_at, description: "Purchase at #{p.store}" } } +
+      client.campaigns.map { |c| { id: c.id, date: c.start_date, description: "Campaign: #{c.name} - Start Date: #{c.start_date} - End Date: #{c.end_date}" } }
+    )
 
+    # Ensure uniqueness based on item ID and description
+    timeline_items.uniq! { |item| [item[:id], item[:description]] }
+
+    # Paginate the array
     Kaminari.paginate_array(timeline_items).page(params[:page]).per(3)
   end
-
 
 end
