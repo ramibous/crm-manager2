@@ -7,7 +7,7 @@
   width: 100%;
   z-index: 1040;
   display: flex;
-  justify-content: space-between; /* Align profile and logout link properly */
+  justify-content: space-between; 
   align-items: center;
 }
 
@@ -27,26 +27,26 @@
 
 /* Adjust main content to avoid overlap with profile bar and navbar */
 .main-content {
-  margin-top: 50px; /* Adjust based on the height of the profile bar */
-  margin-bottom: 120px; /* Add margin to the bottom to avoid overlap with the navbar */
+  margin-top: 50px; 
+  margin-bottom: 120px; 
 }
 
 /* Bottom Navigation Bar Styles */
 .navbar {
-  background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
-  padding: 5px 0; /* Reduce padding to fit better on smaller screens */
+  background-color: rgba(255, 255, 255, 0.9); 
+  padding: 5px 0; 
   position: fixed;
   bottom: 0;
   width: 100%;
-  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
-  backdrop-filter: blur(10px); /* Blur effect for transparency */
-  z-index: 1040; /* Ensure navbar stays above other content */
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1); 
+  backdrop-filter: blur(10px); 
+  z-index: 1040; 
 }
 
 .nav-link {
-  color: #000; /* Black color for icons and text */
+  color: #000; 
   text-align: center;
-  font-size: 10px; /* Adjust text size to fit better on mobile */
+  font-size: 10px; 
   text-decoration: none;
   display: flex;
   flex-direction: column;
@@ -55,19 +55,19 @@
 }
 
 .nav-link i {
-  font-size: 22px; /* Adjust icon size slightly larger */
+  font-size: 22px; 
   display: block;
-  margin-bottom: 3px; /* Increase spacing between icon and text */
-  padding: 6px; /* Adjust padding to reduce extra space */
-  background-color: #000; /* Black background for icon */
-  border-radius: 50%; /* Fully rounded corners */
-  color: #fff; /* White icon color */
+  margin-bottom: 3px; 
+  padding: 6px; 
+  background-color: #000; 
+  border-radius: 50%;
+  color: #fff; 
 }
 
 .nav-link:hover i {
-  background-color: #007bff; /* Change icon background on hover */
+  background-color: #007bff; 
 }
 
 .nav-link:hover {
-  color: #007bff; /* Hover effect to change text color */
+  color: #007bff; 
 }

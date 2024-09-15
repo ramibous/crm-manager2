@@ -19,14 +19,9 @@
 <body>
 
   <!-- Profile bar with logged-in staff's email -->
-  <div class="profile-bar">
-    <% if staff_signed_in? %>
-      <span>Welcome, <%= current_staff.email %></span>
-      <%= link_to 'Logout', destroy_staff_session_path, method: :delete, class: "logout-link" %>
-    <% else %>
-      <%= link_to 'Login', new_staff_session_path, class: "logout-link" %>
-    <% end %>
-  </div>
+  <body class="<%= content_for?(:body_class) ? yield(:body_class) : '' %>">
+  <!-- Profile bar with logged-in staff's email -->
+
 
   <!-- Flash messages -->
   <div class="main-content">
@@ -34,37 +29,41 @@
     <%= yield %>
   </div>
 
-  <nav class="navbar">
-    <div class="container-fluid d-flex justify-content-around">
-      <%= link_to dashboard_path, class: "nav-link" do %>
-        <i class="fas fa-home"></i>
-        Home
-      <% end %>
+  <!-- Conditionally render the navbar unless it's the login page -->
+  <% unless content_for?(:body_class) && yield(:body_class) == 'login-page' %>
+    <nav class="navbar">
+      <div class="container-fluid d-flex justify-content-around">
+        <%= link_to dashboard_path, class: "nav-link" do %>
+          <i class="fas fa-home"></i>
+          Home
+        <% end %>
 
-      <%= link_to search_clients_path, class: "nav-link" do %>
-        <i class="fas fa-search"></i>
-        Search
-      <% end %>
+        <%= link_to search_clients_path, class: "nav-link" do %>
+          <i class="fas fa-search"></i>
+          Search
+        <% end %>
 
-      <%= link_to new_client_path, class: "nav-link" do %>
-        <i class="fas fa-plus-circle"></i>
-        New Client
-      <% end %>
+        <%= link_to new_client_path, class: "nav-link" do %>
+          <i class="fas fa-plus-circle"></i>
+          New Client
+        <% end %>
 
-      <%= link_to appointments_path, class: "nav-link" do %>
-        <i class="fas fa-calendar"></i>
-        Appointments
-      <% end %>
+        <%= link_to appointments_path, class: "nav-link" do %>
+          <i class="fas fa-calendar"></i>
+          Appointments
+        <% end %>
 
-      <%= link_to campaigns_path, class: "nav-link" do %>
-        <i class="fas fa-bullhorn"></i>
-        Campaigns
-      <% end %>
-    </div>
-  </nav>
+        <%= link_to campaigns_path, class: "nav-link" do %>
+          <i class="fas fa-bullhorn"></i>
+          Campaigns
+        <% end %>
+      </div>
+    </nav>
+  <% end %>
 
   <!-- Signature Pad Script -->
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js" defer></script>
+</body>
 
 <script>
   function bindLoadMoreButton() {
