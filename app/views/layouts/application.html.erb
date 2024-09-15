@@ -104,8 +104,65 @@
 
     // Check for an element on Turbo load and hide it
 
+document.addEventListener('DOMContentLoaded', function() {
+  bindLoadMoreButton();
+});
+
+function bindLoadMoreButton() {
+  const loadMoreButton = document.getElementById('load-more');
+
+  if (loadMoreButton) {
+    loadMoreButton.addEventListener('click', async function(event) {
+      event.preventDefault();
+
+      const timelineContainer = document.getElementById('timeline-items');
+      const nextUrl = timelineContainer.getAttribute('data-timeline-next-url');
+
+      if (nextUrl) {
+        try {
+          const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); 
+          const response = await fetch(nextUrl, {
+            method: 'GET',
+            headers: {
+              'Accept': 'text/javascript',
+              'X-CSRF-Token': token 
+            }
+          });
+
+          if (response.ok) {
+            const script = await response.text(); 
+            eval(script); 
+
+            // Rebind the button after new items load
+            bindLoadMoreButton();
+
+            // Move the "No More Items" or "Load More" button to the end of the timeline items
+            const loadMoreContainer = document.getElementById('load-more-container');
+            timelineContainer.appendChild(loadMoreContainer); // Move the button to the end
+          } else {
+            console.error("Failed to load more items:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error during fetch:", error);
+        }
+      } else {
+        console.log("No next URL found.");
+      }
+    });
+  }
+}
+
+
+
 
   </script>
   
 </body>
 </html>
+
+<style>
+  #load-more-container {
+  text-align: center; /* Center the button */
+  margin-top: 20px; /* Add some space between the last item and the button */
+}
+</style>
