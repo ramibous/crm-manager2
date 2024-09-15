@@ -68,6 +68,7 @@
 
   <!-- Service Worker Registration -->
   <script>
+    // Register Service Worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/service-worker.js')
@@ -81,88 +82,99 @@
 
     // Show loading screen only on the first visit with Turbo support
     document.addEventListener('turbo:load', function() {
-      var loadingScreen = document.getElementById('loading-screen');
-      
+      const loadingScreen = document.getElementById('loading-screen');
+
       if (loadingScreen) {
-        // Check if the loading screen has been shown before
         if (localStorage.getItem('loadingScreenShown') === null) {
-          // First visit, show the loading screen
           setTimeout(function() {
             loadingScreen.style.display = 'none';
-            localStorage.setItem('loadingScreenShown', 'true'); 
+            localStorage.setItem('loadingScreenShown', 'true');
           }, 3000); // Hide after 3 seconds
         } else {
           loadingScreen.style.display = 'none';
         }
       }
+
+      // Bind Load More button on turbo visit
+      bindLoadMoreButton();
     });
 
     // Standalone mode for iOS
     if (window.navigator.standalone) {
-      document.body.style.paddingTop = '80px'; // Increase padding to account for the fixed bar in standalone mode
+      document.body.style.paddingTop = '80px'; // Increase padding for standalone mode on iOS
     }
 
-    // Check for an element on Turbo load and hide it
-
-document.addEventListener('DOMContentLoaded', function() {
-  bindLoadMoreButton();
-});
-
-function bindLoadMoreButton() {
-  const loadMoreButton = document.getElementById('load-more');
-
-  if (loadMoreButton) {
-    loadMoreButton.addEventListener('click', async function(event) {
-      event.preventDefault();
-
-      const timelineContainer = document.getElementById('timeline-items');
-      const nextUrl = timelineContainer.getAttribute('data-timeline-next-url');
-
-      if (nextUrl) {
-        try {
-          const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); 
-          const response = await fetch(nextUrl, {
-            method: 'GET',
-            headers: {
-              'Accept': 'text/javascript',
-              'X-CSRF-Token': token 
-            }
-          });
-
-          if (response.ok) {
-            const script = await response.text(); 
-            eval(script); 
-
-            // Rebind the button after new items load
-            bindLoadMoreButton();
-
-            // Move the "No More Items" or "Load More" button to the end of the timeline items
-            const loadMoreContainer = document.getElementById('load-more-container');
-            timelineContainer.appendChild(loadMoreContainer); // Move the button to the end
-          } else {
-            console.error("Failed to load more items:", response.statusText);
-          }
-        } catch (error) {
-          console.error("Error during fetch:", error);
-        }
-      } else {
-        console.log("No next URL found.");
-      }
+    // Bind Load More button for the first time when DOM content is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      bindLoadMoreButton();
     });
-  }
-}
 
+    function bindLoadMoreButton() {
+      const loadMoreButton = document.getElementById('load-more');
+      const timelineContainer = document.getElementById('timeline-items');
 
+      if (loadMoreButton && timelineContainer) {
+        loadMoreButton.addEventListener('click', async function(event) {
+          event.preventDefault();
 
+          const nextUrl = timelineContainer.getAttribute('data-timeline-next-url');
 
+          if (nextUrl) {
+            try {
+              const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+              const response = await fetch(nextUrl, {
+                method: 'GET',
+                headers: {
+                  'Accept': 'text/javascript',
+                  'X-CSRF-Token': token,
+                }
+              });
+
+              if (response.ok) {
+                const script = await response.text();
+                eval(script); // Evaluate and execute the response script
+
+                // Check if there are more items to load
+                const newNextUrl = timelineContainer.getAttribute('data-timeline-next-url');
+                if (!newNextUrl) {
+                  // Disable the button and change the text if no more items
+                  loadMoreButton.disabled = true;
+                  loadMoreButton.textContent = 'No More Items';
+                } else {
+                  // Rebind the button if there are more items
+                  bindLoadMoreButton();
+                }
+
+                // Ensure button is always at the end
+                timelineContainer.appendChild(loadMoreButton);
+              } else {
+                console.error("Failed to load more items:", response.statusText);
+              }
+            } catch (error) {
+              console.error("Error during fetch:", error);
+            }
+          } else {
+            console.log("No next URL found.");
+          }
+        });
+      }
+    }
   </script>
   
 </body>
 </html>
 
+<!-- Add styles for mobile -->
 <style>
-  #load-more-container {
-  text-align: center; /* Center the button */
-  margin-top: 20px; /* Add some space between the last item and the button */
+#load-more {
+  margin: 20px auto;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  #load-more {
+    width: 100%;
+    text-align: center;
+  }
 }
 </style>
