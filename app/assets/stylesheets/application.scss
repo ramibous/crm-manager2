@@ -36,3 +36,10 @@ input, select, textarea {
     padding: 8px;
     width: 100%;
 }
+
+/* Correct @supports syntax */
+@supports (print-color-adjust: exact) {
+    body {
+        print-color-adjust: exact;
+    }
+}
