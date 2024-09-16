@@ -2,7 +2,7 @@
 /.bundle
 
 # Ignore all environment files (except templates).
-/env*
+/.env*
 !/.env*.erb
 
 # Ignore all logfiles and tempfiles.
@@ -26,10 +26,9 @@
 /public/packs/*
 /node_modules/
 
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
 # Ignore BFG tool reports (if using BFG for cleaning repo)
 /.bfg-report/
 /bfg.jar
-
-/config/credentials/production.key
-/config/master.key
-.env

@@ -17,6 +17,7 @@ Rails.application.configure do
   # Compress JavaScript using Terser.
   config.assets.js_compressor = :terser
 
+
   # Do not fall back to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
@@ -37,6 +38,7 @@ Rails.application.configure do
   # Use local storage for Active Storage.
   config.active_storage.service = :cloudinary
 
+
   # Ignore bad email addresses and do not raise email delivery errors.
   config.action_mailer.perform_caching = false
 
@@ -48,17 +50,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  # **New Addition**: Ensure that the application uses the master key for encryption in production.
-  config.require_master_key = true
-
-  # Enable serving static files.
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['HEROKU']
-
-  # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
-
-  # Compress JavaScript and CSS.
-  config.assets.compress = true
-  config.assets.digest = true
 end
