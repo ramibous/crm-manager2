@@ -16,3 +16,4 @@ class ApplicationController < ActionController::Base
     current_staff.manager?
   end
 end
+# force rebuild

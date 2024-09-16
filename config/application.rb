@@ -24,6 +24,9 @@ module CrmApp
     config.time_zone = 'Eastern Time (US & Canada)'
     config.active_record.default_timezone = :local
 
+    # Disable asset initialization during precompilation
+    config.assets.initialize_on_precompile = false
+
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
